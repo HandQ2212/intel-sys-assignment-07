@@ -1,0 +1,82 @@
+\section{Các kỹ thuật Machine Learning cơ bản}
+\subsection{Cơ sở toán học của Mạng nơ-ron Truyền thẳng Đa tầng (MLP)}
+Mạng nơ-ron truyền thẳng đa tầng (Multi-Layer Perceptron - MLP) là một trong những kiến trúc kinh điển nhất của học sâu, được thiết kế để giải quyết các bài toán hồi quy và phân loại phi tuyến tính. Một MLP bao gồm một tầng đầu vào (Input layer), một hoặc nhiều tầng ẩn (Hidden layers), và một tầng đầu ra (Output layer).
+
+Quá trình tính toán lan truyền xuôi (Forward Propagation) từ tầng $l-1$ sang tầng $l$ được định nghĩa bằng các phương trình đại số tuyến tính:
+\begin{equation}
+    Z^{(l)} = W^{(l)} \cdot A^{(l-1)} + b^{(l)}
+\end{equation}
+\begin{equation}
+    A^{(l)} = g^{(l)}(Z^{(l)})
+\end{equation}
+Trong đó, $W^{(l)}$ là ma trận trọng số (weight matrix) kết nối các nơ-ron ở tầng $l-1$ tới tầng $l$, $b^{(l)}$ là vector độ chệch (bias), và $g^{(l)}(\cdot)$ là hàm kích hoạt phi tuyến tính. Việc sử dụng các hàm kích hoạt như ReLU ($g(z) = \max(0, z)$) hay Sigmoid ($g(z) = \frac{1}{1 + e^{-z}}$) là bắt buộc. Nếu loại bỏ hàm kích hoạt, mạng lưới dù có sâu đến hàng trăm tầng ẩn cũng sẽ suy biến hoàn toàn về một phép biến đổi tuyến tính đơn nhất.
+
+\subsection{Thuật toán Tối ưu hóa và Lan truyền ngược (Backpropagation)}
+Để mạng nơ-ron có thể "học" được từ dữ liệu, ta cần xác định một hàm mất mát (Loss function) $J(W, b)$ nhằm định lượng mức độ sai lệch giữa dự đoán của mô hình và giá trị thực tế. Với bài toán hồi quy, hàm Sai số Toàn phương Trung bình (Mean Squared Error - MSE) thường được sử dụng. Đối với bài toán phân loại, hàm Cross-Entropy là lựa chọn tối ưu.
+
+Mục tiêu của quá trình huấn luyện là tìm kiếm bộ tham số $\theta = \{W^{(l)}, b^{(l)}\}$ sao cho hàm $J$ đạt giá trị nhỏ nhất. Quá trình này được thực hiện thông qua thuật toán Gradient Descent (Hạ gradient):
+\begin{equation}
+    W^{(l)} := W^{(l)} - \alpha \frac{\partial J}{\partial W^{(l)}}
+\end{equation}
+\begin{equation}
+    b^{(l)} := b^{(l)} - \alpha \frac{\partial J}{\partial b^{(l)}}
+\end{equation}
+với $\alpha$ là tốc độ học (learning rate).
+
+Để tính toán các đạo hàm riêng $\frac{\partial J}{\partial W}$ và $\frac{\partial J}{\partial b}$ ở các tầng ẩn sâu bên trong, thuật toán Lan truyền ngược áp dụng quy tắc chuỗi (Chain rule) của giải tích. Sai số $\delta^{(l)}$ tại tầng $l$ được tính ngược từ sai số $\delta^{(l+1)}$ của tầng $l+1$:
+\begin{equation}
+    \delta^{(l)} = (W^{(l+1)})^T \delta^{(l+1)} \odot (g^{(l)})'(Z^{(l)})
+\end{equation}
+Từ đó, gradient của trọng số và bias được tính toán:
+\begin{equation}
+    \frac{\partial J}{\partial W^{(l)}} = \delta^{(l)} (A^{(l-1)})^T, \quad \frac{\partial J}{\partial b^{(l)}} = \delta^{(l)}
+\end{equation}
+
+\subsection{Thực nghiệm 1: Bộ dữ liệu Y tế Diabetes Pima}
+Bộ dữ liệu Diabetes từ Kaggle bao gồm 768 bệnh nhân nữ, với 8 đặc trưng y tế (như nồng độ Glucose, Huyết áp, Chỉ số BMI, Tuổi tác) nhằm mục đích dự đoán khả năng mắc bệnh tiểu đường (Phân loại nhị phân).
+Quá trình phân tích dữ liệu thăm dò (EDA) cho thấy bộ dữ liệu có sự chênh lệch lớn về thang đo giữa các biến. Ví dụ, mức độ Insulin dao động từ 0 đến 846, trong khi chỉ số DiabetesPedigreeFunction chỉ nằm trong khoảng 0.07 đến 2.42. Do đó, kỹ thuật `StandardScaler` (Z-score normalization) đã được áp dụng để chuẩn hóa mọi đặc trưng về phân phối có trung bình bằng 0 và phương sai bằng 1.
+
+\subsubsection{Cài đặt thuật toán từ đầu bằng NumPy (From Scratch)}
+Để hiểu rõ cơ chế nội tại, mô hình được lập trình thủ công hoàn toàn bằng NumPy. Quá trình forward pass và tính toán đạo hàm backward pass được triển khai minh bạch:
+\begin{lstlisting}[language=Python]
+class MLP_NumPy:
+    def __init__(self, input_dim):
+        self.W1 = np.random.randn(input_dim, 16) * np.sqrt(2./input_dim) # He initialization
+        self.b1 = np.zeros((1, 16))
+        self.W2 = np.random.randn(16, 1) * 0.01
+        self.b2 = np.zeros((1, 1))
+
+    def forward(self, X):
+        self.Z1 = np.dot(X, self.W1) + self.b1
+        self.A1 = np.maximum(0, self.Z1) # ReLU activation
+        self.Z2 = np.dot(self.A1, self.W2) + self.b2
+        self.A2 = 1 / (1 + np.exp(-self.Z2)) # Sigmoid activation
+        return self.A2
+        
+    def backward(self, X, y, lr=0.01):
+        m = X.shape[0]
+        dZ2 = self.A2 - y
+        dW2 = (1/m) * np.dot(self.A1.T, dZ2)
+        db2 = (1/m) * np.sum(dZ2, axis=0, keepdims=True)
+        dZ1 = np.dot(dZ2, self.W2.T) * (self.Z1 > 0) # ReLU derivative
+        dW1 = (1/m) * np.dot(X.T, dZ1)
+        db1 = (1/m) * np.sum(dZ1, axis=0, keepdims=True)
+        
+        self.W1 -= lr * dW1
+        self.b1 -= lr * db1
+        self.W2 -= lr * dW2
+        self.b2 -= lr * db2
+\end{lstlisting}
+
+\subsubsection{Cài đặt bằng Keras và PyTorch}
+Sử dụng Keras `Sequential` API, việc xây dựng mô hình được rút gọn chỉ còn vài dòng code với lớp `Dense`. Hàm mất mát `binary_crossentropy` và thuật toán tối ưu Adam được sử dụng. Trong khi đó, PyTorch sử dụng `nn.Module` kết hợp với `BCEWithLogitsLoss()` để tính toán loss trực tiếp từ logits, giúp tối ưu hóa sự ổn định số học so với việc chạy qua hàm Sigmoid trước. Cả ba framework đều đạt độ chính xác (Accuracy) trên tập kiểm thử ở mức $\sim 78\%$, nhưng tốc độ huấn luyện của Keras trên dữ liệu nhỏ bị giới hạn bởi thời gian khởi tạo đồ thị tính toán tĩnh.
+
+\subsection{Thực nghiệm 2: Bộ dữ liệu Bất động sản California Housing}
+Bộ dữ liệu California Housing là một bài toán Hồi quy (Regression) kinh điển, bao gồm thông tin về các khối nhà (block groups) tại California với hơn 20.000 bản ghi. Mục tiêu là dự báo Giá nhà trung bình (`median_house_value`) dựa trên các đặc trưng như vĩ độ, kinh độ, tổng số phòng, số người ở và thu nhập trung bình.
+
+Dữ liệu chứa nhiều giá trị ngoại lai (outliers). Hàm mục tiêu được cấu hình là Sai số Toàn phương Trung bình (Mean Squared Error - MSE). Thay vì hàm Sigmoid ở lớp đầu ra, mô hình kết thúc bằng một lớp Linear Activation nhằm cho phép dự đoán các số thực tự do không bị giới hạn trong khoảng $[0, 1]$. Trên PyTorch, hàm `nn.MSELoss()` được áp dụng cùng với thuật toán Adam (tốc độ học $0.01$). Kết quả đối sánh cho thấy mô hình MLP 2 tầng ẩn vượt qua khả năng dự đoán của Linear Regression truyền thống tới 25\% về mặt chỉ số R-squared.
+
+\subsection{Thực nghiệm 3: Đánh giá Phản hồi Khách hàng E-Commerce}
+Bộ dữ liệu "Women's E-Commerce Clothing Reviews" là dữ liệu thực tế từ các đánh giá mua sắm. Ở bài toán này, đặc trưng dạng văn bản tự do (Review Text) được trích xuất bằng thuật toán TF-IDF (`TfidfVectorizer` trong scikit-learn). Dữ liệu dạng thưa (Sparse Matrix) với kích thước hàng chục ngàn chiều được truyền vào mô hình nơ-ron để phân loại liệu khách hàng có giới thiệu sản phẩm hay không (Recommended IND).
+
+Kiến trúc mạng được tinh chỉnh đặc biệt với kỹ thuật Dropout ($p=0.5$) để chống lại hiện tượng quá khớp (Overfitting) vốn rất dễ xảy ra khi số lượng đặc trưng văn bản TF-IDF lớn hơn số lượng mẫu huấn luyện. Kết quả đo lường bằng ma trận nhầm lẫn (Confusion Matrix) và F1-Score minh chứng sức mạnh của Deep Learning so với các kỹ thuật thống kê cổ điển.

@@ -1,0 +1,30 @@
+\section{Mở đầu}
+\subsection{Lý do chọn đề tài}
+Trong kỷ nguyên công nghệ số hiện đại, Trí tuệ Nhân tạo (Artificial Intelligence - AI) đã và đang tạo ra những bước ngoặt mang tính cách mạng trong hầu hết mọi lĩnh vực của đời sống con người. Từ những hệ thống gợi ý sản phẩm thông minh trên các nền tảng thương mại điện tử, hệ thống chẩn đoán y khoa tự động, xe tự lái, cho đến các mô hình ngôn ngữ lớn (Large Language Models) như ChatGPT, AI không còn là một khái niệm viễn tưởng mà đã trở thành một công cụ thiết yếu. Sự phát triển bùng nổ của lượng dữ liệu khổng lồ (Big Data) kết hợp với năng lực tính toán ngày càng vượt trội của các phần cứng đồ họa (GPU/TPU) đã mở ra một kỷ nguyên vàng cho các thuật toán Học máy (Machine Learning - ML) và Học sâu (Deep Learning - DL).
+
+Đằng sau những ứng dụng hào nhoáng đó là một nền tảng toán học và khoa học máy tính vô cùng đồ sộ. Để có thể làm chủ và ứng dụng AI một cách hiệu quả, việc hiểu rõ bản chất cốt lõi của các thuật toán, từ những phương pháp học máy thống kê cơ bản cho đến các kiến trúc mạng nơ-ron phức tạp như Mạng nơ-ron Tích chập (Convolutional Neural Networks - CNN) hay Mạng nơ-ron Hồi quy (Recurrent Neural Networks - RNN), là một yêu cầu bắt buộc đối với bất kỳ kỹ sư công nghệ thông tin nào. Quá trình học tập không chỉ dừng lại ở việc gọi các hàm có sẵn từ các thư viện cấp cao (API-driven development) mà còn phải đi sâu vào việc triển khai từ đầu (from scratch) để thấu hiểu cách thức tối ưu hóa hàm mất mát (loss function), sự lan truyền ngược của đạo hàm (backpropagation), và cách thức dữ liệu được biến đổi qua các không gian vector đa chiều.
+
+\subsection{Mục tiêu nghiên cứu}
+Nghiên cứu này được thực hiện với các mục tiêu cốt lõi như sau:
+\begin{itemize}
+    \item \textbf{Hệ thống hóa cơ sở lý thuyết:} Trình bày một cách logic và khoa học quá trình tiến hóa của các hệ thống AI, từ những hệ chuyên gia sơ khai cho đến sự bùng nổ của mạng nơ-ron nhân tạo. Phân tích sâu các khái niệm toán học làm nền tảng cho Học máy.
+    \item \textbf{Thực nghiệm hóa thuật toán cơ bản:} Xây dựng và đánh giá các mô hình Phân loại và Hồi quy sử dụng Multi-Layer Perceptron (MLP) trên các tập dữ liệu thực tế thuộc các miền lĩnh vực đa dạng như y tế, bất động sản và thương mại điện tử.
+    \item \textbf{Khai phá kiến trúc Mạng Tích chập (CNN):} Phân tích cơ chế trích xuất đặc trưng không gian thông qua phép tích chập (convolution) và gộp (pooling). Đánh giá tính hiệu quả trên ảnh màu, ảnh xám và cả dữ liệu bảng 1D.
+    \item \textbf{Giải quyết bài toán Chuỗi thời gian (RNN):} Phân tích cấu trúc hồi quy, thuật toán BPTT và ứng dụng dự báo chuỗi thời gian liên tục trên dữ liệu tài chính vĩ mô.
+    \item \textbf{Đánh giá đối chuẩn (Benchmarking):} Mọi thuật toán đều được triển khai song song trên 3 nền tảng: NumPy (From scratch), Keras (High-level API) và PyTorch (Dynamic Computation Graph) để cung cấp cái nhìn khách quan về hiệu năng và độ phức tạp mã nguồn.
+\end{itemize}
+
+\subsection{Phạm vi và đối tượng nghiên cứu}
+\textbf{Đối tượng nghiên cứu:}
+Nghiên cứu tập trung vào 3 cấu trúc mạng nơ-ron tiêu biểu: MLP, CNN, và RNN. Song song đó là các thuật toán tối ưu hóa như Gradient Descent (BGD, SGD, Mini-batch) và các phương pháp tinh chỉnh siêu tham số, chuẩn hóa dữ liệu.
+
+\textbf{Phạm vi thực nghiệm (Datasets):}
+Để đảm bảo tính khách quan, tiểu luận sử dụng 9 tập dữ liệu khác biệt về bản chất:
+\begin{itemize}
+    \item Dữ liệu dạng bảng: Bệnh tiểu đường Pima (Diabetes), Giá nhà California (Housing), Đánh giá thời trang (E-commerce).
+    \item Dữ liệu thị giác: Ảnh vật thể CIFAR-10, Ảnh chữ số viết tay MNIST, và một biến thể CNN 1D cho dữ liệu bảng.
+    \item Dữ liệu tuần tự (Time-series): Giá Vàng (Gold Price), Cổ phiếu Amazon (AMZN), và dữ liệu khí tượng Jena Climate.
+\end{itemize}
+
+\subsection{Cấu trúc của Tiểu luận}
+Báo cáo được cấu trúc thành 4 chương chính. Chương 1 tóm tắt lịch sử AI từ thập niên 1950 đến nay. Chương 2 đi sâu vào các mô hình Machine Learning cơ bản (Perceptron đa tầng). Chương 3 tập trung phân tích Mạng nơ-ron Tích chập (CNN) và khả năng trích xuất đặc trưng không gian. Cuối cùng, Chương 4 trình bày về Mạng nơ-ron Hồi quy (RNN) trong việc giải quyết dữ liệu chuỗi thời gian.

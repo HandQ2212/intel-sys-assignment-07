@@ -1,0 +1,34 @@
+\section{Mạng Nơ-ron Tích chập (CNN)}
+\subsection{Lý thuyết cốt lõi của Tích chập (Convolution)}
+Mạng nơ-ron tích chập (CNN) là một lớp đặc biệt của mạng học sâu, được tinh chỉnh hoàn hảo để xử lý cấu trúc dữ liệu dạng lưới, đặc biệt là hình ảnh 2 chiều. Khác với MLP - nơi mọi nơ-ron ở một tầng đều kết nối chằng chịt tới toàn bộ nơ-ron ở tầng sau (Fully Connected) dẫn tới sự bùng nổ tham số - CNN áp dụng triết lý Trọng số Chia sẻ (Weight Sharing) và Kết nối Cục bộ (Local Connectivity).
+
+Linh hồn của CNN là phép Tích chập (Convolution). Thay vì sử dụng ma trận trọng số, CNN sử dụng các Bộ lọc trượt (Kernels/Filters). Một kernel là một ma trận kích thước nhỏ (ví dụ $3 \times 3$ hoặc $5 \times 5$). Trong quá trình Forward Pass, kernel này sẽ trượt tuần tự qua toàn bộ bức ảnh từ trái sang phải, từ trên xuống dưới. Tại mỗi vị trí, một phép tính tổng các tích vô hướng (dot product) giữa kernel và phần ảnh nằm bên dưới nó được thực hiện, tạo ra một Bản đồ Đặc trưng (Feature Map). 
+
+Về mặt toán học liên tục, tích chập 2 chiều giữa một hàm hình ảnh $I$ và một kernel $K$ được định nghĩa là:
+\begin{equation}
+    (I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)
+\end{equation}
+Trong thực tế lập trình máy tính, phép toán này thường được triển khai dưới dạng Cross-Correlation:
+\begin{equation}
+    S(i, j) = \sum_{m=0}^{k-1} \sum_{n=0}^{k-1} I(i \cdot s + m, j \cdot s + n) K(m, n)
+\end{equation}
+với $s$ là bước sải (stride).
+
+Ngoài lớp Convolution, mạng CNN luôn đi kèm với lớp Gộp (Pooling Layer), phổ biến nhất là Max Pooling. Nhiệm vụ của lớp này là hạ lấy mẫu (downsampling) dữ liệu, giảm thiểu kích thước không gian của Feature Map, từ đó giảm số lượng tham số tính toán và tạo ra tính chất Bất biến Dịch chuyển (Translation Invariance) - giúp mô hình nhận diện được vật thể dù nó nằm ở bất kỳ đâu trong khung hình.
+
+\subsection{Khảo sát Dataset 1: Nhận diện chữ số viết tay MNIST}
+MNIST (Modified National Institute of Standards and Technology) là bộ dữ liệu "Hello World" của Computer Vision. Nó chứa 60.000 ảnh huấn luyện và 10.000 ảnh kiểm thử, mỗi ảnh là một chữ số viết tay từ 0 đến 9, kích thước $28 \times 28$ pixel ở định dạng xám (grayscale).
+
+Kiến trúc mạng được thiết kế tuân theo phong cách LeNet-5 cổ điển. Khởi đầu bằng lớp `Conv2D` với 16 bộ lọc kích thước $3 \times 3$, tiếp nối bằng một lớp `MaxPooling2D` ($2 \times 2$), sau đó là một lớp `Flatten` để trải phẳng Bản đồ đặc trưng 2D thành vector 1D, và cuối cùng là lớp Dense kết nối đầy đủ (Fully Connected) phân loại 10 lớp thông qua hàm kích hoạt Softmax.
+
+Khi triển khai trực tiếp bằng mã giả NumPy, phép trượt Convolution đòi hỏi 4 vòng lặp for lồng nhau (vòng lặp Batch, vòng lặp Kênh, vòng lặp Chiều cao và Chiều rộng), gây ra độ trễ điện toán khổng lồ. Tuy nhiên, khi chuyển sang Keras và PyTorch, kiến trúc đồ thị tính toán biên dịch trực tiếp phép Convolution thành các lời gọi hàm cuDNN trên card đồ họa NVIDIA. Kết quả huấn luyện sau 10 Epochs với Keras đạt độ chính xác kiểm thử trên $99.2\%$.
+
+\subsection{Khảo sát Dataset 2: Nhận diện vật thể màu CIFAR-10}
+CIFAR-10 phức tạp hơn nhiều so với MNIST. Bộ dữ liệu chứa 60.000 ảnh màu độ phân giải $32 \times 32$, đại diện cho 10 lớp vật thể (Máy bay, Ô tô, Chim, Mèo, Hươu, Chó, Ếch, Ngựa, Tàu thủy, Xe tải). Sự phức tạp nằm ở chỗ hình ảnh chứa nhiễu bối cảnh, góc chụp đa dạng, và có 3 kênh màu (Red, Green, Blue) tạo thành một tensor đầu vào có kích thước $[Batch\_Size, 32, 32, 3]$.
+
+Để đối phó với mức độ phức tạp này, một kiến trúc VGG-style thu nhỏ đã được xây dựng. Các lớp `Conv2D` được xếp chồng lên nhau liên tiếp trước khi gọi lớp `MaxPooling2D`. Việc này cho phép mạng học được các đặc trưng phi tuyến sâu hơn (nhờ hàm ReLU chèn vào giữa) mà không làm suy giảm ngay lập tức thông tin không gian. Thư viện `torchvision.datasets` của PyTorch được sử dụng để tự động tải và định dạng Tensor. Hàm mất mát `CrossEntropyLoss` (đã bao gồm log-softmax) được dùng để huấn luyện. 
+
+\subsection{Khảo sát Dataset 3: Thực nghiệm Tích chập 1 chiều (1D-CNN) trên Dữ liệu Bảng Diabetes}
+Thông thường, dữ liệu dạng bảng (Tabular Data) được giải quyết bằng cấu trúc MLP, Random Forest, hoặc XGBoost. Tuy nhiên, trong nghiên cứu này, một thử nghiệm đột phá đã được tiến hành: ứng dụng CNN 1 chiều (Conv1D) để trích xuất đặc trưng của tập dữ liệu y tế Diabetes.
+
+Dữ liệu chứa 21 đặc trưng (features) của từng bệnh nhân được coi như một "hình ảnh" có chiều cao 21 pixel và chiều rộng 1 pixel. Lớp `Conv1D` với cửa sổ trượt chiều dọc $K=3$ được lướt qua các biến y tế này. Ý tưởng cốt lõi là mạng nơ-ron có thể khám phá ra các mối tương quan cục bộ liền kề giữa các nhóm biến lân cận. Sau lớp Conv1D, dữ liệu đi qua lớp `GlobalMaxPooling1D` để trích xuất tín hiệu mạnh nhất trên toàn bộ trục không gian đặc trưng, rồi đưa vào bộ phân loại. Mô hình Keras cho bài toán Conv1D này chỉ mất khoảng 2 giây/epoch để hội tụ, minh chứng cho tính gọn nhẹ và linh hoạt của mạng tích chập vượt ra ngoài giới hạn xử lý ảnh không gian 2D thông thường.

@@ -1,0 +1,224 @@
+﻿\documentclass[12pt,a4paper]{article}
+
+% ==============================================================================
+% GÓI THƯ VIỆN CƠ BẢN VÀ HỖ TRỢ TIẾNG VIỆT
+% ==============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs, multirow, makecell, tabularx, longtable, array}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=25mm,
+    right=20mm,
+    top=25mm,
+    bottom=25mm
+}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{float}
+
+% Cấu hình đường dẫn thư mục ảnh
+\graphicspath{{./}{figures/}}
+
+% Cấu hình Hyperlink
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!75!black,
+    citecolor=red!75!black,
+    urlcolor=teal!80!black
+}
+
+% Cấu hình Header & Footer
+\setlength{\headheight}{15pt}
+\addtolength{\topmargin}{-3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Học viện Công nghệ Bưu chính Viễn thông -- PTIT}}
+\fancyhead[R]{\small\textit{Báo cáo Kỹ thuật Assignment 06 -- LTHTTM}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Cấu hình Code Listing
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{gray!30},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=4
+}
+
+% Định dạng tiêu đề các mục
+\titleformat{\section}{\large\bfseries\color{blue!85!black}}{\thesection}{1em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{cyan!75!black}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\small\bfseries\color{black}}{\thesubsubsection}{1em}{}
+
+% Khối ghi chú nổi bật
+\newtcolorbox{mybox}[1]{
+    colback=blue!5!white,
+    colframe=blue!75!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% Khối chú thích & phân tích biểu đồ chuyên sâu
+\newtcolorbox{chartbox}[1][]{
+    colback=blue!2!white,
+    colframe=blue!70!black,
+    fonttitle=\bfseries\small,
+    coltitle=white,
+    arc=1.5mm,
+    boxrule=0.8pt,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm,
+    breakable,
+    title=#1
+}
+
+% Cấu hình cột bảng tự co giãn và căn lề
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+% ==============================================================================
+% BẮT ĐẦU TÀI LIỆU
+% ==============================================================================
+\begin{document}
+
+% ==============================================================================
+% TRANG BÌA CHUẨN KHUNG VIỀN CỔ ĐIỂN VÀ HỌA TIẾT 4 GÓC THEO FILE DOCX
+% ==============================================================================
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        % 1. Đường viền khung ngoài dày
+        \draw[line width=2.2pt, color=black]
+            ([xshift=15mm, yshift=-15mm]current page.north west)
+            rectangle
+            ([xshift=-15mm, yshift=15mm]current page.south east);
+        
+        % 2. Đường viền khung trong mảnh
+        \draw[line width=0.8pt, color=black]
+            ([xshift=17.5mm, yshift=-17.5mm]current page.north west)
+            rectangle
+            ([xshift=-17.5mm, yshift=17.5mm]current page.south east);
+    \end{tikzpicture}
+
+    \centering
+    \vspace*{0.2cm}
+    {\large \textbf{HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG}}\\[0.25cm]
+    {\large \textbf{KHOA CÔNG NGHỆ THÔNG TIN 1}}\\[0.2cm]
+    \rule{5cm}{1pt}\\[0.9cm]
+
+    % Logo PTIT
+    \begin{center}
+        \IfFileExists{figures/logo_ptit.png}{%
+            \includegraphics[width=3.4cm, height=4.2cm, keepaspectratio]{figures/logo_ptit.png}
+        }{%
+            \begin{tcolorbox}[colback=red!5!white, colframe=red!75!black, width=3.8cm, height=3.8cm, arc=2mm, halign=center, valign=center]
+                \Large \textbf{\color{red!80!black}PTIT}\\[0.1cm]
+                \footnotesize \textbf{\color{black}LOGO}
+            \end{tcolorbox}
+        }
+    \end{center}
+
+    \vspace{0.6cm}
+
+    {\Large \textbf{TIỂU LUẬN CUỐI KỲ}}\\[0.3cm]
+    {\large \textbf{MÔN HỌC: LẬP TRÌNH HỆ THỐNG THÔNG MINH}}\\[0.5cm]
+
+    \vspace{0.8cm}
+
+    \begin{flushleft}
+        \hspace{1.6cm}
+        \begin{tabular}{p{5.0cm} p{0.5cm} l}
+            \textbf{Giảng viên hướng dẫn} & : & \textbf{PGS.TS. Trần Đình Quế} \\[0.3cm]
+            \textbf{Lớp}                  & : & \textbf{D23CTPM01} \\[0.3cm]
+            \textbf{Nhóm học phần}        & : & \textbf{CT01} \\[0.3cm]
+            \textbf{Thành viên thực hiện} & : & \textbf{Nguyễn Nam Hải} \\[0.3cm]
+            \textbf{Mã sinh viên}         & : & \textbf{B23DCCN277} \\[0.3cm]
+        \end{tabular}
+    \end{flushleft}
+
+    \vfill
+    {\large \textbf{Hà Nội -- 2026}}
+    \vspace*{0.3cm}
+\end{titlepage}
+
+% ==============================================================================
+% MỤC LỤC BÁO CÁO KỸ THUẬT
+% ==============================================================================
+\newpage
+\renewcommand{\contentsname}{MỤC LỤC TIỂU LUẬN CUỐI KỲ}
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% DANH MỤC HÌNH VẼ & BẢNG BIỂU
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{DANH MỤC HÌNH VẼ}
+\listoffigures
+
+\vspace{0.8cm}
+
+\phantomsection
+\addcontentsline{toc}{section}{DANH MỤC BẢNG BIỂU}
+\listoftables
+
+\newpage
+
+% ==============================================================================
+% TÓM TẮT BÁO CÁO (ABSTRACT)
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{TÓM TẮT BÁO CÁO (ABSTRACT)}
+\section*{TÓM TẮT BÁO CÁO (ABSTRACT)}
+\addcontentsline{toc}{section}{TÓM TẮT BÁO CÁO (ABSTRACT)}
+
+Tiểu luận môn học Lập trình hệ thống thông minh trình bày tổng quan về Trí tuệ nhân tạo, từ lịch sử phát triển cho đến các kỹ thuật Học máy (Machine Learning) cơ bản, Mạng nơ-ron Tích chập (CNN) và Mạng nơ-ron Hồi quy (RNN). Báo cáo thực hiện khảo sát các tập dữ liệu, xây dựng mô hình từ đầu (from scratch) cho đến sử dụng các framework hiện đại như Keras và PyTorch, đồng thời so sánh đánh giá hiệu năng và triển khai ứng dụng thực tế.
+
+\newpage
+
+\include{chapters/00_intro}
+\include{chapters/01_history}
+\include{chapters/02_ml}
+\include{chapters/03_cnn}
+\include{chapters/04_rnn}
+
+\newpage
+\section*{Tài liệu tham khảo}
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+\begin{enumerate}[label={[\arabic*]}]
+    \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \textit{Deep Learning}. MIT Press.
+    \item Russell, S., \& Norvig, P. (2020). \textit{Artificial Intelligence: A Modern Approach}. Pearson.
+    \item Các tài liệu thực hành và bài giảng môn Lập trình hệ thống thông minh.
+\end{enumerate}
+
+\end{document}

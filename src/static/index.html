@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Models Deployment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">AI Models Deployment Dashboard</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cấu hình Dự đoán</h5>
+                        
+                        <label class="form-label mt-2">1. Framework</label>
+                        <select id="framework" class="form-select">
+                            <option value="NumPy">NumPy (From Scratch)</option>
+                            <option value="Keras">Keras / TensorFlow</option>
+                            <option value="PyTorch">PyTorch</option>
+                        </select>
+
+                        <label class="form-label mt-3">2. Loại Mô hình</label>
+                        <select id="model_type" class="form-select" onchange="updateDatasets()">
+                            <option value="ML">Machine Learning (MLP)</option>
+                            <option value="CNN">Mạng Tích chập (CNN)</option>
+                            <option value="RNN">Mạng Hồi quy (RNN)</option>
+                        </select>
+
+                        <label class="form-label mt-3">3. Tập dữ liệu (Dataset)</label>
+                        <select id="dataset" class="form-select">
+                            <!-- Populated dynamically -->
+                        </select>
+
+                        <button class="btn btn-primary w-100 mt-4" onclick="runPredict()">Thực hiện Dự đoán</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Kết quả / Log Server</h5>
+                        <div id="result" class="bg-dark text-light p-3 rounded mt-3" style="min-height: 300px; font-family: monospace; white-space: pre-wrap;">
+Chờ thực hiện dự đoán...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const datasets = {
+            "ML": ["Diabetes", "Housing", "Ecommerce"],
+            "CNN": ["CIFAR-10", "MNIST", "Diabetes_1D"],
+            "RNN": ["Gold_Price", "AMZN_Stock", "Silver_Price"]
+        };
+
+        function updateDatasets() {
+            const type = document.getElementById("model_type").value;
+            const dsSelect = document.getElementById("dataset");
+            dsSelect.innerHTML = "";
+            datasets[type].forEach(ds => {
+                const opt = document.createElement("option");
+                opt.value = ds;
+                opt.innerText = ds;
+                dsSelect.appendChild(opt);
+            });
+        }
+
+        async function runPredict() {
+            const framework = document.getElementById("framework").value;
+            const model_type = document.getElementById("model_type").value;
+            const dataset = document.getElementById("dataset").value;
+            
+            const resDiv = document.getElementById("result");
+            resDiv.innerText = `Đang tải mô hình ${model_type}_${framework}_${dataset}...\n`;
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ framework, model_type, dataset })
+                });
+                const data = await response.json();
+                resDiv.innerText += JSON.stringify(data, null, 2);
+            } catch (err) {
+                resDiv.innerText += `\nLỗi kết nối: ${err.message}`;
+            }
+        }
+
+        // Initialize
+        updateDatasets();
+    </script>
+</body>
+</html>

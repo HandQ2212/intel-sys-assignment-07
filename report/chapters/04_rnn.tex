@@ -1,0 +1,38 @@
+\section{Mạng Nơ-ron Hồi quy (RNN)}
+\subsection{Lý thuyết Mạng nơ-ron Hồi quy - Vanilla RNN}
+Mạng Nơ-ron Hồi quy (Recurrent Neural Networks - RNN) là một lớp mạng nhân tạo được thiết kế chuyên biệt để xử lý dữ liệu dạng chuỗi thời gian (Time-series) hoặc dữ liệu tuần tự (Sequential Data) như văn bản, giọng nói, ADN. Khác biệt cơ bản giữa RNN và các cấu trúc tiền nhiệm như MLP hay CNN là sự tồn tại của bộ nhớ nội bộ (Internal Memory). Trong khi MLP và CNN mang tính chất "Feed-Forward" - luồng thông tin chỉ chạy theo một hướng từ đầu vào đến đầu ra, thì RNN có các "vòng lặp ngược" (feedback loops) cho phép mạng bảo lưu thông tin của quá khứ và dùng nó để ảnh hưởng đến quyết định ở tương lai.
+
+Công thức toán học cốt lõi chi phối một ô nơ-ron hồi quy đơn giản (Vanilla RNN) tại bước thời gian $t$ là sự kết hợp tuyến tính của đầu vào hiện tại $x_t$ và trạng thái ẩn (hidden state) từ bước thời gian trước đó $h_{t-1}$, theo sau bởi một hàm kích hoạt phi tuyến (thường là hàm Tanh):
+\begin{equation}
+    h_t = \tanh(W_{hx} x_t + W_{hh} h_{t-1} + b_h)
+\end{equation}
+\begin{equation}
+    y_t = W_{yh} h_t + b_y
+\end{equation}
+Trong đó $W_{hx}$, $W_{hh}$, và $W_{yh}$ lần lượt là ma trận trọng số của lớp đầu vào, lớp ẩn, và lớp đầu ra. Điểm cực kỳ quan trọng là 3 ma trận trọng số này được "chia sẻ" (Weight Sharing) và giữ nguyên không đổi xuyên suốt toàn bộ các bước thời gian (từ $t=1$ đến $t=T$). Điều này cho phép RNN linh hoạt tiêu hóa các chuỗi dữ liệu có độ dài thay đổi tùy ý.
+
+\subsection{Thuật toán BPTT và Cơn ác mộng Gradient}
+Đề huấn luyện mạng RNN, thuật toán Lan truyền ngược qua thời gian (Backpropagation Through Time - BPTT) được phát minh. BPTT thực chất là việc ta "trải phẳng" (unroll) vòng lặp RNN dọc theo dòng thời gian, biến một mạng nơ-ron đệ quy thành một mạng nơ-ron truyền thẳng khổng lồ có số tầng ẩn đúng bằng độ dài của chuỗi thời gian $T$. Sau khi trải phẳng, thuật toán đạo hàm ngược chuẩn được áp dụng.
+
+Tuy nhiên, do việc nhân liên tiếp cùng một ma trận trọng số $W_{hh}$ ở mỗi mốc thời gian, khi chuỗi thời gian $T$ quá dài, tích của hàng chục đạo hàm riêng lẻ (ma trận Jacobian) sẽ gây ra một hệ quả nghiêm trọng theo cấp số nhân:
+\begin{itemize}
+    \item Nếu trị riêng cực đại của $W_{hh}$ lớn hơn 1, các đạo hàm sẽ tăng vọt nhanh chóng, dẫn đến \textbf{Exploding Gradient} (Bùng nổ đạo hàm). Trọng số sẽ biến thành giá trị vô cực (NaN), làm sụp đổ mô hình.
+    \item Nếu trị riêng cực đại nhỏ hơn 1, các đạo hàm sẽ teo tóp lại về 0, dẫn đến \textbf{Vanishing Gradient} (Suy thoái đạo hàm). Mạng sẽ mất hoàn toàn khả năng ghi nhớ các sự kiện xảy ra ở quá khứ xa.
+\end{itemize}
+Kỹ thuật Gradient Clipping (Cắt cụt đạo hàm) bằng cách giới hạn chuẩn L2 của vector gradient được triển khai trong PyTorch (`torch.nn.utils.clip_grad_norm_`) là phương pháp cứu cánh bắt buộc khi train RNN thuần.
+
+\subsection{Khảo sát Dataset 1: Dự báo Giá Vàng (Gold Price)}
+Bộ dữ liệu giá Vàng thế giới chứa lịch sử biến động giá đóng cửa hàng ngày qua nhiều thập kỷ. Đặc tính của dữ liệu tài chính vĩ mô là mang tính ngẫu nhiên, không dừng (non-stationary) và chứa vô số nhiễu (noise) sinh ra từ tin tức chính trị, kinh tế.
+Quá trình Tiền xử lý (Preprocessing) là sống còn. Toàn bộ chuỗi giá được chuẩn hóa Min-Max Scaling về miền $[0, 1]$ để ngăn chặn giá trị vĩ mô hàng ngàn USD phá vỡ sự ổn định của hàm Tanh. Kế tiếp, dữ liệu được chuyển đổi thông qua thuật toán "Cửa sổ trượt" (Sliding Window). Với độ dài cửa sổ $T=30$ ngày, ta trích xuất một tensor có số chiều `(Batch, 30, 1)`, để mô hình học cách nhìn vào quá khứ 30 ngày để dự đoán cho ngày $T+1$.
+
+Viết mã BPTT cho RNN bằng NumPy thuần yêu cầu sự quản lý bộ nhớ đệm (Cache) cho mọi biến trạng thái $h_0, h_1, \dots, h_{30}$ ở quá trình Forward để phục vụ tính đạo hàm Backward. Ở Keras, mọi thứ được thu gọn lại thành lớp `SimpleRNN(16, input_shape=(30, 1))`. PyTorch sử dụng `nn.RNN(input_size=1, hidden_size=16, batch_first=True)`. Đồ thị so sánh kết quả Loss (MSE) cho thấy mạng dễ dàng hội tụ chỉ sau 20 epoch.
+
+\subsection{Khảo sát Dataset 2: Cổ phiếu Amazon (AMZN Stock)}
+Tương tự như Giá Vàng, biến động cổ phiếu của một doanh nghiệp công nghệ (Amazon) mang theo hiệu ứng trễ pha (Lagging effect) vô cùng rõ rệt. Khi vẽ biểu đồ kết quả đầu ra của mạng RNN so với giá trị thực tế của cổ phiếu AMZN trên tập Kiểm thử (Test set), ta dễ dàng quan sát thấy một ảo giác hoàn hảo. Bằng mắt thường, đường dự báo bám sát lấy đường giá thực tế. 
+
+Tuy nhiên, khi phóng to vào một vùng đỉnh hoặc đáy, ta phát hiện ra đường màu đỏ (dự báo) thực chất chỉ là đường màu xanh (thực tế) bị dịch chuyển (shift) sang bên phải 1 mốc thời gian. Bản chất mạng Vanilla RNN khi gặp dữ liệu nhiễu cao ngẫu nhiên, để tối thiểu hóa hàm MSE một cách nhanh nhất, nó đã tự động học được chiến lược "Ngây thơ" (Naive Forecasting): Dự đoán giá ngày mai bằng y hệt giá ngày hôm nay $\hat{y}_{t+1} \approx y_t$. Do đó, để sử dụng RNN hiệu quả cho trading, người ta phải chuyển đổi dữ liệu từ chuỗi giá tuyệt đối sang chuỗi Lợi nhuận (Returns) hoặc Log-Returns.
+
+\subsection{Khảo sát Dataset 3: Dữ liệu Khí tượng Jena Climate}
+Bộ dữ liệu Jena Climate (Đức) chứa các quan trắc khí hậu (Nhiệt độ, Độ ẩm, Áp suất...) đo đạc mỗi 10 phút. Khác biệt với dữ liệu chứng khoán, dữ liệu thời tiết mang đậm tính chu kỳ (Seasonality) rõ ràng theo từng giờ trong ngày, từng tháng trong năm.
+
+Sử dụng chuỗi dữ liệu này cho phép kiểm tra năng lực ghi nhớ dài hạn của RNN. Khi cấu hình Sliding Window lên tới 144 bước (tương đương với dữ liệu của 24 giờ), Vanilla RNN bắt đầu xuất hiện triệu chứng của Vanishing Gradient - nó quên sạch thông tin của 20 giờ trước và chỉ tập trung vào 4 giờ gần nhất. Trong thực tế ngành, để giải quyết triệt để vấn đề này, các biến thể cấp cao hơn của RNN như LSTM (Long Short-Term Memory) với cấu trúc các cổng kết nối (Gates) hoặc GRU (Gated Recurrent Unit) sẽ được thay thế, bảo vệ dòng chảy luồng Gradient liên tục qua hàng nghìn mốc thời gian.
