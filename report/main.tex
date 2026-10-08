@@ -1380,18 +1380,20 @@ Sau quá trình thiết kế và huấn luyện mô hình trên ba tập dữ li
 \begin{table}[h]
 \centering
 \caption{Bảng So sánh Kết quả Các mô hình CNN trên 3 Bộ dữ liệu}
-\begin{tabular}{|l|c|c|p{5cm}|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|c|c|p{6cm}|}
 \hline
 \textbf{Bộ dữ liệu} & \textbf{Độ chính xác Tập huấn luyện} & \textbf{Độ chính xác Tập kiểm thử} & \textbf{Ghi chú / Nhận xét} \\
 \hline
 \hline
-\textbf{CIFAR-10} & ~ 85.5\% & ~ 78.2\% & Bài toán phức tạp nhất, dễ bị overfit nếu không có Dropout/BatchNorm. Mô hình cần sâu hơn (ResNet, VGG) để đạt $>90\%$. \\
+\textbf{CIFAR-10} & $\sim 85.5\%$ & $\sim 78.2\%$ & Bài toán phức tạp nhất, dễ bị overfit nếu không có Dropout/BatchNorm. Mô hình cần sâu hơn (ResNet, VGG) để đạt $>90\%$. \\
 \hline
-\textbf{MNIST} & ~ 99.8\% & ~ 99.1\% & Hình ảnh đơn giản, một kênh màu, biên độ không gian rõ ràng. CNN nhỏ đạt độ chính xác gần như tuyệt đối rất nhanh. \\
+\textbf{MNIST} & $\sim 99.8\%$ & $\sim 99.1\%$ & Hình ảnh đơn giản, một kênh màu, biên độ không gian rõ ràng. CNN nhỏ đạt độ chính xác gần như tuyệt đối rất nhanh. \\
 \hline
-\textbf{Diabetes 1D} & ~ 82.3\% & ~ 76.5\% & Dữ liệu 1D. Mất cân bằng dữ liệu (Imbalanced) ảnh hưởng đến kết quả test. Kiến trúc 1D-CNN trích xuất đặc trưng cục bộ khá tốt. \\
+\textbf{Diabetes 1D} & $\sim 82.3\%$ & $\sim 76.5\%$ & Dữ liệu 1D. Mất cân bằng dữ liệu (Imbalanced) ảnh hưởng đến kết quả test. Kiến trúc 1D-CNN trích xuất đặc trưng cục bộ khá tốt. \\
 \hline
 \end{tabular}
+}
 \end{table}
 
 \textbf{Phân tích chi tiết:}
