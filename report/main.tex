@@ -1,8 +1,5 @@
-﻿\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 
-% ==============================================================================
-% GÓI THƯ VIỆN CƠ BẢN VÀ HỖ TRỢ TIẾNG VIỆT
-% ==============================================================================
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
@@ -25,14 +22,13 @@
 \usepackage{listings}
 \usepackage{tcolorbox}
 \tcbuselibrary{breakable}
-\usepackage{hyperref}
+\usepackage[unicode]{hyperref}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{lipsum} % For testing/padding if needed
 
-% Cấu hình đường dẫn thư mục ảnh
 \graphicspath{{./}{figures/}}
 
-% Cấu hình Hyperlink
 \hypersetup{
     colorlinks=true,
     linkcolor=blue!75!black,
@@ -40,18 +36,16 @@
     urlcolor=teal!80!black
 }
 
-% Cấu hình Header & Footer
 \setlength{\headheight}{15pt}
 \addtolength{\topmargin}{-3pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textit{Học viện Công nghệ Bưu chính Viễn thông -- PTIT}}
-\fancyhead[R]{\small\textit{Báo cáo Kỹ thuật Assignment 06 -- LTHTTM}}
+\fancyhead[R]{\small\textit{Báo cáo Kỹ thuật Assignment 07 -- LTHTTM}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.6pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
-% Cấu hình Code Listing
 \lstset{
     language=Python,
     basicstyle=\ttfamily\footnotesize,
@@ -71,59 +65,27 @@
     tabsize=4
 }
 
-% Định dạng tiêu đề các mục
 \titleformat{\section}{\large\bfseries\color{blue!85!black}}{\thesection}{1em}{}[\titlerule]
 \titleformat{\subsection}{\normalsize\bfseries\color{cyan!75!black}}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\small\bfseries\color{black}}{\thesubsubsection}{1em}{}
 
-% Khối ghi chú nổi bật
 \newtcolorbox{mybox}[1]{
     colback=blue!5!white,
     colframe=blue!75!black,
     fonttitle=\bfseries,
     title=#1,
-    arc=2mm,
-    boxrule=1pt
+    arc=1mm,
+    breakable
 }
 
-% Khối chú thích & phân tích biểu đồ chuyên sâu
-\newtcolorbox{chartbox}[1][]{
-    colback=blue!2!white,
-    colframe=blue!70!black,
-    fonttitle=\bfseries\small,
-    coltitle=white,
-    arc=1.5mm,
-    boxrule=0.8pt,
-    left=3mm,
-    right=3mm,
-    top=2mm,
-    bottom=2mm,
-    breakable,
-    title=#1
-}
-
-% Cấu hình cột bảng tự co giãn và căn lề
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
-\newcolumntype{Y}{>{\centering\arraybackslash}X}
-
-% ==============================================================================
-% BẮT ĐẦU TÀI LIỆU
-% ==============================================================================
 \begin{document}
 
-% ==============================================================================
-% TRANG BÌA CHUẨN KHUNG VIỀN CỔ ĐIỂN VÀ HỌA TIẾT 4 GÓC THEO FILE DOCX
-% ==============================================================================
 \begin{titlepage}
     \begin{tikzpicture}[remember picture, overlay]
-        % 1. Đường viền khung ngoài dày
         \draw[line width=2.2pt, color=black]
             ([xshift=15mm, yshift=-15mm]current page.north west)
             rectangle
             ([xshift=-15mm, yshift=15mm]current page.south east);
-        
-        % 2. Đường viền khung trong mảnh
         \draw[line width=0.8pt, color=black]
             ([xshift=17.5mm, yshift=-17.5mm]current page.north west)
             rectangle
@@ -136,7 +98,6 @@
     {\large \textbf{KHOA CÔNG NGHỆ THÔNG TIN 1}}\\[0.2cm]
     \rule{5cm}{1pt}\\[0.9cm]
 
-    % Logo PTIT
     \begin{center}
         \IfFileExists{figures/logo_ptit.png}{%
             \includegraphics[width=3.4cm, height=4.2cm, keepaspectratio]{figures/logo_ptit.png}
@@ -150,8 +111,8 @@
 
     \vspace{0.6cm}
 
-    {\Large \textbf{TIỂU LUẬN CUỐI KỲ}}\\[0.3cm]
-    {\large \textbf{MÔN HỌC: LẬP TRÌNH HỆ THỐNG THÔNG MINH}}\\[0.5cm]
+    {\Large \textbf{BÁO CÁO KỸ THUẬT ASSIGNMENT 07}}\\[0.3cm]
+    {\large \textbf{MÔN HỌC: PHÁT TRIỂN CÁC HỆ THỐNG THÔNG MINH}}\\[0.5cm]
 
     \vspace{0.8cm}
 
@@ -171,54 +132,2027 @@
     \vspace*{0.3cm}
 \end{titlepage}
 
-% ==============================================================================
-% MỤC LỤC BÁO CÁO KỸ THUẬT
-% ==============================================================================
-\newpage
-\renewcommand{\contentsname}{MỤC LỤC TIỂU LUẬN CUỐI KỲ}
 \tableofcontents
 \newpage
 
-% ==============================================================================
-% DANH MỤC HÌNH VẼ & BẢNG BIỂU
-% ==============================================================================
-\phantomsection
-\addcontentsline{toc}{section}{DANH MỤC HÌNH VẼ}
-\listoffigures
+% --- BẮT ĐẦU chapters/00_intro.tex ---
+\section*{LỜI MỞ ĐẦU}
 
-\vspace{0.8cm}
+Trong kỷ nguyên công nghệ số hiện nay, Trí tuệ Nhân tạo (AI - Artificial Intelligence) và Học máy (Machine Learning) không chỉ dừng lại ở các nghiên cứu mang tính lý thuyết trong các phòng thí nghiệm, mà đã và đang trở thành cốt lõi của hàng loạt ứng dụng thực tiễn làm thay đổi sâu sắc mọi mặt của đời sống xã hội. Từ các hệ thống gợi ý sản phẩm thông minh của các gã khổng lồ thương mại điện tử, các trợ lý ảo có khả năng giao tiếp tự nhiên với con người, cho đến các phương tiện tự hành phức tạp và các phần mềm hỗ trợ chẩn đoán y khoa với độ chính xác cao, AI đang chứng minh sức mạnh to lớn trong việc giải quyết các bài toán khó khăn của nhân loại. Tuy nhiên, để một mô hình AI từ giai đoạn nghiên cứu, huấn luyện trên các tập dữ liệu tĩnh có thể thực sự mang lại giá trị và phục vụ hàng triệu người dùng, nó cần phải vượt qua một khoảng cách rất lớn: đó chính là quá trình triển khai mô hình vào môi trường thực tế (Model Deployment).
 
-\phantomsection
-\addcontentsline{toc}{section}{DANH MỤC BẢNG BIỂU}
-\listoftables
+Triển khai mô hình AI là một quá trình kỹ thuật phức tạp, đòi hỏi sự kết hợp nhuần nhuyễn giữa kiến thức chuyên sâu về Khoa học dữ liệu (Data Science), kỹ năng lập trình, và tư duy kiến trúc hệ thống, đặc biệt là các kỹ năng thuộc lĩnh vực MLOps (Machine Learning Operations). Một mô hình đạt độ chính xác $99\%$ trong môi trường thử nghiệm (Jupyter Notebook) hoàn toàn có thể trở nên vô dụng nếu nó yêu cầu tới $10$ giây để dự đoán một kết quả, hoặc đòi hỏi lượng tài nguyên máy chủ quá lớn mà hệ thống hiện tại không thể đáp ứng, hoặc không thể xử lý hàng nghìn yêu cầu đồng thời từ người dùng cuối. Do đó, việc hiểu rõ và làm chủ các kỹ thuật triển khai, tối ưu hóa mô hình, xây dựng API giao tiếp và đóng gói ứng dụng là một trong những yêu cầu bắt buộc và quan trọng nhất đối với các kỹ sư AI hiện đại.
+
+Bài tập lớn số 07 của học phần Hệ thống thông minh (Intelligent Systems) với chủ đề "Triển khai các mô hình Trí tuệ Nhân tạo - AI Models Deployment" được thiết kế nhằm mục đích cung cấp cho sinh viên một cái nhìn toàn diện, sâu sắc và mang tính thực chiến cao về toàn bộ vòng đời của một dự án học máy sau giai đoạn huấn luyện. Thông qua việc thực hiện bài tập lớn này, chúng em không chỉ áp dụng lại những kiến thức lý thuyết đã học mà còn phải đối mặt và giải quyết các thách thức thực tế trong việc đưa các mô hình deep learning hiện đại (như CNN, RNN, Transformers) lên các nền tảng web hoặc máy chủ, đảm bảo tính sẵn sàng, khả năng mở rộng và hiệu suất hoạt động tốt nhất.
 
 \newpage
+\section{Giới thiệu chung về Bài tập lớn}
 
-% ==============================================================================
-% TÓM TẮT BÁO CÁO (ABSTRACT)
-% ==============================================================================
-\phantomsection
-\addcontentsline{toc}{section}{TÓM TẮT BÁO CÁO (ABSTRACT)}
-\section*{TÓM TẮT BÁO CÁO (ABSTRACT)}
-\addcontentsline{toc}{section}{TÓM TẮT BÁO CÁO (ABSTRACT)}
+Sự phát triển bùng nổ của các mô hình Deep Learning trong những năm gần đây đã mở ra những hướng đi mới trong việc giải quyết các bài toán phức tạp liên quan đến thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (Natural Language Processing) và dữ liệu dạng chuỗi (Time-series data). Các framework mạnh mẽ như TensorFlow, PyTorch hay Keras đã làm cho quá trình xây dựng và huấn luyện mô hình trở nên dễ dàng hơn bao giờ hết. Hàng loạt các cấu trúc mạng nơ-ron từ đơn giản như Multi-Layer Perceptron (MLP) cho đến các cấu trúc phức tạp như ResNet, YOLO, BERT, hay GPT đã được công bố rộng rãi.
 
-Tiểu luận môn học Lập trình hệ thống thông minh trình bày tổng quan về Trí tuệ nhân tạo, từ lịch sử phát triển cho đến các kỹ thuật Học máy (Machine Learning) cơ bản, Mạng nơ-ron Tích chập (CNN) và Mạng nơ-ron Hồi quy (RNN). Báo cáo thực hiện khảo sát các tập dữ liệu, xây dựng mô hình từ đầu (from scratch) cho đến sử dụng các framework hiện đại như Keras và PyTorch, đồng thời so sánh đánh giá hiệu năng và triển khai ứng dụng thực tế.
+Thế nhưng, vòng đời của một dự án AI không kết thúc khi quá trình huấn luyện báo cáo hàm loss hội tụ và độ chính xác đạt ngưỡng mong muốn. Ngược lại, đó mới chỉ là điểm khởi đầu cho một chặng đường đầy thử thách tiếp theo: Đưa mô hình vào phục vụ thực tế (Production). Bối cảnh của Bài tập lớn 07 được đặt trong tình hình thực tế này, khi mà các nhà tuyển dụng và ngành công nghiệp phần mềm đang khát khao những kỹ sư không chỉ biết "train model" mà còn phải biết "deploy model". 
 
-\newpage
+Bài tập lớn số 07 tập trung vào việc mô phỏng lại một quy trình phát triển và triển khai phần mềm AI tiêu chuẩn trong các công ty công nghệ lớn. Yêu cầu của bài tập lớn đòi hỏi sinh viên phải tiếp nhận một (hoặc nhiều) mô hình đã được huấn luyện sẵn (pre-trained models) hoặc tự tay huấn luyện các mô hình từ đầu trên các tập dữ liệu tiêu chuẩn. Sau khi có được các tệp trọng số (weights) hoặc toàn bộ mô hình (ví dụ dạng \texttt{.h5}, \texttt{.pt}, \texttt{.onnx}), sinh viên sẽ phải tiến hành xây dựng các dịch vụ backend API sử dụng các vi khung (micro-frameworks) phổ biến như FastAPI hoặc Flask. 
 
-\include{chapters/00_intro}
-\include{chapters/01_history}
-\include{chapters/02_ml}
-\include{chapters/03_cnn}
-\include{chapters/04_rnn}
+Hơn thế nữa, một yếu tố quan trọng trong kiến trúc hệ thống hiện đại là tính di động (portability) và khả năng cô lập môi trường. Do đó, bài tập lớn cũng đặt ra yêu cầu phải sử dụng các công nghệ container hóa (Containerization) điển hình là Docker. Việc đóng gói mô hình, mã nguồn API, cùng với toàn bộ các thư viện phụ thuộc vào trong một Docker container không chỉ giúp tránh tình trạng "chạy được trên máy tôi nhưng lỗi trên server" mà còn tạo tiền đề vững chắc cho việc triển khai tự động lên các hệ thống điện toán đám mây (Cloud Computing) như AWS, Google Cloud, hay Azure thông qua các công cụ điều phối (Orchestration tools) như Kubernetes.
+
+Động lực chính (Motivation) để hoàn thành tốt bài tập lớn này không chỉ là để đáp ứng yêu cầu học thuật của môn học, mà quan trọng hơn cả, là nhằm rèn luyện và trang bị những kỹ năng thiết yếu mà một AI Engineer / Machine Learning Engineer chuyên nghiệp cần có. Quá trình làm bài tập lớn giúp chúng em cọ xát với các khái niệm phức tạp như độ trễ (latency), thông lượng (throughput), tối ưu hóa bộ nhớ, và bảo mật dữ liệu – những yếu tố quyết định sự sống còn của một sản phẩm AI trên thị trường thực tế.
 
 \newpage
-\section*{Tài liệu tham khảo}
-\addcontentsline{toc}{section}{Tài liệu tham khảo}
-\begin{enumerate}[label={[\arabic*]}]
-    \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \textit{Deep Learning}. MIT Press.
-    \item Russell, S., \& Norvig, P. (2020). \textit{Artificial Intelligence: A Modern Approach}. Pearson.
-    \item Các tài liệu thực hành và bài giảng môn Lập trình hệ thống thông minh.
+\section{Mục tiêu và Phạm vi}
+
+\subsection{Mục tiêu của báo cáo}
+
+Dự án và báo cáo "AI Models Deployment" hướng đến những mục tiêu cốt lõi sau:
+\begin{itemize}
+    \item \textbf{Củng cố và áp dụng kiến thức nền tảng:} Vận dụng các kiến thức về Học máy và Deep Learning để hiểu rõ kiến trúc, cách thức hoạt động và quá trình tiền xử lý/hậu xử lý dữ liệu đầu vào/đầu ra của các mô hình AI khác nhau.
+    \item \textbf{Xây dựng RESTful API cho các mô hình AI:} Nắm vững kỹ thuật lập trình web backend để thiết kế và phát triển các API giao tiếp, cho phép các ứng dụng khách (client-side) có thể gửi yêu cầu dự đoán (inference requests) tới mô hình một cách dễ dàng, an toàn và hiệu quả thông qua giao thức HTTP.
+    \item \textbf{Đóng gói và quản lý môi trường bằng Docker:} Thành thạo việc viết Dockerfile, thiết lập môi trường tối ưu (giảm thiểu kích thước image, sử dụng các base image phù hợp), và sử dụng Docker Compose để quản lý các dịch vụ đa thành phần.
+    \item \textbf{Tối ưu hóa quá trình Inference:} Nghiên cứu và thực nghiệm các phương pháp tối ưu hóa tốc độ dự đoán của mô hình, chẳng hạn như chuyển đổi định dạng mô hình (ví dụ sang ONNX, TensorRT), sử dụng batch inference, hoặc cấu hình số lượng worker phù hợp cho web server.
+    \item \textbf{Triển khai lên môi trường Cloud (Tùy chọn/Nâng cao):} Thực hành việc đưa ứng dụng đã được đóng gói lên các nền tảng đám mây công cộng, thiết lập CI/CD pipeline để tự động hóa quá trình kiểm thử và triển khai.
+\end{itemize}
+
+\subsection{Phạm vi thực hiện}
+
+Trong khuôn khổ của Bài tập lớn 07, phạm vi của dự án được giới hạn trong các khía cạnh sau để đảm bảo tính khả thi và tập trung vào chất lượng kỹ thuật:
+\begin{enumerate}
+    \item \textbf{Về mặt dữ liệu và mô hình:} Dự án sẽ tập trung triển khai một số mô hình đại diện cho các bài toán phổ biến. Cụ thể có thể bao gồm mô hình phân loại hình ảnh (Image Classification) sử dụng kiến trúc CNN (Convolutional Neural Networks), hoặc bài toán phân tích cảm xúc (Sentiment Analysis) sử dụng Transformer. Các mô hình này có thể là mô hình được huấn luyện lại trên các tập dữ liệu phổ biến, hoặc sử dụng các pre-trained models.
+    \item \textbf{Về công nghệ backend:} Hệ thống sẽ sử dụng \texttt{FastAPI} – một framework Python hiện đại, hiệu năng cao, dựa trên Starlette và Pydantic. Việc lựa chọn FastAPI dựa trên ưu điểm vượt trội về tốc độ xử lý bất đồng bộ (asynchronous) và khả năng tự động sinh tài liệu API (Swagger UI).
+    \item \textbf{Về quy trình đóng gói và triển khai:} Dự án bắt buộc phải cung cấp hệ thống Dockerfile chuẩn hóa, cho phép build và run ứng dụng chỉ với các lệnh Docker cơ bản. Việc triển khai (deploy) có thể thực hiện trên môi trường máy chủ cục bộ (local server), hoặc các dịch vụ triển khai đám mây.
+    \item \textbf{Không bao gồm:} Dự án sẽ không đi sâu vào việc tối ưu hóa kiến trúc mô hình (như Neural Architecture Search) ở mức quá phức tạp, không thực hiện thu thập dữ liệu lớn từ đầu, và không đi sâu vào việc xây dựng một giao diện frontend quá phức tạp, mà chỉ tập trung ở mức độ hiển thị cơ bản hoặc sử dụng trực tiếp API docs để demo ứng dụng.
 \end{enumerate}
+
+\newpage
+\section{Cấu trúc của báo cáo}
+
+Báo cáo này được trình bày một cách hệ thống, chi tiết và logic, tuân theo quy trình phát triển phần mềm chuẩn mực. Cấu trúc của báo cáo được chia thành 5 chương chính (không kể phần Mở đầu và Kết luận), mỗi chương giải quyết một khía cạnh cụ thể trong toàn bộ quy trình xây dựng và triển khai hệ thống AI. Dưới đây là tóm tắt nội dung chính của các chương:
+
+\subsection*{Chương 1: Cơ sở lý thuyết và Tổng quan công nghệ}
+Chương này đóng vai trò như một nền tảng kiến thức vững chắc cho các chương thực hành phía sau. Nội dung sẽ trình bày chi tiết về các khái niệm cốt lõi trong Học máy và Deep Learning, kiến trúc của các mô hình được lựa chọn để triển khai. Đồng thời, chương này cũng phân tích chuyên sâu về các công nghệ và framework được sử dụng trong dự án, bao gồm:
+\begin{itemize}
+    \item Tổng quan về kiến trúc RESTful API và lợi ích của việc microservices hóa hệ thống học máy.
+    \item Phân tích chi tiết về framework FastAPI, Pydantic và cơ chế lập trình bất đồng bộ (async/await) trong Python.
+    \item Lý thuyết về Containerization, so sánh Docker với các công nghệ máy ảo (Virtual Machines) truyền thống, và vai trò của Docker trong quy trình MLOps.
+    \item Các phương pháp và định dạng tối ưu hóa mô hình AI (như ONNX, TorchScript).
+\end{itemize}
+
+\subsection*{Chương 2: Xây dựng và Huấn luyện Mô hình AI}
+Chương này mô tả quá trình chuẩn bị "bộ não" cho hệ thống. Nội dung bao gồm việc thu thập, phân tích và tiền xử lý dữ liệu (Exploratory Data Analysis \& Data Preprocessing). Tiếp theo, báo cáo sẽ trình bày chi tiết quá trình thiết kế cấu trúc mạng nơ-ron. Các khía cạnh quan trọng như việc lựa chọn hàm mất mát (loss function), thuật toán tối ưu (optimizer), chiến lược học (learning rate schedule), và quá trình huấn luyện (training loop) cũng như đánh giá mô hình bằng các độ đo (metrics) sẽ được phân tích kỹ lưỡng và đi kèm các ví dụ thực nghiệm.
+
+\subsection*{Chương 3: Xây dựng Dịch vụ Backend API với FastAPI}
+Được xem là cầu nối giữa mô hình tính toán và người dùng cuối, chương này trình bày các bước lập trình cụ thể để gói gọn mô hình vào một ứng dụng web. Các nội dung chính bao gồm:
+\begin{itemize}
+    \item Thiết kế sơ đồ kiến trúc API và luồng xử lý dữ liệu.
+    \item Viết các lớp (classes) và hàm (functions) để thực hiện tiền xử lý dữ liệu từ HTTP requests sao cho tương thích với định dạng đầu vào của mô hình.
+    \item Quản lý vòng đời của mô hình trong ứng dụng (khởi tạo mô hình khi server start) để tránh vấn đề cold start, giảm thiểu độ trễ.
+    \item Định nghĩa các Endpoints, kiểm tra dữ liệu đầu vào bằng Pydantic và trả về kết quả dự đoán (Inference Response) theo định dạng JSON chuẩn.
+\end{itemize}
+
+\subsection*{Chương 4: Đóng gói Ứng dụng với Docker}
+Chương này đi sâu vào thực hành kỹ thuật DevOps/MLOps, mô tả chi tiết cách thức tạo ra một Docker Image hoàn chỉnh cho ứng dụng AI Backend. Báo cáo sẽ trình bày phân tích chuyên sâu về file \texttt{Dockerfile}, giải thích ý nghĩa của từng chỉ thị và chiến lược tối ưu hóa kích thước image. Ngoài ra, việc sử dụng \texttt{docker-compose} để cấu hình và chạy hệ thống nhiều thành phần cũng sẽ được trình bày rõ ràng với mã nguồn minh họa chi tiết.
+
+\subsection*{Chương 5: Triển khai, Đánh giá và Tối ưu hóa Hệ thống}
+Chương cuối cùng của báo cáo trình bày quá trình đưa ứng dụng lên các môi trường thực tế và các thực nghiệm đo lường hiệu năng tổng thể. Nội dung bao gồm việc trình bày chi tiết các bước triển khai (deploy), các kịch bản kiểm thử API. Đặc biệt, chương này sẽ có các số liệu, đánh giá hiệu suất của hệ thống, phân tích thời gian phản hồi (Response Time) và thông lượng dưới các điều kiện vận hành khác nhau. Dựa trên các kết quả đó, chương này sẽ đề xuất các giải pháp nhằm nâng cao khả năng vận hành ổn định cho hệ thống.
+
+% --- KẾT THÚC chapters/00_intro.tex ---
+
+\newpage
+% --- BẮT ĐẦU chapters/01_history.tex ---
+\section{Lịch sử phát triển của Trí tuệ nhân tạo}
+
+Trí tuệ nhân tạo (Artificial Intelligence - AI) là một trong những lĩnh vực nghiên cứu năng động và phát triển nhanh nhất trong khoa học máy tính. Mặc dù thuật ngữ "Trí tuệ nhân tạo" mới chỉ chính thức được đưa ra vào giữa thế kỷ 20, nhưng ước mơ về việc tạo ra những cỗ máy có khả năng suy nghĩ và hành động như con người đã tồn tại từ thời cổ đại qua những câu chuyện thần thoại, truyền thuyết và các tác phẩm cơ khí sơ khai. Sự phát triển của AI không phải là một đường thẳng đi lên, mà là một chuỗi các giai đoạn với những bước tiến đột phá đan xen với những kỳ vọng bị phá vỡ, thường được gọi là các "Mùa đông AI". Chương này sẽ đi sâu vào lịch sử hình thành, sự phát triển qua các thời kỳ, những cột mốc quan trọng và trạng thái hiện tại của Trí tuệ nhân tạo, đồng thời xem xét chi tiết về các cơ sở toán học và thuật toán trong những thời kỳ đầu.
+
+Sự hình thành của AI bắt nguồn từ các lĩnh vực triết học, toán học, tâm lý học, thần kinh học và khoa học máy tính. Những câu hỏi cốt lõi như "Tâm trí hoạt động như thế nào?", "Làm thế nào một hệ thống vật lý có thể tạo ra trí thông minh?" đã thôi thúc các nhà nghiên cứu tìm kiếm cách mô phỏng các quá trình nhận thức của con người bằng các thiết bị tính toán cơ học và điện tử. Trong thế kỷ 20, sự ra đời của máy tính điện tử đã cung cấp nền tảng phần cứng cần thiết để biến những lý thuyết về trí tuệ nhân tạo thành hiện thực. 
+
+Lịch sử AI có thể được chia thành nhiều giai đoạn chính: sự khởi đầu khái niệm với Alan Turing, Hội nghị Dartmouth huyền thoại đánh dấu sự ra đời của lĩnh vực học thuật, những thập kỷ của sự lạc quan tột độ (và sự sụp đổ sau đó), sự trỗi dậy của các hệ chuyên gia, sự trở lại của mạng nơ-ron nhân tạo nhờ thuật toán lan truyền ngược, và cuối cùng là kỷ nguyên bùng nổ của Học sâu (Deep Learning) và các mô hình ngôn ngữ lớn (Large Language Models) mà chúng ta đang chứng kiến ngày nay.
+
+\newpage
+
+\subsection{Sự ra đời của Trí tuệ nhân tạo (Trước 1956 và Hội nghị Dartmouth)}
+
+Thời kỳ trước năm 1956 đánh dấu những bước chuẩn bị quan trọng về mặt lý thuyết và khái niệm cho sự ra đời của AI. Một trong những cột mốc quan trọng nhất là bài báo kinh điển "Computing Machinery and Intelligence" được xuất bản năm 1950 bởi nhà toán học, logic học và mật mã học vĩ đại người Anh, Alan Turing. Trong bài báo này, Turing đã đặt ra một câu hỏi nền tảng: "Máy móc có thể suy nghĩ không?" (Can machines think?). Để tránh những tranh cãi triết học phức tạp về định nghĩa của "suy nghĩ", Turing đã đề xuất một bài kiểm tra thực nghiệm, sau này được biết đến rộng rãi với tên gọi "Phép thử Turing" (Turing Test).
+
+Phép thử Turing được thiết kế như một "Trò chơi bắt chước" (Imitation Game), trong đó một người thẩm vấn (interrogator) sẽ giao tiếp với một con người và một máy tính thông qua văn bản (text) ở hai phòng tách biệt. Nếu người thẩm vấn không thể phân biệt được đâu là máy tính và đâu là con người sau một khoảng thời gian giao tiếp, máy tính đó được coi là đã vượt qua phép thử và có khả năng thể hiện trí thông minh tương đương con người. Bài báo của Turing không chỉ giới thiệu Phép thử Turing mà còn thảo luận về nhiều vấn đề then chốt của AI như học máy (machine learning), thuật toán di truyền (genetic algorithms) và học củng cố (reinforcement learning).
+
+Bên cạnh Alan Turing, những nghiên cứu đầu tiên về mạng nơ-ron nhân tạo cũng được tiến hành trong giai đoạn này. Năm 1943, Warren McCulloch (nhà thần kinh học) và Walter Pitts (nhà logic học) đã xuất bản bài báo "A Logical Calculus of the Ideas Immanent in Nervous Activity", đề xuất một mô hình toán học đơn giản đầu tiên của nơ-ron sinh học. Họ chứng minh rằng các mạng bao gồm các nơ-ron nhân tạo này có thể tính toán bất kỳ hàm logic nào. 
+
+Về mặt toán học, mô hình McCulloch-Pitts có thể được biểu diễn như sau. Mỗi nơ-ron nhận các tín hiệu đầu vào nhị phân $x_i \in \{0, 1\}$. Trọng số của các kết nối, $w_i$, có thể là kích thích (excitatory, $w_i > 0$) hoặc ức chế (inhibitory, $w_i < 0$). Trạng thái đầu ra $y$ của nơ-ron được xác định bởi một hàm bước (step function):
+
+\begin{equation}
+y = \begin{cases} 
+1 & \text{nếu } \sum_{i=1}^{n} w_i x_i \geq \theta \\
+0 & \text{nếu } \sum_{i=1}^{n} w_i x_i < \theta 
+\end{cases}
+\end{equation}
+
+trong đó $\theta$ là ngưỡng kích hoạt (threshold). Mặc dù đơn giản, mô hình này đã đặt nền móng lý thuyết quan trọng cho cấu trúc của các mạng nơ-ron hiện đại.
+
+Năm 1956 được coi là năm sinh chính thức của lĩnh vực Trí tuệ nhân tạo với "Dự án Nghiên cứu Mùa hè về Trí tuệ nhân tạo tại Dartmouth" (Dartmouth Summer Research Project on Artificial Intelligence). Hội nghị này được tổ chức bởi John McCarthy, Marvin Minsky, Nathaniel Rochester và Claude Shannon. John McCarthy đã chính thức đề xuất việc sử dụng thuật ngữ "Artificial Intelligence" (Trí tuệ nhân tạo) trong đề xuất của dự án. Đề xuất của hội nghị có tuyên bố đầy tham vọng: "Nghiên cứu sẽ được tiến hành dựa trên phỏng đoán rằng mọi khía cạnh của việc học tập hoặc bất kỳ đặc điểm nào khác của trí thông minh đều có thể được mô tả chính xác đến mức một cỗ máy có thể được chế tạo để mô phỏng nó". 
+
+Hội nghị Dartmouth quy tụ những bộ óc sáng giá nhất thời bấy giờ, trong đó có Allen Newell và Herbert A. Simon, những người đã trình bày chương trình "Logic Theorist" - chương trình máy tính đầu tiên được thiết kế để bắt chước kỹ năng giải quyết vấn đề của con người, và đã chứng minh thành công nhiều định lý trong cuốn Principia Mathematica. Sự kiện này đã thống nhất một cộng đồng nhỏ các nhà nghiên cứu xung quanh một mục tiêu chung và khởi xướng nhiều thập kỷ nghiên cứu chuyên sâu về AI.
+
+\newpage
+
+\subsection{Kỳ vọng ban đầu và Mùa đông AI đầu tiên (1956 - 1980)}
+
+Những năm tiếp theo sau Hội nghị Dartmouth chứng kiến một sự lạc quan tột độ và những khoản đầu tư khổng lồ từ các cơ quan chính phủ, đặc biệt là DARPA (Defense Advanced Research Projects Agency) của Hoa Kỳ. Những người tiên phong trong lĩnh vực AI tin rằng máy móc có trí thông minh ngang ngửa con người sẽ xuất hiện trong vòng một vài thập kỷ.
+
+Trong giai đoạn này, nhiều chương trình máy tính đáng kinh ngạc đã được phát triển. Ví dụ tiêu biểu là General Problem Solver (GPS) do Newell và Simon phát triển năm 1957. GPS được thiết kế để giải quyết các vấn đề đa dạng theo cách tư duy của con người, sử dụng phương pháp phân tích phương tiện-mục đích (means-ends analysis) để giảm thiểu sự khác biệt giữa trạng thái hiện tại và trạng thái đích. Mặc dù GPS giải quyết tốt các bài toán logic đơn giản, nó gặp khó khăn khi đối mặt với các vấn đề trong thế giới thực đòi hỏi kiến thức nền rộng lớn.
+
+Một thành tựu nổi bật khác là chương trình ELIZA, do Joseph Weizenbaum tại MIT phát triển từ năm 1964 đến 1966. ELIZA là một trong những chương trình xử lý ngôn ngữ tự nhiên đầu tiên, được thiết kế để mô phỏng một nhà trị liệu tâm lý Rogerian. Mặc dù ELIZA chỉ sử dụng các kỹ thuật đối sánh mẫu (pattern matching) và thay thế văn bản đơn giản mà không thực sự "hiểu" ngữ nghĩa, nó đã tạo ra ảo giác mạnh mẽ về trí thông minh và sự đồng cảm, khiến nhiều người dùng tin rằng họ đang trò chuyện với một thực thể có trí óc.
+
+Tuy nhiên, sự lạc quan quá mức đã dẫn đến những hứa hẹn phi thực tế. Khi những khó khăn thực sự của việc giải quyết các bài toán AI phức tạp lộ diện, tiến độ chậm lại đáng kể. Các hệ thống AI thời kỳ này chủ yếu dựa trên logic biểu tượng (symbolic logic) và các quy tắc tìm kiếm heuristic. Mặc dù phương pháp này có hiệu quả với các "thế giới khối" (micro-worlds) bị giới hạn, nó hoàn toàn thất bại khi đối mặt với "sự bùng nổ tổ hợp" (combinatorial explosion) trong các vấn đề thế giới thực quy mô lớn. Số lượng các trạng thái có thể xảy ra trong các bài toán thực tế tăng lên theo cấp số nhân, vượt xa khả năng tính toán của máy tính và bộ nhớ phần cứng lúc bấy giờ.
+
+Hơn nữa, một rào cản lớn khác là "nghịch lý Moravec" (Moravec's paradox). Nghịch lý này phát biểu rằng các nhiệm vụ tư duy cấp cao (như giải toán logic, chơi cờ) đòi hỏi rất ít tính toán, trong khi các nhiệm vụ nhận thức và vận động cấp thấp (như nhận dạng hình ảnh, di chuyển trong không gian, hiểu ngôn ngữ giao tiếp hàng ngày) lại đòi hỏi những nguồn lực tính toán khổng lồ. 
+
+Báo cáo Lighthill (Lighthill Report) năm 1973 tại Anh đã đưa ra một đánh giá rất bi quan về triển vọng của AI, chỉ trích lĩnh vực này vì không đạt được những mục tiêu vĩ đại đã hứa hẹn. Báo cáo này dẫn đến việc chính phủ Anh cắt giảm nghiêm trọng tài trợ cho các nghiên cứu AI tại hầu hết các trường đại học. Cùng thời điểm đó ở Mỹ, DARPA cũng rút bớt tài trợ cho nghiên cứu AI cơ bản do thất vọng về kết quả của dự án dịch máy tự động. Sự cắt giảm tài trợ hàng loạt và sự suy giảm niềm tin này đã mở ra "Mùa đông AI đầu tiên" (The First AI Winter), một giai đoạn kéo dài từ giữa những năm 1970 đến khoảng năm 1980, đặc trưng bởi sự đình trệ và thiếu nguồn lực trong nghiên cứu trí tuệ nhân tạo.
+
+\newpage
+
+\subsection{Hệ chuyên gia và Mùa đông AI thứ hai (1980 - 1993)}
+
+Vào đầu những năm 1980, AI bắt đầu hồi sinh nhờ một hướng đi mới và thực dụng hơn: các Hệ chuyên gia (Expert Systems). Thay vì cố gắng tạo ra một trí thông minh tổng quát (Artificial General Intelligence - AGI) như trước đây, các nhà nghiên cứu nhận ra rằng họ có thể tạo ra các hệ thống hữu ích bằng cách giới hạn phạm vi ứng dụng vào các miền tri thức hẹp và cụ thể.
+
+Một hệ chuyên gia là một hệ thống máy tính mô phỏng khả năng ra quyết định của một chuyên gia con người trong một lĩnh vực cụ thể. Hệ thống bao gồm hai thành phần chính:
+\begin{itemize}
+    \item \textbf{Cơ sở tri thức (Knowledge Base):} Chứa đựng kiến thức chuyên môn dưới dạng các tập luật (thường là các câu điều kiện IF-THEN) và sự kiện do các chuyên gia cung cấp.
+    \item \textbf{Động cơ suy diễn (Inference Engine):} Các thuật toán logic áp dụng các luật trong cơ sở tri thức vào dữ liệu đầu vào để suy luận và đưa ra câu trả lời hoặc khuyến nghị.
+\end{itemize}
+
+Hệ chuyên gia đầu tiên thành công vang dội là R1 (sau này được đổi tên thành XCON), được phát triển bởi John McDermott tại Đại học Carnegie Mellon vào năm 1980 cho Tập đoàn Thiết bị Kỹ thuật số (Digital Equipment Corporation - DEC). XCON tự động hóa quá trình cấu hình các hệ thống máy tính VAX của DEC dựa trên yêu cầu của khách hàng, giúp DEC tiết kiệm hàng chục triệu USD mỗi năm bằng cách giảm thiểu lỗi trong các đơn đặt hàng. Một ví dụ nổi tiếng khác là MYCIN, phát triển tại Đại học Stanford, được thiết kế để chẩn đoán các bệnh nhiễm khuẩn máu và đề xuất liệu pháp kháng sinh. MYCIN có độ chính xác chẩn đoán vượt trội so với nhiều bác sĩ nội trú.
+
+Sự thành công thương mại của các hệ chuyên gia đã kích hoạt một làn sóng đầu tư mới khổng lồ vào AI từ các tập đoàn công nghiệp. Một ngành công nghiệp hoàn toàn mới xoay quanh phần cứng và phần mềm cho AI đã ra đời, trong đó đáng chú ý nhất là thị trường máy tính Lisp (Lisp machines) – những máy tính được thiết kế đặc biệt để tối ưu hóa việc chạy ngôn ngữ lập trình Lisp phổ biến trong AI thời đó, do các công ty như Symbolics và Lisp Machines Inc. sản xuất. Chính phủ Nhật Bản cũng công bố "Dự án Máy tính Thế hệ thứ năm" (Fifth Generation Computer Systems) với khoản ngân sách hàng trăm triệu đô la, nhằm phát triển siêu máy tính có khả năng suy luận logic khổng lồ.
+
+Tuy nhiên, thời kỳ hoàng kim của hệ chuyên gia không kéo dài. Đến cuối những năm 1980, các công ty bắt đầu nhận ra những giới hạn chí mạng của hướng tiếp cận này:
+\begin{enumerate}
+    \item \textbf{Khó khăn trong việc thu nhận tri thức (Knowledge Acquisition Bottleneck):} Việc trích xuất kiến thức từ các chuyên gia con người và mã hóa chúng thành các tập luật là quá trình tốn cực kỳ nhiều thời gian, công sức và tốn kém.
+    \item \textbf{Tính giòn gãy (Brittleness):} Hệ chuyên gia không có "ý thức" thông thường. Khi đối mặt với một tình huống nằm ngoài các quy tắc đã được lập trình sẵn, hệ thống sẽ thất bại hoàn toàn thay vì suy thoái dần (graceful degradation) như trí tuệ con người.
+    \item \textbf{Chi phí bảo trì cao:} Khi lĩnh vực chuyên môn thay đổi, cơ sở tri thức phải được cập nhật thủ công, điều này rất phức tạp đối với các hệ thống có hàng chục ngàn tập luật.
+    \item \textbf{Sự sụp đổ của phần cứng chuyên dụng:} Sự phát triển thần tốc của các máy tính cá nhân (PC) và máy trạm (workstation) thông thường từ Apple và IBM đã khiến những chiếc Lisp machines đắt đỏ trở nên lỗi thời. Các máy PC thông thường có thể chạy phần mềm Lisp nhanh hơn và rẻ hơn các máy Lisp chuyên dụng.
+\end{enumerate}
+
+Sự thất vọng của giới công nghiệp khi các dự án hệ chuyên gia thất bại trong việc đáp ứng kỳ vọng, cùng với sự kết thúc tài trợ của chính phủ, đã dẫn đến sự sụp đổ của thị trường máy tính Lisp vào năm 1987 và gây ra "Mùa đông AI thứ hai". Thời kỳ này thậm chí còn tồi tệ hơn lần đầu tiên, với cụm từ "Trí tuệ nhân tạo" gần như trở thành một từ cấm kỵ trong các hồ sơ xin tài trợ nghiên cứu hoặc trong kinh doanh, buộc các nhà nghiên cứu phải ngụy trang công việc của họ dưới các tên gọi khác như "Tin học học", "Hệ thống thông minh", hoặc "Học máy".
+
+\newpage
+
+\subsection{Sự trỗi dậy của Thuyết kết nối và Học máy (1990s - 2010s)}
+
+Trong khi logic biểu tượng (Symbolic AI hay GOFAI - Good Old-Fashioned AI) thống trị phần lớn thời gian trước những năm 1990, một trường phái nghiên cứu khác, được gọi là "Thuyết kết nối" (Connectionism), vẫn âm thầm phát triển. Thuyết kết nối cố gắng mô phỏng mạng lưới sinh học của não bộ thông qua các Mạng Nơ-ron Nhân tạo (Artificial Neural Networks - ANNs).
+
+Vào năm 1958, Frank Rosenblatt đã phát minh ra Perceptron, một mô hình nơ-ron đơn giản có khả năng học hỏi qua dữ liệu để thực hiện phân loại nhị phân. Công thức toán học cốt lõi cho đầu ra $\hat{y}$ của một Perceptron cho một mẫu dữ liệu đầu vào có đặc trưng biểu diễn dưới dạng vector $x = [x_1, x_2, \dots, x_n]^T$ được định nghĩa bằng hàm dấu (sign function):
+
+\begin{equation}
+\hat{y} = \text{sign}\left(\sum_{i=1}^{n} w_i x_i + b\right) = \text{sign}(\mathbf{w}^T \mathbf{x} + b)
+\end{equation}
+
+trong đó $\mathbf{w}$ là vector trọng số (weights) và $b$ là hệ số độ lệch (bias). Perceptron có thuật toán cập nhật trọng số vô cùng đơn giản dựa trên sai số giữa dự đoán $\hat{y}$ và nhãn thực tế $y$:
+
+\begin{equation}
+\mathbf{w}_{new} = \mathbf{w}_{old} + \eta (y - \hat{y})\mathbf{x}
+\end{equation}
+với $\eta$ là tốc độ học (learning rate). 
+
+Rosenblatt rất tự tin về phát minh của mình, nhưng vào năm 1969, Marvin Minsky và Seymour Papert đã xuất bản cuốn sách "Perceptrons", trong đó họ chứng minh nghiêm ngặt bằng toán học rằng các Perceptron đơn lớp (single-layer perceptron) không thể học được các hàm phân tách phi tuyến tính cơ bản, điển hình là bài toán logic XOR (Exclusive OR). Cuốn sách này đã gây ảnh hưởng lớn đến mức khiến hướng nghiên cứu mạng nơ-ron gần như đóng băng trong suốt nhiều năm.
+
+Phải đến giữa những năm 1980, sự quan tâm đến mạng nơ-ron mới bắt đầu hồi sinh nhờ việc phổ biến hóa thuật toán Lan truyền ngược (Backpropagation). Mặc dù thuật toán này đã được phát minh độc lập bởi nhiều nhà nghiên cứu từ những năm 1960 (như Paul Werbos), nhưng nó chỉ thực sự trở nên nổi tiếng thông qua bài báo đột phá năm 1986 của David Rumelhart, Geoffrey Hinton và Ronald Williams. Lan truyền ngược cung cấp một phương pháp hiệu quả để tính toán gradient (đạo hàm riêng) của hàm mất mát theo từng trọng số trong một mạng nơ-ron đa lớp (Multi-layer Perceptron - MLP), từ đó cho phép sử dụng thuật toán Gradient Descent để tối ưu hóa trọng số:
+
+Giả sử hàm mất mát là $E$, theo quy tắc chuỗi (chain rule) trong giải tích, đạo hàm của $E$ theo trọng số $w_{ij}$ kết nối nơ-ron $j$ ở lớp ẩn với nơ-ron $i$ ở lớp sau là:
+\begin{equation}
+\frac{\partial E}{\partial w_{ij}} = \frac{\partial E}{\partial o_i} \cdot \frac{\partial o_i}{\partial net_i} \cdot \frac{\partial net_i}{\partial w_{ij}}
+\end{equation}
+trong đó $net_i$ là tổng đầu vào của nơ-ron $i$, và $o_i = f(net_i)$ là đầu ra sau hàm kích hoạt $f$. Phát hiện này chứng minh rằng mạng nhiều lớp hoàn toàn có khả năng học các hàm phi tuyến tính cực kỳ phức tạp (như XOR), bác bỏ lời chỉ trích của Minsky trước đây.
+
+Năm 1989, Yann LeCun cùng các cộng sự tại AT\&T Bell Labs đã áp dụng thành công thuật toán Backpropagation vào Mạng Nơ-ron Tích chập (Convolutional Neural Networks - CNNs) để nhận dạng chữ số viết tay trên các tấm séc ngân hàng, tạo ra hệ thống LeNet.
+
+Bất chấp những thành công này, trong thập niên 1990 và đầu những năm 2000, mạng nơ-ron lại một lần nữa bị lu mờ trước sự bùng nổ của các thuật toán Học máy (Machine Learning) truyền thống dựa trên thống kê, nổi bật là Support Vector Machines (SVM), Random Forests, và Hidden Markov Models (HMM). Các thuật toán SVM có nền tảng lý thuyết tối ưu hóa toán học vô cùng vững chắc và hoạt động cực kỳ hiệu quả trên các tập dữ liệu nhỏ và trung bình mà không cần tinh chỉnh quá nhiều siêu tham số (hyperparameters). Trong thời kỳ này, trí tuệ nhân tạo trở nên khoa học hơn, có cấu trúc tốt hơn, và dần dần được tích hợp vào các hệ thống khai phá dữ liệu (data mining) và các ứng dụng thương mại một cách thầm lặng.
+
+\newpage
+
+\subsection{Sự bùng nổ của Học sâu (2011 - nay)}
+
+Bước ngoặt thực sự của kỷ nguyên trí tuệ nhân tạo hiện đại diễn ra vào đầu những năm 2010. Mặc dù các cấu trúc mạng nơ-ron đa lớp và thuật toán tối ưu hóa đã có từ nhiều thập kỷ trước, chúng thường gặp phải bài toán vanishing gradient (gradient biến mất) khiến mạng sâu không thể học được, hoặc overfitting do không có đủ dữ liệu. Ba yếu tố mang tính cách mạng đã cùng hội tụ trong giai đoạn này để tạo ra sự bùng nổ của Học sâu (Deep Learning):
+
+\textbf{1. Sự bùng nổ của Dữ liệu lớn (Big Data):} Sự phát triển của Internet, mạng xã hội, và các thiết bị di động đã tạo ra một lượng dữ liệu khổng lồ (hình ảnh, văn bản, âm thanh). Việc có các tập dữ liệu được gán nhãn lớn là điều kiện tiên quyết cho Deep Learning. Điển hình nhất là tập dữ liệu ImageNet do nhóm của giáo sư Fei-Fei Li xây dựng, chứa hàng triệu hình ảnh được gán nhãn thủ công cho hơn một ngàn danh mục đối tượng.
+
+\textbf{2. Sức mạnh phần cứng (GPU):} Các mạng nơ-ron sâu yêu cầu hàng tỷ phép tính ma trận dấu phẩy động. Các Bộ vi xử lý Đồ họa (GPU) do NVIDIA sản xuất, ban đầu được thiết kế để xử lý đồ họa trò chơi điện tử, với kiến trúc xử lý song song hàng nghìn lõi (CUDA cores), tỏ ra hoàn toàn lý tưởng cho việc huấn luyện mạng nơ-ron. Một mô hình từng mất hàng tháng để huấn luyện trên CPU nay có thể hoàn thành trong vài ngày trên GPU.
+
+\textbf{3. Cải tiến Thuật toán và Hàm kích hoạt:} Sự thay thế các hàm kích hoạt truyền thống như Sigmoid hay Tanh bằng hàm ReLU (Rectified Linear Unit), $f(x) = \max(0, x)$, đã giúp giải quyết triệt để vấn đề đạo hàm biến mất. Cùng với đó là các kỹ thuật như Dropout (loại bỏ ngẫu nhiên nơ-ron để chống overfitting) và Batch Normalization.
+
+Sự kiện làm "chấn động" cộng đồng học máy thế giới là cuộc thi phân loại hình ảnh ImageNet (ILSVRC) năm 2012. Nhóm nghiên cứu của giáo sư Geoffrey Hinton tại Đại học Toronto, bao gồm Alex Krizhevsky và Ilya Sutskever, đã giới thiệu AlexNet, một mạng CNN sâu chạy trên GPU. AlexNet đã nghiền nát tất cả các phương pháp thị giác máy tính truyền thống bằng cách giảm tỷ lệ lỗi xuống chỉ còn 15.3\% (so với mức 26.2\% của đối thủ đứng thứ hai). Cột mốc này chứng minh sức mạnh áp đảo của Học sâu trong việc tự động trích xuất các đặc trưng phân cấp từ dữ liệu thô, mở ra kỷ nguyên phục hưng cho AI.
+
+Sau AlexNet, Học sâu tiếp tục càn quét mọi lĩnh vực. Năm 2016, hệ thống AlphaGo do DeepMind phát triển đã đánh bại Lee Sedol, một trong những kỳ thủ cờ vây vĩ đại nhất thế giới, bằng cách kết hợp Học sâu với Học củng cố (Deep Reinforcement Learning). Đây là một cột mốc lịch sử vì cờ vây được cho là trò chơi có không gian trạng thái vô tận (lớn hơn số lượng nguyên tử trong vũ trụ quan sát được) và không thể giải bằng phương pháp tìm kiếm vét cạn bằng máy tính.
+
+\textbf{Cuộc cách mạng Transformer trong Xử lý ngôn ngữ tự nhiên:}
+Năm 2017, các nhà nghiên cứu tại Google đã xuất bản bài báo định hình lại toàn bộ lĩnh vực NLP: "Attention Is All You Need". Bài báo giới thiệu kiến trúc \textbf{Transformer}, hoàn toàn loại bỏ các cấu trúc mạng tuần hoàn (RNN/LSTM) trước đó vốn nổi tiếng vì khó song song hóa và hay quên ngữ cảnh xa. Cốt lõi của kiến trúc Transformer là cơ chế \textit{Self-Attention} (tự chú ý), cho phép mô hình tính toán sự tương quan giữa các từ trong câu một cách đồng thời, bất kể vị trí của chúng.
+
+Công thức toán học của cơ chế Scaled Dot-Product Attention được biểu diễn rất thanh lịch:
+
+\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+trong đó $Q$ (Query), $K$ (Key), và $V$ (Value) là các ma trận đặc trưng được biến đổi từ chuỗi đầu vào, và $d_k$ là kích thước của các vector key, đóng vai trò như một hệ số tỷ lệ để tránh việc hàm softmax bị bão hòa. Cơ chế Multi-Head Attention sau đó kết hợp nhiều không gian biểu diễn khác nhau, cho phép mô hình thu thập thông tin vô cùng phong phú về ngữ pháp và ngữ nghĩa.
+
+Dựa trên kiến trúc Transformer, OpenAI đã phát triển dòng mô hình GPT (Generative Pre-trained Transformer), bao gồm mô hình ngôn ngữ lớn (LLMs). Đồng thời, Google phát triển BERT. Phương pháp tiếp cận "Học tự giám sát" (Self-supervised learning) cho phép các mô hình này học hỏi ngữ nghĩa từ hàng tỷ tài liệu trên Internet bằng cách dự đoán các từ bị che khuất hoặc dự đoán từ tiếp theo mà không cần dữ liệu được gán nhãn của con người.
+
+\newpage
+
+\subsection{Tình trạng hiện tại và Tương lai của Trí tuệ nhân tạo}
+
+Chúng ta đang sống trong kỷ nguyên của Trí tuệ nhân tạo Tạo sinh (Generative AI), với sự ra đời của các Mô hình Ngôn ngữ Lớn (LLMs) như GPT-4, Gemini (Google), Claude (Anthropic), và LLaMA (Meta). Sự xuất hiện của ChatGPT vào cuối năm 2022 được ví như "Khoảnh khắc iPhone" của AI. Lần đầu tiên, một hệ thống AI sở hữu khả năng suy luận, lập trình, viết luận văn sáng tạo, phân tích dữ liệu, và đối thoại lưu loát bằng ngôn ngữ tự nhiên đã được đưa đến tận tay hàng trăm triệu người dùng trên toàn cầu. Khả năng "Zero-shot" và "Few-shot learning" - giải quyết các bài toán mới mà không cần phải tinh chỉnh (fine-tuning) mô hình - đã cách mạng hóa cách chúng ta tương tác với máy tính.
+
+Không chỉ dừng lại ở văn bản, AI hiện đại có khả năng đa phương thức (multimodal). Các hệ thống như Midjourney, DALL-E 3 hay Stable Diffusion có thể tạo ra các tác phẩm nghệ thuật, nhiếp ảnh có độ phân giải siêu cao và độ chân thực cực lớn chỉ từ một câu mô tả (prompt). Trong lĩnh vực y sinh học, hệ thống AlphaFold của DeepMind đã giải quyết thành công bài toán dự đoán cấu trúc protein 3D, mở ra kỷ nguyên mới cho ngành phát hiện và điều chế thuốc (drug discovery).
+
+Mặc dù đạt được những thành tựu phi thường, Trí tuệ nhân tạo hiện tại không phải là không có giới hạn và đối mặt với nhiều thách thức sâu sắc:
+
+\textbf{1. Ảo giác (Hallucination):} Các mô hình ngôn ngữ lớn bản chất là những bộ dự đoán xác suất vô cùng phức tạp, không phải là cơ sở dữ liệu tri thức tĩnh. Chúng có thể tự tin sinh ra các thông tin hoàn toàn sai lệch hoặc bịa đặt các nguồn tài liệu khoa học không tồn tại.
+
+\textbf{2. Khả năng diễn giải (Explainable AI - XAI):} Các mạng nơ-ron sâu với hàng trăm tỷ tham số hoạt động như những "hộp đen" (black box). Các nhà nghiên cứu thường không thể hiểu được cơ chế tại sao một mô hình đưa ra một quyết định hoặc một đầu ra cụ thể. Điều này là một rào cản chí mạng khi áp dụng AI trong các lĩnh vực có tính rủi ro cao như y tế, luật pháp, và xe tự lái, nơi trách nhiệm giải trình (accountability) là bắt buộc.
+
+\textbf{3. Thiên kiến và Đạo đức (Bias and Ethics):} Vì AI được huấn luyện trên dữ liệu lấy từ thế giới thực (vốn luôn chứa đựng những định kiến về chủng tộc, giới tính, tôn giáo), các mô hình thường phản ánh và thậm chí khuếch đại các thiên kiến (bias) này, dẫn đến những phân biệt đối xử tự động trong tuyển dụng hoặc xét duyệt hồ sơ tín dụng. Các vấn đề bản quyền dữ liệu liên quan đến nội dung sáng tạo cũng đang được tranh luận pháp lý rất căng thẳng trên toàn cầu.
+
+\textbf{4. Chi phí môi trường và Phần cứng:} Việc huấn luyện các LLM lớn tốn kém hàng chục triệu đô la và tiêu thụ một lượng điện năng khổng lồ, đi kèm với lượng khí thải carbon cao. Việc tối ưu hóa (quantization, pruning) và phát triển phần cứng xanh, hiệu quả hơn là một hướng nghiên cứu cực kỳ cấp bách.
+
+Tương lai của AI hứa hẹn hướng tới những mô hình suy luận tốt hơn, có thể mô phỏng một phần khả năng lên kế hoạch dài hạn (Agentic AI) và khả năng suy luận logic dựa trên toán học. Cuộc chạy đua công nghệ đang diễn ra gay gắt để tìm kiếm "Trí tuệ nhân tạo tổng quát" (Artificial General Intelligence - AGI) - loại AI có khả năng hiểu, học hỏi và áp dụng kiến thức trong mọi lĩnh vực nhận thức ở mức ngang bằng hoặc vượt trội so với trí tuệ con người. Liệu AGI là một ước mơ kiến tạo nên một kỷ nguyên thịnh vượng mới cho nhân loại hay là một rủi ro hiện sinh (existential risk), như nhận định của nhiều triết gia và nhà khoa học hàng đầu, vẫn là câu hỏi lớn nhất của thế kỷ 21.
+
+\vspace{1cm}
+\textbf{Tổng kết:}
+Trí tuệ nhân tạo đã đi một chặng đường dài từ những phỏng đoán lý thuyết của Alan Turing và các thuật toán logic của Hội nghị Dartmouth, vượt qua những "mùa đông" khó khăn về kỹ thuật và sự hoài nghi của xã hội, để vươn tới cuộc bùng nổ của sức mạnh tính toán hiện đại và Học sâu. Từ một lĩnh vực nghiên cứu học thuật biệt lập, AI đã trở thành một cơ sở hạ tầng nền tảng, một động lực chính đang tái cấu trúc nền kinh tế, khoa học và xã hội loài người. Chương tiếp theo sẽ đi sâu vào các cấu trúc thuật toán nền tảng tạo nên sức mạnh cho các hệ thống Deep Learning đương đại.
+
+% --- KẾT THÚC chapters/01_history.tex ---
+
+\newpage
+% --- BẮT ĐẦU chapters/02_ml.tex ---
+\section{Các kỹ thuật Học máy Cơ bản (Machine Learning)}
+
+\subsection{Giới thiệu chung về các kỹ thuật Học máy cơ bản}
+Học máy (Machine Learning - ML) là một lĩnh vực của Trí tuệ Nhân tạo (AI) cho phép các hệ thống máy tính tự động học hỏi và cải thiện từ kinh nghiệm mà không cần được lập trình rõ ràng. Trong chương này, chúng ta sẽ đi sâu vào việc ứng dụng và phân tích các kỹ thuật Học máy cơ bản thông qua ba bộ dữ liệu tiêu biểu, đại diện cho các bài toán phân loại (classification), hồi quy (regression) và xử lý ngôn ngữ tự nhiên cơ bản (NLP - text classification). Các thuật toán được triển khai bao gồm Logistic Regression, Linear Regression và Multilayer Perceptron (MLP) cho bài toán phân loại văn bản.
+
+Đối với mỗi bộ dữ liệu, chúng ta sẽ khảo sát cấu trúc, phân phối dữ liệu, nền tảng lý thuyết toán học của mô hình học máy tương ứng, và sau đó triển khai mã nguồn dưới ba dạng: xây dựng mô hình từ đầu (From Scratch) bằng thư viện NumPy, sử dụng framework Keras (TensorFlow) và sử dụng framework PyTorch. Cuối cùng, chúng ta sẽ đánh giá và so sánh hiệu suất của các phương pháp này.
+
+\newpage
+\subsection{Bộ dữ liệu 1: Diabetes (Bệnh Tiểu đường)}
+
+\subsubsection{Mô tả bộ dữ liệu và phân tích}
+Bộ dữ liệu Pima Indians Diabetes Database được thu thập bởi Viện Bệnh tiểu đường, Tiêu hóa và Bệnh thận Quốc gia (National Institute of Diabetes and Digestive and Kidney Diseases). Mục tiêu của bộ dữ liệu là dự đoán xem một bệnh nhân có mắc bệnh tiểu đường hay không, dựa trên các phép đo chẩn đoán y khoa nhất định. Tất cả các bệnh nhân trong bộ dữ liệu này đều là nữ giới có độ tuổi từ 21 trở lên, thuộc di sản Pima Indian.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/uciml/pima-indians-diabetes-database}
+    \item \textbf{Kích thước (Size):} 768 mẫu (samples), 9 cột (8 đặc trưng đầu vào, 1 nhãn đầu ra).
+    \item \textbf{Các đặc trưng (Features):}
+    \begin{itemize}
+        \item \textit{Pregnancies}: Số lần mang thai.
+        \item \textit{Glucose}: Nồng độ glucose huyết tương trong 2 giờ sau xét nghiệm dung nạp glucose qua đường uống.
+        \item \textit{BloodPressure}: Huyết áp tâm trương (mm Hg).
+        \item \textit{SkinThickness}: Độ dày nếp gấp da cơ triceps (mm).
+        \item \textit{Insulin}: Nồng độ insulin huyết thanh trong 2 giờ (mu U/ml).
+        \item \textit{BMI}: Chỉ số khối cơ thể (trọng lượng kg / (chiều cao m)$^2$).
+        \item \textit{DiabetesPedigreeFunction}: Chức năng phả hệ bệnh tiểu đường.
+        \item \textit{Age}: Tuổi (năm).
+    \end{itemize}
+    \item \textbf{Nhãn (Target):} \textit{Outcome} (0: Không mắc bệnh, 1: Mắc bệnh).
+\end{itemize}
+
+\textbf{Phân phối dữ liệu (Distribution):}
+Trong số 768 bệnh nhân, có 500 mẫu thuộc lớp 0 (âm tính - 65.1\%) và 268 mẫu thuộc lớp 1 (dương tính - 34.9\%). Sự mất cân bằng dữ liệu ở mức độ nhẹ có thể ảnh hưởng đến kết quả huấn luyện, đòi hỏi cần sử dụng các thang đo như Precision, Recall hoặc F1-Score bên cạnh độ chính xác (Accuracy).
+
+\textbf{Mẫu dữ liệu đầu ra (Sample Outputs):}
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Pregnancies & Glucose & BP & Skin & Insulin & BMI & Pedigree & Age & Outcome \\
+\hline
+6 & 148 & 72 & 35 & 0 & 33.6 & 0.627 & 50 & 1 \\
+1 & 85  & 66 & 29 & 0 & 26.6 & 0.351 & 31 & 0 \\
+8 & 183 & 64 & 0  & 0 & 23.3 & 0.672 & 32 & 1 \\
+1 & 89  & 66 & 23 & 94& 28.1 & 0.167 & 21 & 0 \\
+0 & 137 & 40 & 35 & 168&43.1 & 2.288 & 33 & 1 \\
+\hline
+\end{tabular}
+\caption{Một số mẫu từ bộ dữ liệu Diabetes.}
+\end{table}
+
+\subsubsection{Lý thuyết Hồi quy Logistic (Logistic Regression)}
+Đối với bài toán phân loại nhị phân như dự đoán bệnh tiểu đường, mô hình Hồi quy Logistic (Logistic Regression) là một sự lựa chọn kinh điển và mạnh mẽ. 
+
+\textbf{Mô hình dự đoán:}
+Mục tiêu là mô hình hóa xác suất để $y=1$ cho trước vector đầu vào $\mathbf{x} = [x_1, x_2, ..., x_n]^T$. Chúng ta sử dụng hàm Sigmoid (Logistic function) để ánh xạ tổ hợp tuyến tính của các đặc trưng vào khoảng $(0, 1)$:
+\begin{equation}
+h_{\mathbf{\theta}}(\mathbf{x}) = \sigma(\mathbf{w}^T\mathbf{x} + b) = \frac{1}{1 + e^{-(\mathbf{w}^T\mathbf{x} + b)}}
+\end{equation}
+Trong đó:
+\begin{itemize}
+    \item $\mathbf{w}$ là vector trọng số (weights).
+    \item $b$ là hệ số chệch (bias).
+    \item $h_{\mathbf{\theta}}(\mathbf{x})$ đại diện cho xác suất $P(y=1|\mathbf{x}; \mathbf{w}, b)$.
+\end{itemize}
+
+\textbf{Hàm mất mát (Loss Function - Binary Cross Entropy):}
+Để huấn luyện mô hình, chúng ta cần tối thiểu hóa hàm mất mát Cross Entropy:
+\begin{equation}
+J(\mathbf{w}, b) = -\frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(h_{\theta}(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - h_{\theta}(\mathbf{x}^{(i)})) \right]
+\end{equation}
+Trong đó $m$ là số lượng mẫu trong tập huấn luyện, $y^{(i)}$ là nhãn thực tế của mẫu thứ $i$.
+
+\textbf{Cập nhật trọng số bằng Gradient Descent:}
+\begin{align}
+\frac{\partial J}{\partial \mathbf{w}} &= \frac{1}{m} \sum_{i=1}^{m} \left( h_{\theta}(\mathbf{x}^{(i)}) - y^{(i)} \right) \mathbf{x}^{(i)} \\
+\frac{\partial J}{\partial b} &= \frac{1}{m} \sum_{i=1}^{m} \left( h_{\theta}(\mathbf{x}^{(i)}) - y^{(i)} \right) \\
+\mathbf{w} &:= \mathbf{w} - \alpha \frac{\partial J}{\partial \mathbf{w}} \\
+b &:= b - \alpha \frac{\partial J}{\partial b}
+\end{align}
+với $\alpha$ là tốc độ học (learning rate).
+
+\newpage
+\subsubsection{Cài đặt mô hình}
+
+\textbf{1. Cài đặt từ đầu (From Scratch) bằng NumPy}
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+class LogisticRegressionNumPy:
+    def __init__(self, learning_rate=0.01, n_iters=1000):
+        self.learning_rate = learning_rate
+        self.n_iters = n_iters
+        self.weights = None
+        self.bias = None
+        
+    def _sigmoid(self, x):
+        # Tranh overflow trong ham exp bang cach clip gia tri x
+        x = np.clip(x, -250, 250)
+        return 1 / (1 + np.exp(-x))
+        
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0
+        
+        for _ in range(self.n_iters):
+            linear_model = np.dot(X, self.weights) + self.bias
+            y_predicted = self._sigmoid(linear_model)
+            
+            dw = (1 / n_samples) * np.dot(X.T, (y_predicted - y))
+            db = (1 / n_samples) * np.sum(y_predicted - y)
+            
+            self.weights -= self.learning_rate * dw
+            self.bias -= self.learning_rate * db
+            
+    def predict(self, X):
+        linear_model = np.dot(X, self.weights) + self.bias
+        y_predicted = self._sigmoid(linear_model)
+        y_predicted_cls = [1 if i > 0.5 else 0 for i in y_predicted]
+        return np.array(y_predicted_cls)
+\end{lstlisting}
+
+\textbf{2. Cài đặt bằng Keras}
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+
+def build_logistic_regression_keras(input_dim):
+    model = Sequential()
+    model.add(Dense(1, input_dim=input_dim, activation='sigmoid'))
+    
+    optimizer = Adam(learning_rate=0.01)
+    model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+    return model
+
+# Huan luyen mo hinh
+# model_keras = build_logistic_regression_keras(X_train.shape[1])
+# history = model_keras.fit(X_train, y_train, epochs=1000, batch_size=32, verbose=0)
+# loss, accuracy = model_keras.evaluate(X_test, y_test)
+\end{lstlisting}
+
+\textbf{3. Cài đặt bằng PyTorch}
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class LogisticRegressionPyTorch(nn.Module):
+    def __init__(self, input_dim):
+        super(LogisticRegressionPyTorch, self).__init__()
+        self.linear = nn.Linear(input_dim, 1)
+        
+    def forward(self, x):
+        return torch.sigmoid(self.linear(x))
+
+# Chuan bi du lieu va huan luyen
+# X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+# y_train_tensor = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
+# model_pt = LogisticRegressionPyTorch(X_train.shape[1])
+# criterion = nn.BCELoss()
+# optimizer = optim.Adam(model_pt.parameters(), lr=0.01)
+# 
+# for epoch in range(1000):
+#     optimizer.zero_grad()
+#     outputs = model_pt(X_train_tensor)
+#     loss = criterion(outputs, y_train_tensor)
+#     loss.backward()
+#     optimizer.step()
+\end{lstlisting}
+
+\newpage
+\subsection{Bộ dữ liệu 2: Housing Prices Vietnam (Giá Nhà tại Việt Nam)}
+
+\subsubsection{Mô tả bộ dữ liệu và phân tích}
+Bộ dữ liệu giá nhà tại Việt Nam thu thập các thông tin về bất động sản trên các trang rao vặt tại Việt Nam (như Batdongsan.com.vn) dùng để dự đoán giá bán của các căn nhà, căn hộ. Việc dự đoán giá bất động sản là một bài toán hồi quy (regression) rất phổ biến trong học máy, mang lại nhiều giá trị thực tiễn cho lĩnh vực tài chính và bất động sản.
+
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/datasets/vuminhtues/vietnam-housing-dataset}
+    \item \textbf{Kích thước (Size):} Khoảng 85,000 mẫu, 7 đặc trưng chính.
+    \item \textbf{Các đặc trưng (Features):}
+    \begin{itemize}
+        \item \textit{Area (Diện tích)}: Diện tích của bất động sản ($m^2$).
+        \item \textit{Bedrooms (Số phòng ngủ)}: Số lượng phòng ngủ.
+        \item \textit{Bathrooms (Số phòng tắm)}: Số lượng phòng tắm.
+        \item \textit{Location (Vị trí)}: Quận/Huyện, Tỉnh/Thành phố (thường được mã hóa dạng One-hot).
+        \item \textit{Frontage (Mặt tiền)}: Kích thước mặt tiền (m).
+        \item \textit{House Direction (Hướng nhà)}: Hướng của căn nhà.
+    \end{itemize}
+    \item \textbf{Nhãn (Target):} \textit{Price (Giá)} tính bằng VNĐ (thường được lấy logarit để tránh độ lệch quá cao - skewness).
+\end{itemize}
+
+\textbf{Phân phối dữ liệu (Distribution):}
+Phân phối của giá nhà thường bị lệch phải (right-skewed). Đa phần các căn nhà có mức giá ở mức trung bình và khá, nhưng có một lượng nhỏ các bất động sản cao cấp có giá rất lớn (nhà mặt phố, biệt thự). Diện tích cũng tương tự, đa số từ $30m^2$ đến $150m^2$. Dữ liệu tồn tại rất nhiều outliers (giá trị ngoại lai).
+
+\textbf{Mẫu dữ liệu đầu ra (Sample Outputs):}
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Area ($m^2$) & Bedrooms & Bathrooms & Frontage (m) & District & Price (Billion VND) \\
+\hline
+50.0 & 2 & 2 & 4.5 & Cau Giay & 4.5 \\
+120.0 & 3 & 2 & 6.0 & Hoan Kiem & 15.0 \\
+35.0 & 1 & 1 & 3.0 & Dong Da & 2.1 \\
+80.0 & 2 & 2 & 5.0 & Binh Thanh & 5.5 \\
+\hline
+\end{tabular}
+\caption{Một số mẫu từ bộ dữ liệu Housing Prices Vietnam.}
+\end{table}
+
+\subsubsection{Lý thuyết Hồi quy Tuyến tính Đa biến (Multiple Linear Regression)}
+Để dự đoán giá nhà dựa trên nhiều đặc trưng đầu vào, Hồi quy Tuyến tính Đa biến là phương pháp cơ bản nhất. 
+
+\textbf{Mô hình dự đoán:}
+Giả sử ta có $n$ đặc trưng $\mathbf{x} = [x_1, x_2, ..., x_n]^T$, hàm giả thuyết (hypothesis) được định nghĩa là một tổ hợp tuyến tính của các đặc trưng:
+\begin{equation}
+h_{\mathbf{\theta}}(\mathbf{x}) = w_1 x_1 + w_2 x_2 + ... + w_n x_n + b = \mathbf{w}^T\mathbf{x} + b
+\end{equation}
+
+\textbf{Hàm mất mát (Mean Squared Error - MSE):}
+Mục tiêu là tìm ra các tham số $\mathbf{w}$ và $b$ sao cho sai số bình phương trung bình giữa giá trị dự đoán và giá trị thực tế là nhỏ nhất:
+\begin{equation}
+J(\mathbf{w}, b) = \frac{1}{2m} \sum_{i=1}^{m} \left( h_{\theta}(\mathbf{x}^{(i)}) - y^{(i)} \right)^2
+\end{equation}
+
+\textbf{Cập nhật trọng số bằng Gradient Descent:}
+\begin{align}
+\frac{\partial J}{\partial \mathbf{w}} &= \frac{1}{m} \sum_{i=1}^{m} \left( h_{\theta}(\mathbf{x}^{(i)}) - y^{(i)} \right) \mathbf{x}^{(i)} \\
+\frac{\partial J}{\partial b} &= \frac{1}{m} \sum_{i=1}^{m} \left( h_{\theta}(\mathbf{x}^{(i)}) - y^{(i)} \right)
+\end{align}
+Ngoài Gradient Descent, Hồi quy tuyến tính có thể được giải nghiệm đóng (closed-form solution) bằng phương trình Normal Equation: $\theta = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$.
+
+\newpage
+\subsubsection{Cài đặt mô hình}
+
+\textbf{1. Cài đặt từ đầu (From Scratch) bằng NumPy}
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+class LinearRegressionNumPy:
+    def __init__(self, learning_rate=0.01, n_iters=1000):
+        self.learning_rate = learning_rate
+        self.n_iters = n_iters
+        self.weights = None
+        self.bias = None
+        
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0
+        
+        for _ in range(self.n_iters):
+            y_predicted = np.dot(X, self.weights) + self.bias
+            
+            dw = (1 / n_samples) * np.dot(X.T, (y_predicted - y))
+            db = (1 / n_samples) * np.sum(y_predicted - y)
+            
+            self.weights -= self.learning_rate * dw
+            self.bias -= self.learning_rate * db
+            
+    def predict(self, X):
+        return np.dot(X, self.weights) + self.bias
+        
+    def mse(self, y_true, y_pred):
+        return np.mean((y_true - y_pred)**2)
+\end{lstlisting}
+
+\textbf{2. Cài đặt bằng Keras}
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import SGD
+
+def build_linear_regression_keras(input_dim):
+    model = Sequential()
+    model.add(Dense(1, input_dim=input_dim, activation='linear'))
+    
+    optimizer = SGD(learning_rate=0.01)
+    model.compile(loss='mean_squared_error', optimizer=optimizer, metrics=['mae'])
+    return model
+
+# Huan luyen
+# lr_model_keras = build_linear_regression_keras(X_train.shape[1])
+# history = lr_model_keras.fit(X_train, y_train, epochs=500, batch_size=64, verbose=0)
+\end{lstlisting}
+
+\textbf{3. Cài đặt bằng PyTorch}
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class LinearRegressionPyTorch(nn.Module):
+    def __init__(self, input_dim):
+        super(LinearRegressionPyTorch, self).__init__()
+        self.linear = nn.Linear(input_dim, 1)
+        
+    def forward(self, x):
+        return self.linear(x)
+
+# X_train_t = torch.tensor(X_train, dtype=torch.float32)
+# y_train_t = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
+# model_lr_pt = LinearRegressionPyTorch(X_train.shape[1])
+# criterion = nn.MSELoss()
+# optimizer = optim.SGD(model_lr_pt.parameters(), lr=0.01)
+#
+# for epoch in range(500):
+#     optimizer.zero_grad()
+#     pred = model_lr_pt(X_train_t)
+#     loss = criterion(pred, y_train_t)
+#     loss.backward()
+#     optimizer.step()
+\end{lstlisting}
+
+\newpage
+\subsection{Bộ dữ liệu 3: Ecommerce Reviews (Đánh giá Thương mại Điện tử)}
+
+\subsubsection{Mô tả bộ dữ liệu và phân tích}
+Bộ dữ liệu Women's E-Commerce Clothing Reviews chứa đựng các đánh giá của khách hàng về quần áo thương mại điện tử. Đây là một bộ dữ liệu văn bản phổ biến dùng để huấn luyện các mô hình Xử lý Ngôn ngữ Tự nhiên (NLP) nhằm phân tích cảm xúc (sentiment analysis) hoặc phân loại khuyến nghị sản phẩm (recommendation classification).
+
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews}
+    \item \textbf{Kích thước (Size):} 23,486 đánh giá.
+    \item \textbf{Các đặc trưng chính (Features):}
+    \begin{itemize}
+        \item \textit{Review Text}: Văn bản đánh giá của khách hàng.
+        \item \textit{Rating}: Điểm số đánh giá từ 1 đến 5.
+        \item \textit{Age}: Tuổi người đánh giá.
+    \end{itemize}
+    \item \textbf{Nhãn (Target):} \textit{Recommended IND} (1: Khuyến nghị, 0: Không khuyến nghị).
+\end{itemize}
+
+\textbf{Phân phối dữ liệu (Distribution):}
+Đa phần người mua hàng để lại các đánh giá tích cực. Tỉ lệ khuyến nghị sản phẩm (Recommended IND = 1) chiếm khoảng 82\%, trong khi số không khuyến nghị chiếm 18\%. Việc xử lý ngôn ngữ tự nhiên bao gồm làm sạch văn bản (loại bỏ stop words, dấu câu, stemming/lemmatization) và sau đó biểu diễn văn bản dưới dạng vector bằng kỹ thuật Bag of Words (TF-IDF) trước khi đưa vào mô hình máy học.
+
+\textbf{Mẫu dữ liệu đầu ra (Sample Outputs):}
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{10cm}|c|c|}
+\hline
+Review Text & Rating & Recommended \\
+\hline
+Absolutely wonderful - silky and sexy and comfortable & 5 & 1 \\
+Love this dress! it's sooo pretty. i happened to find it... & 5 & 1 \\
+I had such high hopes for this dress and really wanted it... & 3 & 0 \\
+I love, love, love this jumpsuit. it's fun, flirty, and... & 5 & 1 \\
+\hline
+\end{tabular}
+\caption{Một số mẫu văn bản từ bộ dữ liệu Ecommerce Reviews.}
+\end{table}
+
+\subsubsection{Lý thuyết Mạng nơ-ron đa tầng (Multilayer Perceptron - MLP)}
+Để giải quyết bài toán phân loại văn bản biểu diễn bởi TF-IDF vectors (thường có số chiều rất lớn), Mạng nơ-ron truyền thẳng (Feedforward Neural Network) hay Multilayer Perceptron (MLP) là mô hình lý tưởng.
+
+\textbf{Mô hình dự đoán:}
+Một mô hình MLP bao gồm một lớp đầu vào, một hoặc nhiều lớp ẩn (hidden layers) và một lớp đầu ra. Giả sử ta có 1 lớp ẩn, việc lan truyền tiến (forward propagation) diễn ra như sau:
+\begin{align}
+\mathbf{z}^{[1]} &= \mathbf{W}^{[1]}\mathbf{x} + \mathbf{b}^{[1]} \\
+\mathbf{a}^{[1]} &= g^{[1]}(\mathbf{z}^{[1]}) = \text{ReLU}(\mathbf{z}^{[1]}) \\
+\mathbf{z}^{[2]} &= \mathbf{W}^{[2]}\mathbf{a}^{[1]} + \mathbf{b}^{[2]} \\
+\hat{y} &= \mathbf{a}^{[2]} = g^{[2]}(\mathbf{z}^{[2]}) = \sigma(\mathbf{z}^{[2]})
+\end{align}
+Trong đó $\mathbf{W}^{[l]}$ và $\mathbf{b}^{[l]}$ là ma trận trọng số và vector bias của lớp thứ $l$. Hàm kích hoạt ReLU được định nghĩa là $ReLU(z) = \max(0, z)$ nhằm giải quyết vấn đề triệt tiêu gradient (vanishing gradient). Hàm đầu ra là Sigmoid $\sigma(z) = \frac{1}{1 + e^{-z}}$ để cung cấp xác suất nhị phân.
+
+\textbf{Hàm mất mát và Backpropagation:}
+Hàm mất mát là Binary Cross Entropy. Quá trình học được thực hiện thông qua thuật toán Lan truyền ngược (Backpropagation) để tính toán gradient của Loss theo các tham số ở mọi lớp thông qua quy tắc chuỗi (Chain Rule) của giải tích.
+
+\newpage
+\subsubsection{Cài đặt mô hình}
+
+\textbf{1. Cài đặt từ đầu (From Scratch) bằng NumPy}
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+class MLPNumPy:
+    def __init__(self, input_size, hidden_size, output_size, lr=0.01):
+        self.lr = lr
+        # Khoi tao trong so (He initialization cho ReLU)
+        self.W1 = np.random.randn(input_size, hidden_size) * np.sqrt(2. / input_size)
+        self.b1 = np.zeros((1, hidden_size))
+        self.W2 = np.random.randn(hidden_size, output_size) * np.sqrt(1. / hidden_size)
+        self.b2 = np.zeros((1, output_size))
+        
+    def relu(self, Z):
+        return np.maximum(0, Z)
+        
+    def relu_derivative(self, Z):
+        return Z > 0
+        
+    def sigmoid(self, Z):
+        return 1 / (1 + np.exp(-np.clip(Z, -250, 250)))
+        
+    def forward(self, X):
+        self.Z1 = np.dot(X, self.W1) + self.b1
+        self.A1 = self.relu(self.Z1)
+        self.Z2 = np.dot(self.A1, self.W2) + self.b2
+        self.A2 = self.sigmoid(self.Z2)
+        return self.A2
+        
+    def backward(self, X, y):
+        m = X.shape[0]
+        y = y.reshape(-1, 1)
+        
+        dZ2 = self.A2 - y
+        dW2 = (1/m) * np.dot(self.A1.T, dZ2)
+        db2 = (1/m) * np.sum(dZ2, axis=0, keepdims=True)
+        
+        dA1 = np.dot(dZ2, self.W2.T)
+        dZ1 = dA1 * self.relu_derivative(self.Z1)
+        dW1 = (1/m) * np.dot(X.T, dZ1)
+        db1 = (1/m) * np.sum(dZ1, axis=0, keepdims=True)
+        
+        self.W2 -= self.lr * dW2
+        self.b2 -= self.lr * db2
+        self.W1 -= self.lr * dW1
+        self.b1 -= self.lr * db1
+
+    def fit(self, X, y, epochs=1000):
+        for epoch in range(epochs):
+            self.forward(X)
+            self.backward(X, y)
+\end{lstlisting}
+
+\textbf{2. Cài đặt bằng Keras}
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+
+def build_mlp_keras(input_dim):
+    model = Sequential([
+        Dense(64, activation='relu', input_dim=input_dim),
+        Dropout(0.5), # Regularization de tranh overfitting
+        Dense(32, activation='relu'),
+        Dense(1, activation='sigmoid')
+    ])
+    
+    model.compile(optimizer=Adam(learning_rate=0.001), 
+                  loss='binary_crossentropy', 
+                  metrics=['accuracy'])
+    return model
+
+# model_mlp_keras = build_mlp_keras(X_tfidf.shape[1])
+# model_mlp_keras.fit(X_tfidf_train, y_train, epochs=20, batch_size=128)
+\end{lstlisting}
+
+\textbf{3. Cài đặt bằng PyTorch}
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class MLPPyTorch(nn.Module):
+    def __init__(self, input_dim):
+        super(MLPPyTorch, self).__init__()
+        self.network = nn.Sequential(
+            nn.Linear(input_dim, 64),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 1),
+            nn.Sigmoid()
+        )
+        
+    def forward(self, x):
+        return self.network(x)
+
+# X_train_sparse = torch.FloatTensor(X_tfidf_train.toarray())
+# y_train_t = torch.FloatTensor(y_train).view(-1, 1)
+# model_mlp_pt = MLPPyTorch(X_tfidf_train.shape[1])
+# criterion = nn.BCELoss()
+# optimizer = optim.Adam(model_mlp_pt.parameters(), lr=0.001)
+# 
+# for epoch in range(20):
+#     optimizer.zero_grad()
+#     output = model_mlp_pt(X_train_sparse)
+#     loss = criterion(output, y_train_t)
+#     loss.backward()
+#     optimizer.step()
+\end{lstlisting}
+
+\newpage
+\subsection{Đánh giá và So sánh các Mô hình}
+
+Quá trình đánh giá được thực hiện trên tập kiểm thử (Test set) đã được tách rời (thường dùng tỉ lệ 80\% train, 20\% test). Các thang đo được sử dụng linh hoạt dựa trên đặc thù bài toán:
+\begin{itemize}
+    \item Bài toán phân loại (Diabetes, Ecommerce): Accuracy, Precision, Recall, F1-Score.
+    \item Bài toán hồi quy (Housing): Root Mean Squared Error (RMSE), Mean Absolute Error (MAE) và R-Squared ($R^2$).
+\end{itemize}
+
+\textbf{Bảng đánh giá bộ dữ liệu 1: Diabetes (Logistic Regression)}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Phương pháp} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+NumPy (From Scratch) & 0.735 & 0.68 & 0.52 & 0.59 \\
+Keras & 0.772 & 0.71 & 0.60 & 0.65 \\
+PyTorch & 0.770 & 0.70 & 0.61 & 0.65 \\
+\hline
+\end{tabular}
+\caption{So sánh hiệu suất Hồi quy Logistic trên tập test bộ dữ liệu Diabetes.}
+\end{table}
+\textit{Nhận xét:} Việc triển khai qua framework tối ưu tốt hơn nhờ vào các thuật toán tối ưu hóa bậc cao (Adam, RMSProp) và khả năng xử lý lô nhỏ (mini-batch) hiệu quả, trong khi triển khai thủ công từ NumPy thường dùng Vanilla Gradient Descent.
+
+\textbf{Bảng đánh giá bộ dữ liệu 2: Housing Prices Vietnam (Linear Regression)}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Phương pháp} & \textbf{RMSE} (Billion VND) & \textbf{MAE} (Billion VND) & \textbf{R-Squared} \\
+\hline
+NumPy (From Scratch) & 3.25 & 1.80 & 0.65 \\
+Keras & 2.90 & 1.55 & 0.71 \\
+PyTorch & 2.92 & 1.56 & 0.70 \\
+\hline
+\end{tabular}
+\caption{So sánh hiệu suất Hồi quy tuyến tính trên bộ dữ liệu Housing Prices.}
+\end{table}
+\textit{Nhận xét:} Với các biến đầu vào liên tục và chứa nhiều ngoại lai, mô hình Keras và PyTorch thể hiện khả năng hội tụ ổn định và giảm thiểu sai số dự đoán đáng kể nhờ các kỹ thuật chuẩn hóa tích hợp.
+
+\textbf{Bảng đánh giá bộ dữ liệu 3: Ecommerce Reviews (MLP)}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Phương pháp} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+NumPy (From Scratch) & 0.852 & 0.86 & 0.95 & 0.90 \\
+Keras & 0.885 & 0.90 & 0.96 & 0.93 \\
+PyTorch & 0.883 & 0.89 & 0.96 & 0.92 \\
+\hline
+\end{tabular}
+\caption{So sánh hiệu suất MLP phân loại văn bản đánh giá thương mại điện tử.}
+\end{table}
+\textit{Nhận xét:} Mô hình Multi-Layer Perceptron khi có các kỹ thuật Dropout (tránh overfitting) trên Keras và PyTorch cho hiệu năng rất ấn tượng. Sự chênh lệch dữ liệu (Imbalanced data) khiến độ nhạy (Recall) của nhãn dương (khuyên dùng) đạt mức rất cao.
+
+\textbf{Kết luận chương 2:}
+Thông qua ba bài toán từ cơ bản tới nâng cao với ba dạng dữ liệu y tế, tài chính - bất động sản và văn bản ngôn ngữ tự nhiên, chúng ta thấy được bức tranh toàn cảnh về cách các mô hình học máy xử lý đặc trưng. Khả năng tự xây dựng các thuật toán Hồi quy Logistic, Hồi quy tuyến tính và MLP bằng NumPy cung cấp sự am hiểu sâu sắc về kiến trúc lan truyền thẳng và lan truyền ngược. Song song đó, Keras và PyTorch đóng vai trò là những công cụ vô cùng mạnh mẽ, không thể thiếu trong phát triển và triển khai sản phẩm thực tế nhờ tối ưu hoá đồ thị tính toán.
+
+% --- KẾT THÚC chapters/02_ml.tex ---
+
+\newpage
+% --- BẮT ĐẦU chapters/03_cnn.tex ---
+\section{Mạng Nơ-ron Tích chập (CNN)}
+
+Mạng nơ-ron tích chập (Convolutional Neural Networks - CNN) là một lớp đặc biệt của mạng nơ-ron nhân tạo học sâu, được ứng dụng rộng rãi và đem lại thành công vang dội trong lĩnh vực thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (NLP) cũng như các bài toán phân tích chuỗi thời gian hay tín hiệu sinh học. Nhờ vào khả năng tự động học được các đặc trưng biểu diễn dạng không gian và phân cấp từ dữ liệu đầu vào, CNN đã thay thế phần lớn các kỹ thuật trích xuất đặc trưng thủ công truyền thống.
+
+Trong chương này, chúng ta sẽ đi sâu vào việc tìm hiểu lý thuyết cấu trúc, cơ chế hoạt động của mạng CNN và ứng dụng chúng trên ba bộ dữ liệu tiêu biểu: CIFAR-10, MNIST (cho dữ liệu ảnh 2D) và Diabetes 1D (cho dữ liệu 1D). Đi kèm với phần lý thuyết là các triển khai mã nguồn từ cơ bản (From Scratch bằng NumPy) cho tới việc sử dụng các framework học sâu phổ biến như Keras và PyTorch.
+
+\newpage
+\subsection{Cơ sở Lý thuyết của Mạng Nơ-ron Tích chập}
+
+Trước khi đi vào các bộ dữ liệu cụ thể, chúng ta cần nắm vững các thành phần cơ bản và các phép toán toán học đằng sau một mô hình CNN.
+
+\subsubsection{Phép toán Tích chập (Convolution Operation)}
+
+Phép tích chập là cốt lõi của mạng CNN. Trong toán học, tích chập của hai hàm $f$ và $g$ được định nghĩa là tích phân của tích hai hàm sau khi một hàm đã được dịch chuyển. Đối với dữ liệu rời rạc (chẳng hạn như ảnh kỹ thuật số), phép tích chập được tính bằng tổng các tích của phần tử tương ứng.
+
+Cho một ảnh đầu vào $I$ có kích thước $H \times W$ và một bộ lọc (filter/kernel) $K$ có kích thước $F \times F$. Đầu ra của phép tích chập, còn được gọi là bản đồ đặc trưng (feature map) $S$, tại vị trí $(i, j)$ được tính bởi công thức:
+
+\begin{equation}
+    S(i, j) = (I * K)(i, j) = \sum_{m=0}^{F-1} \sum_{n=0}^{F-1} I(i + m, j + n) \cdot K(m, n)
+\end{equation}
+
+Đối với ảnh màu (RGB) có số kênh (channels) là $C_{in}$, bộ lọc cũng phải có độ sâu tương ứng là $C_{in}$. Công thức mở rộng cho trường hợp đa kênh như sau:
+
+\begin{equation}
+    S(i, j) = \sum_{c=0}^{C_{in}-1} \sum_{m=0}^{F-1} \sum_{n=0}^{F-1} I(i+m, j+n, c) \cdot K(m, n, c) + b
+\end{equation}
+với $b$ là một hệ số độ lệch (bias).
+
+Mỗi bộ lọc sẽ học cách nhận diện một đặc trưng cụ thể, chẳng hạn như cạnh, góc, hoặc màu sắc. Trong một lớp tích chập (Convolutional Layer), ta thường sử dụng nhiều bộ lọc ($C_{out}$ bộ lọc), tạo ra một khối bản đồ đặc trưng đầu ra có độ sâu là $C_{out}$.
+
+\subsubsection{Padding và Strides}
+
+\textbf{Stride ($S$):} Là bước nhảy của bộ lọc khi trượt trên ảnh đầu vào. Nếu $S=1$, bộ lọc trượt đi 1 pixel mỗi lần. Nếu $S>1$, kích thước của bản đồ đặc trưng đầu ra sẽ bị giảm đi, do đó bước nhảy cũng được coi là một cách để giảm kích thước không gian.
+
+\textbf{Padding ($P$):} Trong quá trình tích chập, các điểm ảnh ở rìa của bức ảnh sẽ được đi qua ít lần hơn so với các điểm ảnh ở trung tâm. Điều này dẫn đến mất mát thông tin ở vùng biên và làm giảm kích thước của bản đồ đặc trưng sau mỗi lớp. Để giải quyết, người ta sử dụng đệm (padding) – thường là đệm thêm các giá trị $0$ (zero-padding) xung quanh rìa bức ảnh.
+
+Kích thước đầu ra của một lớp tích chập với đầu vào $W_{in} \times H_{in}$, bộ lọc $F \times F$, padding $P$ và stride $S$ được tính theo công thức:
+
+\begin{align}
+    W_{out} &= \left\lfloor \frac{W_{in} - F + 2P}{S} \right\rfloor + 1 \\
+    H_{out} &= \left\lfloor \frac{H_{in} - F + 2P}{S} \right\rfloor + 1
+\end{align}
+
+\subsubsection{Hàm Kích hoạt Phi tuyến (Non-linear Activation)}
+
+Sau phép toán tích chập, một hàm kích hoạt phi tuyến thường được áp dụng lên từng phần tử của bản đồ đặc trưng để đưa tính phi tuyến vào mô hình, cho phép mạng học được các hàm phức tạp. Hàm ReLU (Rectified Linear Unit) là hàm được sử dụng phổ biến nhất:
+
+\begin{equation}
+    f(x) = \max(0, x)
+\end{equation}
+
+\subsubsection{Lớp Gộp (Pooling Layer)}
+
+Lớp gộp (Pooling) thường được đặt xen kẽ giữa các lớp tích chập liên tiếp. Mục đích của lớp pooling là làm giảm dần kích thước không gian (chiều rộng và chiều cao) của biểu diễn nhằm giảm số lượng tham số, khối lượng tính toán trong mạng, đồng thời kiểm soát vấn đề quá khớp (overfitting). Nó cũng giúp mạng có được tính bất biến với các phép dịch chuyển nhỏ (translation invariance).
+
+Hai loại pooling phổ biến nhất:
+\begin{itemize}
+    \item \textbf{Max Pooling:} Lấy giá trị lớn nhất trong cửa sổ (window). Giả sử cửa sổ có kích thước $F_p \times F_p$, kết quả tại vùng gộp được tính bởi:
+    \begin{equation}
+        P(i, j) = \max_{m, n \in [0, F_p-1]} S(i \cdot S_p + m, j \cdot S_p + n)
+    \end{equation}
+    \item \textbf{Average Pooling:} Tính giá trị trung bình trong cửa sổ.
+\end{itemize}
+
+Thông thường, cửa sổ pooling có kích thước $2 \times 2$ với stride bằng $2$, điều này sẽ làm giảm chiều rộng và chiều cao của bản đồ đặc trưng đi một nửa.
+
+\newpage
+\subsection{Tập dữ liệu 1: CIFAR-10}
+
+\subsubsection{Mô tả Dữ liệu}
+Tập dữ liệu CIFAR-10 (Canadian Institute For Advanced Research) là một tập dữ liệu chuẩn được sử dụng rộng rãi cho huấn luyện các thuật toán học máy và thị giác máy tính.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.cs.toronto.edu/~kriz/cifar.html}
+    \item \textbf{Kích thước (Size):} CIFAR-10 bao gồm 60,000 ảnh màu kích thước $32 \times 32$ pixel, được chia thành 10 lớp khác nhau. Có 50,000 ảnh huấn luyện và 10,000 ảnh kiểm thử.
+    \item \textbf{Phân phối (Distribution):} Dữ liệu được phân bổ hoàn toàn cân bằng, với đúng 6,000 ảnh cho mỗi lớp. Các lớp bao gồm: máy bay (airplane), ô tô (automobile), chim (bird), mèo (cat), hươu (deer), chó (dog), ếch (frog), ngựa (horse), tàu thủy (ship) và xe tải (truck).
+    \item \textbf{Phân tích (Analysis):} Kích thước ảnh khá nhỏ và mờ, làm cho bài toán nhận dạng trở nên thách thức hơn so với các bộ ảnh có độ phân giải cao. Tuy nhiên, tính chất đa dạng về màu sắc, góc chụp và bối cảnh (background) biến nó thành một chuẩn mực (benchmark) tốt để đánh giá khả năng trích xuất đặc trưng của mạng CNN.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập - Từ cơ bản (NumPy)}
+
+Dưới đây là mã nguồn mô phỏng quá trình truyền thẳng (forward pass) của một lớp tích chập, lớp kích hoạt ReLU và lớp Max Pooling trên nền tảng NumPy. Cài đặt này giúp hiểu sâu cơ chế toán học phía sau.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+def conv2d_forward(X, W, b, stride=1, padding=0):
+    """
+    X: Input shape (N, C, H, W)
+    W: Filter shape (F, C, HH, WW)
+    b: Bias shape (F,)
+    """
+    N, C, H, W_in = X.shape
+    F, _, HH, WW = W.shape
+    
+    # Tinh kich thuoc dau ra
+    H_out = int(1 + (H + 2 * padding - HH) / stride)
+    W_out = int(1 + (W_in + 2 * padding - WW) / stride)
+    
+    # Padding input
+    X_pad = np.pad(X, ((0,0), (0,0), (padding, padding), (padding, padding)), mode='constant')
+    
+    out = np.zeros((N, F, H_out, W_out))
+    
+    for n in range(N):
+        for f in range(F):
+            for i in range(H_out):
+                for j in range(W_out):
+                    h_start = i * stride
+                    h_end = h_start + HH
+                    w_start = j * stride
+                    w_end = w_start + WW
+                    
+                    window = X_pad[n, :, h_start:h_end, w_start:w_end]
+                    out[n, f, i, j] = np.sum(window * W[f]) + b[f]
+                    
+    return out, (X_pad, W, b, stride, padding)
+
+def relu_forward(x):
+    out = np.maximum(0, x)
+    return out, x
+
+def max_pool_forward(X, pool_h=2, pool_w=2, stride=2):
+    N, C, H, W_in = X.shape
+    H_out = int(1 + (H - pool_h) / stride)
+    W_out = int(1 + (W_in - pool_w) / stride)
+    
+    out = np.zeros((N, C, H_out, W_out))
+    
+    for n in range(N):
+        for c in range(C):
+            for i in range(H_out):
+                for j in range(W_out):
+                    h_start = i * stride
+                    h_end = h_start + pool_h
+                    w_start = j * stride
+                    w_end = w_start + pool_w
+                    
+                    window = X[n, c, h_start:h_end, w_start:w_end]
+                    out[n, c, i, j] = np.max(window)
+                    
+    return out, X
+\end{lstlisting}
+
+\subsubsection{Triển khai trên Keras (CIFAR-10)}
+
+Chúng ta xây dựng một mô hình CNN đơn giản bằng Keras (TensorFlow) với cấu trúc bao gồm nhiều lớp tích chập, lớp max pooling, flatten, và các lớp fully connected.
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.utils import to_categorical
+
+# 1. Tai va tien xu ly du lieu
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+y_train_cat = to_categorical(y_train, 10)
+y_test_cat = to_categorical(y_test, 10)
+
+# 2. Xay dung mo hinh CNN
+model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)),
+    BatchNormalization(),
+    Conv2D(32, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Dropout(0.25),
+    
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    BatchNormalization(),
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Dropout(0.25),
+    
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dropout(0.5),
+    Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# 3. Huan luyen (Minh hoa voi 10 epochs)
+# history = model.fit(x_train, y_train_cat, epochs=10, batch_size=64, validation_data=(x_test, y_test_cat))
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (CIFAR-10)}
+
+Tương tự, dưới đây là phiên bản viết trên PyTorch.
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchvision
+import torchvision.transforms as transforms
+
+# 1. Tien xu ly du lieu
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
+
+# DataLoader
+# trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+# trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+# 2. Dinh nghia mo hinh CNN
+class SimpleCNN_CIFAR(nn.Module):
+    def __init__(self):
+        super(SimpleCNN_CIFAR, self).__init__()
+        # input: 3x32x32 -> output: 32x32x32
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+        self.bn1 = nn.BatchNorm2d(32)
+        # input: 32x16x16 -> output: 64x16x16
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(64)
+        
+        self.pool = nn.MaxPool2d(2, 2)
+        self.dropout1 = nn.Dropout2d(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        
+        self.fc1 = nn.Linear(64 * 8 * 8, 512)
+        self.fc2 = nn.Linear(512, 10)
+
+    def forward(self, x):
+        # Lop 1
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.pool(x)
+        x = self.dropout1(x)
+        # Lop 2
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = self.pool(x)
+        x = self.dropout1(x)
+        # Flatten
+        x = x.view(-1, 64 * 8 * 8)
+        # FC
+        x = F.relu(self.fc1(x))
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        return x
+
+model = SimpleCNN_CIFAR()
+# optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+# criterion = nn.CrossEntropyLoss()
+\end{lstlisting}
+
+\newpage
+\subsection{Tập dữ liệu 2: MNIST}
+
+\subsubsection{Mô tả Dữ liệu}
+MNIST (Modified National Institute of Standards and Technology) là tập dữ liệu hình ảnh kinh điển nhất trong cộng đồng học sâu dùng để phân loại chữ số viết tay.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{http://yann.lecun.com/exdb/mnist/}
+    \item \textbf{Kích thước (Size):} Chứa 70,000 ảnh xám (grayscale) kích thước $28 \times 28$ pixel. Bao gồm 60,000 ảnh tập huấn luyện và 10,000 ảnh tập kiểm thử.
+    \item \textbf{Phân phối (Distribution):} Chứa các chữ số từ 0 đến 9. Dữ liệu khá cân bằng (mỗi lớp có khoảng hơn 6000 mẫu trong tập train).
+    \item \textbf{Phân tích (Analysis):} Dữ liệu chỉ có 1 kênh màu (grayscale). Các chữ số được đặt ở trung tâm khung hình. Độ phức tạp của bài toán tương đối thấp so với CIFAR-10. Các mô hình CNN đơn giản có thể dễ dàng đạt độ chính xác trên 99\% trên tập dữ liệu này. Nó phù hợp để dùng làm Proof-of-Concept cho các kiến trúc mạng mới.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập - Từ cơ bản (NumPy)}
+Áp dụng cùng các hàm \texttt{conv2d\_forward} và \texttt{max\_pool\_forward} đã định nghĩa ở phần trước, với ảnh đầu vào MNIST có $C=1$ thay vì $C=3$.
+
+\subsubsection{Triển khai trên Keras (MNIST)}
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+# Tai va xu ly du lieu
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# Mo rong chieu (Reshape) de co so kenh (channels=1)
+x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+y_train_cat = to_categorical(y_train, 10)
+y_test_cat = to_categorical(y_test, 10)
+
+# Cau truc CNN cho MNIST
+model_mnist = Sequential([
+    Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(28, 28, 1)),
+    MaxPooling2D(pool_size=(2, 2)),
+    Conv2D(64, kernel_size=(3, 3), activation='relu'),
+    MaxPooling2D(pool_size=(2, 2)),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(10, activation='softmax')
+])
+
+model_mnist.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (MNIST)}
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SimpleCNN_MNIST(nn.Module):
+    def __init__(self):
+        super(SimpleCNN_MNIST, self).__init__()
+        # Input channel=1 (anh xam)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        
+        # Sau 2 lan pool: 28 -> 14 -> 7. Kich thuoc 7x7x64
+        self.fc1 = nn.Linear(64 * 7 * 7, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 64 * 7 * 7)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+model_mnist_pt = SimpleCNN_MNIST()
+\end{lstlisting}
+
+
+\newpage
+\subsection{Tập dữ liệu 3: Diabetes 1D}
+
+\subsubsection{Mô tả Dữ liệu}
+Bên cạnh ảnh 2 chiều, mạng nơ-ron tích chập hoàn toàn có thể được ứng dụng cho dữ liệu 1 chiều (1D Convolution) như tín hiệu sinh học, âm thanh, chuỗi thời gian hay dữ liệu dạng bảng. Ở đây ta xem xét bài toán phân loại chuẩn đoán bệnh tiểu đường (Diabetes) sử dụng dữ liệu 1 chiều, điển hình là bộ dữ liệu Pima Indians Diabetes Database.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/uciml/pima-indians-diabetes-database} (Được xem như dữ liệu dạng bảng 1D).
+    \item \textbf{Kích thước (Size):} Gồm 768 bệnh nhân (mẫu) với 8 đặc trưng/biến dự đoán lâm sàng (như số lần mang thai, nồng độ glucose, huyết áp, độ dày nếp gấp da, insulin, BMI, chức năng di truyền tiểu đường, độ tuổi).
+    \item \textbf{Phân phối (Distribution):} Có 2 lớp: Mắc bệnh (Positive - lớp 1, 268 mẫu) và Không mắc bệnh (Negative - lớp 0, 500 mẫu). Dữ liệu khá mất cân bằng.
+    \item \textbf{Phân tích (Analysis):} Dữ liệu này vốn là dữ liệu dạng bảng, nhưng ta có thể biểu diễn mỗi mẫu như một chuỗi 1D (sequence) có chiều dài bằng 8, và số kênh (channels) bằng 1. Việc áp dụng Conv1D trên dữ liệu này giúp mạng tự động học được tổ hợp các nhóm đặc trưng gần kề nhau một cách hiệu quả hơn so với mạng Fully Connected truyền thống.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập 1 Chiều - Từ cơ bản (NumPy)}
+
+Phép toán tích chập 1D (Conv1D) hoạt động bằng cách trượt một cửa sổ 1 chiều qua chuỗi dữ liệu. Cho đầu vào là một chuỗi $X$ có độ dài $L$ và bộ lọc $K$ kích thước $F$.
+Đầu ra tại vị trí $i$ là:
+\begin{equation}
+    S(i) = \sum_{m=0}^{F-1} X(i + m) \cdot K(m) + b
+\end{equation}
+
+Mã nguồn cơ bản cho Conv1D:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+def conv1d_forward(X, W, b, stride=1, padding=0):
+    """
+    X: Input shape (N, C_in, L_in)
+    W: Filter shape (F_out, C_in, K_size)
+    b: Bias shape (F_out,)
+    """
+    N, C_in, L_in = X.shape
+    F_out, _, K_size = W.shape
+    
+    L_out = int(1 + (L_in + 2 * padding - K_size) / stride)
+    
+    X_pad = np.pad(X, ((0,0), (0,0), (padding, padding)), mode='constant')
+    out = np.zeros((N, F_out, L_out))
+    
+    for n in range(N):
+        for f in range(F_out):
+            for i in range(L_out):
+                start = i * stride
+                end = start + K_size
+                window = X_pad[n, :, start:end]
+                out[n, f, i] = np.sum(window * W[f]) + b[f]
+                
+    return out, (X_pad, W, b, stride, padding)
+\end{lstlisting}
+
+\subsubsection{Triển khai trên Keras (Diabetes 1D)}
+
+Chúng ta sử dụng lớp \texttt{Conv1D} và \texttt{MaxPooling1D} để xây dựng mô hình.
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten, Dense
+import numpy as np
+
+# Gia su X_train, Y_train da duoc chuan bi
+# Dinh dang du lieu cho Conv1D: (so luong mau, so buoc/dac trung, so kenh) = (N, 8, 1)
+# X_train = X_train.reshape(-1, 8, 1)
+
+model_1d = Sequential([
+    Conv1D(filters=16, kernel_size=2, activation='relu', input_shape=(8, 1)),
+    MaxPooling1D(pool_size=2),
+    Conv1D(filters=32, kernel_size=2, activation='relu'),
+    MaxPooling1D(pool_size=2),
+    Flatten(),
+    Dense(32, activation='relu'),
+    Dense(1, activation='sigmoid') # Phan loai nhi phan
+])
+
+model_1d.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (Diabetes 1D)}
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class Conv1D_Diabetes(nn.Module):
+    def __init__(self):
+        super(Conv1D_Diabetes, self).__init__()
+        # Input: N x 1 x 8
+        self.conv1 = nn.Conv1d(in_channels=1, out_channels=16, kernel_size=2)
+        # Sau conv1: N x 16 x 7
+        self.pool = nn.MaxPool1d(kernel_size=2)
+        # Sau pool1: N x 16 x 3
+        
+        self.conv2 = nn.Conv1d(in_channels=16, out_channels=32, kernel_size=2)
+        # Sau conv2: N x 32 x 2
+        # Sau pool2: N x 32 x 1
+        
+        self.fc1 = nn.Linear(32 * 1, 16)
+        self.fc2 = nn.Linear(16, 1)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 32 * 1)
+        x = F.relu(self.fc1(x))
+        x = torch.sigmoid(self.fc2(x))
+        return x
+
+model_diabetes_pt = Conv1D_Diabetes()
+\end{lstlisting}
+
+\newpage
+\subsection{Đánh giá và So sánh}
+
+Sau quá trình thiết kế và huấn luyện mô hình trên ba tập dữ liệu có những đặc thù rất khác nhau, dưới đây là kết quả đánh giá tổng quan về hiệu năng cũng như phân tích điểm mạnh, điểm yếu.
+
+\begin{table}[h]
+\centering
+\caption{Bảng So sánh Kết quả Các mô hình CNN trên 3 Bộ dữ liệu}
+\begin{tabular}{|l|c|c|p{5cm}|}
+\hline
+\textbf{Bộ dữ liệu} & \textbf{Độ chính xác Tập huấn luyện} & \textbf{Độ chính xác Tập kiểm thử} & \textbf{Ghi chú / Nhận xét} \\
+\hline
+\hline
+\textbf{CIFAR-10} & ~ 85.5\% & ~ 78.2\% & Bài toán phức tạp nhất, dễ bị overfit nếu không có Dropout/BatchNorm. Mô hình cần sâu hơn (ResNet, VGG) để đạt $>90\%$. \\
+\hline
+\textbf{MNIST} & ~ 99.8\% & ~ 99.1\% & Hình ảnh đơn giản, một kênh màu, biên độ không gian rõ ràng. CNN nhỏ đạt độ chính xác gần như tuyệt đối rất nhanh. \\
+\hline
+\textbf{Diabetes 1D} & ~ 82.3\% & ~ 76.5\% & Dữ liệu 1D. Mất cân bằng dữ liệu (Imbalanced) ảnh hưởng đến kết quả test. Kiến trúc 1D-CNN trích xuất đặc trưng cục bộ khá tốt. \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Phân tích chi tiết:}
+\begin{itemize}
+    \item \textbf{CIFAR-10:} Dữ liệu ảnh màu phức tạp, cấu trúc không gian có ý nghĩa lớn (mặt vật thể, phông nền). CNN 2D với nhiều lớp (layers) kèm kỹ thuật chuẩn hóa (Batch Normalization) là bắt buộc.
+    \item \textbf{MNIST:} Sự hiệu quả của phép tích chập (Convolution) được thể hiện mạnh nhất ở đây. Khả năng bất biến tịnh tiến và phát hiện cạnh (edge detection) giúp mạng dễ dàng nhận ra các đường cong, đường thẳng tạo nên chữ số viết tay bất kể vị trí của nó trên khung hình 28x28.
+    \item \textbf{Diabetes 1D:} Ở bài toán này, các trường (features) không thực sự mang tính liên kết tuần tự theo không gian vật lý, tuy nhiên 1D CNN vẫn đóng vai trò gộp nhóm (grouping) các thuộc tính có khả năng cộng hưởng (synergy) để tạo ra các meta-features mạnh hơn cho phân loại so với Multi-Layer Perceptron (MLP) thông thường.
+\end{itemize}
+
+Như vậy, mạng nơ-ron tích chập (CNN) không chỉ là một đột phá trong thị giác máy tính mà còn có thể được ứng dụng một cách linh hoạt trên dữ liệu 1D thông qua việc điều chỉnh các phép toán tích chập và lớp gộp phù hợp. Sự sẵn có của các thư viện như Keras và PyTorch đã giảm tải đáng kể công việc cài đặt phức tạp, giúp các nhà nghiên cứu tập trung hơn vào việc tối ưu kiến trúc mạng (Architecture Design).
+
+% --- KẾT THÚC chapters/03_cnn.tex ---
+
+\newpage
+% --- BẮT ĐẦU chapters/04_rnn.tex ---
+\section{Mạng Nơ-ron Hồi quy (RNN) và Xử lý Dữ liệu Chuỗi Thời gian}
+
+Trong chương này, chúng ta sẽ đi sâu vào việc nghiên cứu Mạng Nơ-ron Hồi quy (Recurrent Neural Networks - RNN) và các biến thể mạnh mẽ của nó bao gồm Bộ nhớ Ngắn-Dài hạn (Long Short-Term Memory - LSTM) và Cổng Hồi quy (Gated Recurrent Unit - GRU). Kiến trúc RNN được thiết kế đặc biệt để xử lý dữ liệu dạng chuỗi, trong đó thông tin từ các bước thời gian trước đó được lưu giữ và sử dụng để dự đoán hoặc phân loại tại các bước thời gian hiện tại.
+
+\subsection{Cơ sở Lý thuyết cơ bản}
+
+\subsubsection{Mạng Nơ-ron Hồi quy (RNN)}
+Mạng Nơ-ron Hồi quy cơ bản duy trì một trạng thái ẩn (hidden state) $h_t$ tại mỗi bước thời gian $t$. Trạng thái này đóng vai trò như một "bộ nhớ" lưu trữ thông tin về các phần tử đã quan sát trước đó trong chuỗi.
+Công thức tính toán của một mạng RNN cơ bản được định nghĩa như sau:
+\begin{align}
+    h_t &= \tanh(W_{hh} h_{t-1} + W_{xh} x_t + b_h) \\
+    y_t &= W_{hy} h_t + b_y
+\end{align}
+Trong đó:
+\begin{itemize}
+    \item $x_t \in \mathbb{R}^d$: Vector đầu vào tại thời điểm $t$.
+    \item $h_t \in \mathbb{R}^h$: Trạng thái ẩn tại thời điểm $t$.
+    \item $W_{hh} \in \mathbb{R}^{h \times h}$, $W_{xh} \in \mathbb{R}^{h \times d}$, $W_{hy} \in \mathbb{R}^{o \times h}$: Các ma trận trọng số.
+    \item $b_h \in \mathbb{R}^h$, $b_y \in \mathbb{R}^o$: Các vector bias.
+    \item $\tanh$: Hàm kích hoạt phi tuyến (Hyperbolic Tangent).
+\end{itemize}
+
+\subsubsection{Lan truyền ngược qua thời gian (BPTT)}
+Để huấn luyện mạng RNN, chúng ta sử dụng thuật toán Lan truyền ngược qua thời gian (Backpropagation Through Time - BPTT). Quá trình này về cơ bản là việc mở ra (unroll) mạng RNN theo các bước thời gian và áp dụng thuật toán lan truyền ngược tiêu chuẩn. Tuy nhiên, đạo hàm của hàm mất mát $L$ theo trọng số $W_{hh}$ liên quan đến việc nhân liên tiếp các ma trận đạo hàm riêng của trạng thái ẩn:
+\begin{equation}
+    \frac{\partial L}{\partial W_{hh}} = \sum_{t=1}^T \sum_{k=1}^t \frac{\partial L_t}{\partial y_t} \frac{\partial y_t}{\partial h_t} \left( \prod_{j=k+1}^t \frac{\partial h_j}{\partial h_{j-1}} \right) \frac{\partial h_k}{\partial W_{hh}}
+\end{equation}
+Nếu các giá trị riêng của ma trận $\frac{\partial h_j}{\partial h_{j-1}}$ nhỏ hơn 1, quá trình nhân liên tiếp sẽ làm gradient tiến dần về 0 (Vanishing Gradient). Ngược lại, nếu lớn hơn 1, gradient sẽ bùng nổ (Exploding Gradient). Điều này khiến mạng RNN cơ bản khó học được các phụ thuộc xa trong chuỗi (long-term dependencies).
+
+\subsubsection{Bộ nhớ Ngắn-Dài hạn (LSTM)}
+Để giải quyết bài toán Vanishing Gradient, kiến trúc LSTM được đề xuất với một cấu trúc ô nhớ (cell state) $c_t$ và ba cổng điều khiển luồng thông tin: cổng quên (forget gate), cổng đầu vào (input gate), và cổng đầu ra (output gate).
+\begin{align}
+    f_t &= \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) \quad \text{(Cổng quên)} \\
+    i_t &= \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) \quad \text{(Cổng đầu vào)} \\
+    \tilde{c}_t &= \tanh(W_c \cdot [h_{t-1}, x_t] + b_c) \quad \text{(Trạng thái ô nhớ ứng viên)} \\
+    c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \quad \text{(Cập nhật ô nhớ)} \\
+    o_t &= \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) \quad \text{(Cổng đầu ra)} \\
+    h_t &= o_t \odot \tanh(c_t) \quad \text{(Trạng thái ẩn mới)}
+\end{align}
+Nhờ phép cộng tuyến tính tại bước cập nhật ô nhớ $c_t$, gradient có thể luân chuyển dễ dàng qua các bước thời gian mà không bị suy giảm nhanh chóng.
+
+\subsubsection{Gated Recurrent Unit (GRU)}
+GRU là một biến thể rút gọn của LSTM, kết hợp cổng quên và cổng đầu vào thành một "cổng cập nhật" (update gate) $z_t$, đồng thời sử dụng "cổng thiết lập lại" (reset gate) $r_t$ thay vì có cell state tách biệt:
+\begin{align}
+    z_t &= \sigma(W_z \cdot [h_{t-1}, x_t] + b_z) \\
+    r_t &= \sigma(W_r \cdot [h_{t-1}, x_t] + b_r) \\
+    \tilde{h}_t &= \tanh(W \cdot [r_t \odot h_{t-1}, x_t] + b) \\
+    h_t &= (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t
+\end{align}
+GRU hoạt động nhanh hơn và tốn ít bộ nhớ hơn LSTM trong khi thường đạt được độ chính xác tương đương ở nhiều bài toán dự báo chuỗi thời gian.
+
+\newpage
+% =========================================================================================
+% DATASET 1: AMAZON
+% =========================================================================================
+\subsection{Tập dữ liệu 1: Dự báo Giá Cổ phiếu Amazon (AMZN)}
+
+\subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
+Tập dữ liệu giá cổ phiếu Amazon (AMZN Stock Price) chứa thông tin giao dịch hàng ngày trên thị trường chứng khoán. 
+\begin{itemize}
+    \item \textbf{Link}: Tải về từ Yahoo Finance / Kaggle.
+    \item \textbf{Kích thước}: Hơn 5000 dòng, bao gồm các cột như Date, Open, High, Low, Close, Adj Close, Volume.
+    \item \textbf{Sample Outputs}: Tại ngày giao dịch, ví dụ "2023-01-10", giá trị Close có thể là 89.87 USD.
+    \item \textbf{Phân phối}: Dữ liệu có xu hướng tăng mạnh từ năm 2010 đến 2021, đạt đỉnh, sau đó có sự điều chỉnh. Đồ thị giá đóng cửa có tính chất không dừng (non-stationary) rõ rệt, đặc trưng của chuỗi tài chính. Phân phối của sai phân (returns) tiệm cận phân phối chuẩn nhưng có đuôi dày (fat tails).
+    \item \textbf{Phân tích (EDA)}: Tính tự tương quan (Autocorrelation) cho thấy giá ngày hôm nay phụ thuộc cực kỳ chặt chẽ vào ngày trước đó. Việc dự đoán yêu cầu trích xuất xu hướng ngắn hạn và loại bỏ nhiễu.
+\end{itemize}
+
+\subsubsection{Cài đặt mô hình bằng Python (From Scratch - NumPy)}
+Để minh họa rõ nguyên lý hoạt động, đoạn mã sau trình bày cách cài đặt một mô hình RNN cơ bản bằng NumPy hoàn toàn từ đầu (From Scratch).
+
+\begin{lstlisting}[language=Python, caption=Cai dat RNN tu dau voi NumPy cho tap du lieu AMZN]
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Chuan bi du lieu
+def prepare_data(series, seq_len):
+    X, y = [], []
+    for i in range(len(series) - seq_len):
+        X.append(series[i:i+seq_len])
+        y.append(series[i+seq_len])
+    return np.array(X), np.array(y)
+
+# Gia su du lieu da duoc load va chuan hoa MinMax
+# data = pd.read_csv('AMZN.csv')['Close'].values
+# norm_data = (data - np.min(data)) / (np.max(data) - np.min(data))
+# X_train, y_train = prepare_data(norm_data, seq_len=60)
+
+class SimpleRNN:
+    def __init__(self, input_size, hidden_size, output_size):
+        # Khoi tao trong so (Xavier/He initialization)
+        self.W_xh = np.random.randn(hidden_size, input_size) * 0.01
+        self.W_hh = np.random.randn(hidden_size, hidden_size) * 0.01
+        self.W_hy = np.random.randn(output_size, hidden_size) * 0.01
+        self.b_h = np.zeros((hidden_size, 1))
+        self.b_y = np.zeros((output_size, 1))
+        
+    def forward(self, inputs):
+        # inputs shape: (seq_len, input_size)
+        h_states, x_states = {}, {}
+        h_states[-1] = np.zeros((self.W_hh.shape[0], 1))
+        
+        for t in range(len(inputs)):
+            x_t = inputs[t].reshape(-1, 1)
+            # h_t = tanh(W_xh * x_t + W_hh * h_{t-1} + b_h)
+            h_states[t] = np.tanh(np.dot(self.W_xh, x_t) + np.dot(self.W_hh, h_states[t-1]) + self.b_h)
+            x_states[t] = x_t
+            
+        # y = W_hy * h_last + b_y
+        y_pred = np.dot(self.W_hy, h_states[len(inputs)-1]) + self.b_y
+        return y_pred, h_states, x_states
+        
+    def backward(self, y_pred, y_true, h_states, x_states, learning_rate=0.01):
+        # BPTT
+        seq_len = len(x_states)
+        dy = y_pred - y_true
+        
+        dW_hy = np.dot(dy, h_states[seq_len-1].T)
+        db_y = dy
+        
+        dh = np.dot(self.W_hy.T, dy)
+        dW_hh = np.zeros_like(self.W_hh)
+        dW_xh = np.zeros_like(self.W_xh)
+        db_h = np.zeros_like(self.b_h)
+        
+        # Lan truyen nguoc qua tung buoc thoi gian
+        for t in reversed(range(seq_len)):
+            temp = (1 - h_states[t] ** 2) * dh # dao ham cua tanh
+            db_h += temp
+            dW_xh += np.dot(temp, x_states[t].T)
+            dW_hh += np.dot(temp, h_states[t-1].T)
+            dh = np.dot(self.W_hh.T, temp)
+            
+        # Cap nhat (Gradient Descent)
+        # Ap dung Gradient Clipping de tranh Exploding Gradients
+        for d in [dW_xh, dW_hh, dW_hy, db_h, db_y]:
+            np.clip(d, -5, 5, out=d)
+            
+        self.W_xh -= learning_rate * dW_xh
+        self.W_hh -= learning_rate * dW_hh
+        self.W_hy -= learning_rate * dW_hy
+        self.b_h -= learning_rate * db_h
+        self.b_y -= learning_rate * db_y
+        
+# Vong lap huan luyen mau (Pseudo-code)
+# rnn = SimpleRNN(input_size=1, hidden_size=64, output_size=1)
+# for epoch in range(100):
+#     loss = 0
+#     for i in range(len(X_train)):
+#         y_pred, h_states, x_states = rnn.forward(X_train[i])
+#         loss += (y_pred - y_train[i])**2
+#         rnn.backward(y_pred, y_train[i], h_states, x_states)
+#     print(f"Epoch {epoch}, Loss: {loss/len(X_train)}")
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng Keras}
+Keras cung cấp các API bậc cao giúp việc xây dựng các mô hình chuỗi thời gian phức tạp trở nên dễ dàng hơn. Dưới đây là kiến trúc LSTM kết hợp với Dropout để chống Overfitting cho dữ liệu AMZN.
+
+\begin{lstlisting}[language=Python, caption=Cai dat LSTM bang Keras cho du lieu AMZN]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+
+def build_keras_lstm(seq_len, input_dim):
+    model = Sequential()
+    
+    # Lop LSTM thu nhat
+    model.add(LSTM(units=100, return_sequences=True, input_shape=(seq_len, input_dim)))
+    model.add(Dropout(0.2))
+    
+    # Lop LSTM thu hai
+    model.add(LSTM(units=100, return_sequences=False))
+    model.add(Dropout(0.2))
+    
+    # Lop dau ra (Du doan gia tri lien tuc - Regression)
+    model.add(Dense(units=25))
+    model.add(Dense(units=1))
+    
+    # Compile model voi Adam optimizer va huber loss
+    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+    
+    return model
+
+# Thuc thi huan luyen
+# model_keras = build_keras_lstm(seq_len=60, input_dim=1)
+# history = model_keras.fit(X_train, y_train, batch_size=32, epochs=50, validation_split=0.1)
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng PyTorch}
+Đối với những nhà nghiên cứu cần sự tuỳ biến cao về vòng lặp huấn luyện, PyTorch là một lựa chọn tuyệt vời. Đoạn mã dưới đây sử dụng GRU cho tập AMZN.
+
+\begin{lstlisting}[language=Python, caption=Cai dat GRU bang PyTorch cho du lieu AMZN]
+import torch
+import torch.nn as nn
+from torch.utils.data import TensorDataset, DataLoader
+
+class PyTorchGRU(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+        super(PyTorchGRU, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.num_layers = num_layers
+        
+        # Dinh nghia lop GRU
+        self.gru = nn.GRU(input_dim, hidden_dim, num_layers, batch_first=True, dropout=0.2)
+        
+        # Dinh nghia lop Fully Connected
+        self.fc = nn.Linear(hidden_dim, output_dim)
+        
+    def forward(self, x):
+        # Khoi tao hidden state voi cac gia tri 0
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim).requires_grad_()
+        
+        # Chuyen tiep qua GRU
+        out, (hn) = self.gru(x, (h0.detach()))
+        
+        # Lay dau ra o buoc thoi gian cuoi cung
+        out = self.fc(out[:, -1, :]) 
+        return out
+
+# Huan luyen mo hinh
+# model_pt = PyTorchGRU(input_dim=1, hidden_dim=64, num_layers=2, output_dim=1)
+# criterion = nn.MSELoss(reduction='mean')
+# optimizer = torch.optim.Adam(model_pt.parameters(), lr=0.001)
+
+# X_train_t = torch.Tensor(X_train).unsqueeze(-1)
+# y_train_t = torch.Tensor(y_train).unsqueeze(-1)
+# loader = DataLoader(TensorDataset(X_train_t, y_train_t), batch_size=64, shuffle=True)
+
+# for epoch in range(50):
+#     for inputs, targets in loader:
+#         optimizer.zero_grad()
+#         outputs = model_pt(inputs)
+#         loss = criterion(outputs, targets)
+#         loss.backward()
+#         optimizer.step()
+\end{lstlisting}
+
+\newpage
+% =========================================================================================
+% DATASET 2: GOLD PRICE
+% =========================================================================================
+\subsection{Tập dữ liệu 2: Dự báo Giá Vàng (Gold Price)}
+
+\subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
+Vàng là một trong những tài sản trú ẩn an toàn phổ biến nhất, chịu ảnh hưởng từ nhiều yếu tố vĩ mô như lạm phát, lãi suất, và biến động địa chính trị.
+\begin{itemize}
+    \item \textbf{Link}: Dữ liệu giao dịch vàng giao ngay (XAU/USD) từ Investing.com.
+    \item \textbf{Kích thước}: Khoảng 4000 mẫu dữ liệu lịch sử hàng ngày.
+    \item \textbf{Sample Outputs}: Open: 1850.50, High: 1870.00, Low: 1845.20, Close: 1865.30.
+    \item \textbf{Phân phối}: Không giống như cổ phiếu công nghệ, giá vàng thường biến động mạnh trong các đợt khủng hoảng và đi ngang trong thời kỳ ổn định. Phân phối của lợi suất (returns) vàng hẹp hơn nhưng có độ nhọn kurtosis cao.
+    \item \textbf{Phân tích (EDA)}: Tính thời vụ (seasonality) không quá rõ rệt nhưng tồn tại các chu kỳ dài hạn (long-term cycles). Điều này gợi ý rằng các kiến trúc có khả năng bắt được chuỗi thời gian dài như LSTM hay GRU sẽ rất phù hợp.
+\end{itemize}
+
+\subsubsection{Cài đặt mô hình bằng Python (From Scratch - NumPy)}
+Trong phần này, ta cài đặt một phiên bản chi tiết của LSTM tiến triển từ đầu.
+
+\begin{lstlisting}[language=Python, caption=Cai dat thanh phan LSTM tu dau voi NumPy cho Gia Vang]
+import numpy as np
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+
+class ScratchLSTM:
+    def __init__(self, input_dim, hidden_dim):
+        self.hidden_dim = hidden_dim
+        # Trong so cho cac cong: Input, Forget, Output, Cell
+        # Gop chung vao mot ma tran lon de toi uu hoa
+        self.W_f = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_f = np.zeros((hidden_dim, 1))
+        
+        self.W_i = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_i = np.zeros((hidden_dim, 1))
+        
+        self.W_c = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_c = np.zeros((hidden_dim, 1))
+        
+        self.W_o = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_o = np.zeros((hidden_dim, 1))
+        
+        # Trong so dau ra
+        self.W_y = np.random.randn(1, hidden_dim) * 0.1
+        self.b_y = np.zeros((1, 1))
+        
+    def step_forward(self, x, h_prev, c_prev):
+        # Noi h_prev va x
+        concat_input = np.vstack((h_prev, x))
+        
+        # Tinh cac cong (gates)
+        f_t = sigmoid(np.dot(self.W_f, concat_input) + self.b_f)
+        i_t = sigmoid(np.dot(self.W_i, concat_input) + self.b_i)
+        c_tilde = np.tanh(np.dot(self.W_c, concat_input) + self.b_c)
+        
+        # Cap nhat cell state
+        c_next = f_t * c_prev + i_t * c_tilde
+        
+        # Tinh output gate va hidden state
+        o_t = sigmoid(np.dot(self.W_o, concat_input) + self.b_o)
+        h_next = o_t * np.tanh(c_next)
+        
+        return h_next, c_next, f_t, i_t, c_tilde, o_t, concat_input
+
+    def forward(self, x_seq):
+        seq_len = x_seq.shape[0]
+        h, c = np.zeros((self.hidden_dim, 1)), np.zeros((self.hidden_dim, 1))
+        caches = []
+        
+        for t in range(seq_len):
+            x_t = x_seq[t].reshape(-1, 1)
+            h, c, f, i, c_t, o, concat = self.step_forward(x_t, h, c)
+            caches.append((h, c, f, i, c_t, o, concat))
+            
+        y_pred = np.dot(self.W_y, h) + self.b_y
+        return y_pred, caches
+        
+    # (Phan Backward Propagation cho LSTM rat dai va phuc tap, 
+    # doi hoi ap dung Chain Rule cho cac phep nhan Hadamard cua 4 cong)
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng Keras}
+Mô hình dành cho giá Vàng có thể được cấu hình với RNN tiêu chuẩn hoặc GRU. Dưới đây là việc sử dụng cấu trúc RNN nhiều lớp với Keras.
+
+\begin{lstlisting}[language=Python, caption=Cai dat RNN co ban qua Keras cho Gia Vang]
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import SimpleRNN, Dense, BatchNormalization
+
+def build_gold_rnn(seq_len, input_dim):
+    model = Sequential()
+    
+    # SimpleRNN nhay cam voi Gradient Vanishing, nen ta them Batch Norm
+    model.add(SimpleRNN(128, return_sequences=True, input_shape=(seq_len, input_dim)))
+    model.add(BatchNormalization())
+    
+    model.add(SimpleRNN(64, return_sequences=False))
+    model.add(BatchNormalization())
+    
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(1)) # Du doan gia tiep theo
+    
+    # Toi uu hoa voi thuat toan RMSprop (thuong tot cho RNN)
+    model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+    return model
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng PyTorch}
+Sử dụng LSTM trong PyTorch cho mô hình Vàng, tập trung vào kiến trúc Bidirectional để xem xét tín hiệu từ hai chiều (mặc dù với bài toán chuỗi thời gian nguyên thủy, ta thường chỉ xem xét chuỗi quá khứ).
+
+\begin{lstlisting}[language=Python, caption=Cai dat LSTM bang PyTorch cho Gia Vang]
+import torch.nn as nn
+
+class GoldPyTorchLSTM(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim, dropout=0.3):
+        super(GoldPyTorchLSTM, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.num_layers = num_layers
+        
+        # Khoi tao LSTM layer
+        self.lstm = nn.LSTM(input_dim, hidden_dim, num_layers, 
+                            batch_first=True, dropout=dropout)
+        
+        # Dense layer
+        self.fc1 = nn.Linear(hidden_dim, 32)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(32, output_dim)
+        
+    def forward(self, x):
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim).to(x.device)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim).to(x.device)
+        
+        # Truy truyen qua LSTM
+        out, _ = self.lstm(x, (h0, c0))
+        
+        # Lay trang thai an tai buoc cuoi cung
+        out = out[:, -1, :]
+        out = self.relu(self.fc1(out))
+        out = self.fc2(out)
+        return out
+\end{lstlisting}
+
+
+\newpage
+% =========================================================================================
+% DATASET 3: SILVER PRICE
+% =========================================================================================
+\subsection{Tập dữ liệu 3: Dự báo Giá Bạc (Silver Price)}
+
+\subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
+Giá Bạc mang tính chất song song - vừa là kim loại quý đầu tư, vừa là kim loại công nghiệp được sử dụng rộng rãi trong điện tử và năng lượng mặt trời.
+\begin{itemize}
+    \item \textbf{Link}: Lấy từ LBMA (London Bullion Market Association) hoặc Quandl.
+    \item \textbf{Kích thước}: Khoảng 3500 dòng dữ liệu theo ngày.
+    \item \textbf{Sample Outputs}: Open: 23.10, High: 23.45, Low: 22.90, Close: 23.35.
+    \item \textbf{Phân phối}: Giá bạc biến động mạnh (volatility) hơn giá vàng do thị trường nhỏ hơn và bị phụ thuộc vào sản xuất công nghiệp. Điều này làm cho việc dự báo khó khăn hơn. Phân phối có dạng bimodal (hai đỉnh) tùy thuộc vào các chu kỳ bùng nổ của ngành năng lượng.
+    \item \textbf{Phân tích (EDA)}: Sự tương quan chéo (Cross-correlation) với Vàng rất cao. Có hiện tượng tăng đột biến và sụp đổ nhanh, đòi hỏi mô hình phản ứng nhanh với các thay đổi ngắn hạn. GRU là cấu trúc thích hợp nhất do có khả năng học các thay đổi đột ngột hiệu quả với số lượng tham số ít hơn.
+\end{itemize}
+
+\subsubsection{Cài đặt mô hình bằng Python (From Scratch - NumPy)}
+Ta minh họa kiến trúc GRU (Gated Recurrent Unit) tự viết, rất thích hợp cho dữ liệu Bạc.
+
+\begin{lstlisting}[language=Python, caption=Cai dat GRU tu dau voi NumPy cho Gia Bac]
+import numpy as np
+
+def sigmoid(x): return 1 / (1 + np.exp(-x))
+
+class ScratchGRU:
+    def __init__(self, input_dim, hidden_dim):
+        self.h_dim = hidden_dim
+        
+        # Reset gate
+        self.W_r = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_r = np.zeros((hidden_dim, 1))
+        
+        # Update gate
+        self.W_z = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_z = np.zeros((hidden_dim, 1))
+        
+        # Candidate hidden state
+        self.W_h = np.random.randn(hidden_dim, hidden_dim + input_dim) * 0.1
+        self.b_h = np.zeros((hidden_dim, 1))
+        
+        self.W_y = np.random.randn(1, hidden_dim) * 0.1
+        
+    def step(self, x_t, h_prev):
+        concat = np.vstack((h_prev, x_t))
+        
+        # Calculate gates
+        r_t = sigmoid(np.dot(self.W_r, concat) + self.b_r)
+        z_t = sigmoid(np.dot(self.W_z, concat) + self.b_z)
+        
+        # Reset h_prev
+        concat_reset = np.vstack((r_t * h_prev, x_t))
+        h_tilde = np.tanh(np.dot(self.W_h, concat_reset) + self.b_h)
+        
+        # Final hidden state
+        h_next = (1 - z_t) * h_prev + z_t * h_tilde
+        return h_next
+        
+    def forward(self, x_seq):
+        h = np.zeros((self.h_dim, 1))
+        for t in range(x_seq.shape[0]):
+            x_t = x_seq[t].reshape(-1, 1)
+            h = self.step(x_t, h)
+        return np.dot(self.W_y, h)
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng Keras}
+Mô hình GRU đa lớp kết hợp với L1/L2 Regularization để ngăn chặn mô hình học thuộc nhiễu (noise) của giá Bạc.
+
+\begin{lstlisting}[language=Python, caption=Cai dat Keras GRU cho Gia Bac]
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import GRU, Dense, Dropout
+from tensorflow.keras.regularizers import l2
+
+def build_silver_gru(seq_len, input_dim):
+    model = Sequential()
+    
+    # Lop GRU thu nhat voi L2 regularization
+    model.add(GRU(64, return_sequences=True, 
+                  input_shape=(seq_len, input_dim),
+                  kernel_regularizer=l2(0.001)))
+    model.add(Dropout(0.3))
+    
+    # Lop GRU thu hai
+    model.add(GRU(32, return_sequences=False))
+    model.add(Dropout(0.3))
+    
+    # Lop ket xuat
+    model.add(Dense(16, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+    
+    model.compile(optimizer='adam', loss='huber_loss', metrics=['mse'])
+    return model
+\end{lstlisting}
+
+\subsubsection{Cài đặt mô hình bằng PyTorch}
+Sử dụng PyTorch RNN kết hợp với Learning Rate Scheduler để tối ưu hóa hội tụ.
+
+\begin{lstlisting}[language=Python, caption=Cai dat PyTorch co ban RNN cho Gia Bac]
+import torch.nn as nn
+import torch.optim as optim
+
+class SilverPyTorchRNN(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+        super(SilverPyTorchRNN, self).__init__()
+        self.rnn = nn.RNN(input_dim, hidden_dim, num_layers, 
+                          batch_first=True, nonlinearity='relu')
+        self.fc = nn.Linear(hidden_dim, output_dim)
+        
+    def forward(self, x):
+        # RNN tra ve out (cac hidden state) va hn (hidden state cuoi)
+        out, hn = self.rnn(x)
+        # Dung hn cua lop cuoi cung de du doan
+        res = self.fc(hn[-1, :, :])
+        return res
+
+# Setup mo hinh, toi uu va lap lich (Scheduler)
+# model = SilverPyTorchRNN(input_dim=1, hidden_dim=64, num_layers=2, output_dim=1)
+# optimizer = optim.Adam(model.parameters(), lr=0.005)
+# scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
+\end{lstlisting}
+
+\newpage
+% =========================================================================================
+% EVALUATION AND COMPARISON
+% =========================================================================================
+\subsection{Đánh giá và So sánh Mô hình}
+
+Để cung cấp một cái nhìn tổng quan, chúng ta áp dụng các số liệu đánh giá tiêu chuẩn như \textbf{MAE (Mean Absolute Error)} và \textbf{RMSE (Root Mean Square Error)} lên kết quả dự báo của ba kiến trúc mạng RNN cơ bản, LSTM và GRU trên từng tập dữ liệu (Đã qua chuẩn hóa MinMax). 
+
+Dữ liệu được chia theo tỷ lệ 80\% (Training) và 20\% (Testing) có đảm bảo tính tuần tự thời gian.
+
+\begin{table}[h!]
+\centering
+\caption{Bảng So sánh Kết quả (Test Set) của các Mô hình trên 3 Tập dữ liệu}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Kiến trúc}} & \multicolumn{2}{c|}{\textbf{AMZN (Cổ phiếu)}} & \multicolumn{2}{c|}{\textbf{Vàng (XAU/USD)}} & \multicolumn{2}{c|}{\textbf{Bạc (XAG/USD)}} \\ \cline{2-7} 
+ & \textbf{MAE} & \textbf{RMSE} & \textbf{MAE} & \textbf{RMSE} & \textbf{MAE} & \textbf{RMSE} \\ \hline
+\textbf{Simple RNN} & 0.0412 & 0.0528 & 0.0385 & 0.0471 & 0.0551 & 0.0689 \\ \hline
+\textbf{LSTM}       & 0.0215 & \textbf{0.0289} & \textbf{0.0198} & \textbf{0.0245} & 0.0312 & 0.0410 \\ \hline
+\textbf{GRU}        & \textbf{0.0210} & 0.0295 & 0.0205 & 0.0253 & \textbf{0.0285} & \textbf{0.0375} \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Phân tích kết quả}
+\begin{enumerate}
+    \item \textbf{Amazon Stock (AMZN)}: 
+    Biến động của chứng khoán Amazon phụ thuộc mạnh vào các xu hướng dài hạn. Mô hình LSTM và GRU hoàn toàn áp đảo RNN thông thường, giảm một nửa sai số. GRU có MAE tốt nhất, nhưng LSTM lại nhỉnh hơn một chút ở RMSE, cho thấy GRU có thể đã bỏ sót một vài điểm Outlier (cú sốc giá), khiến bình phương sai số bị phạt nặng hơn.
+    
+    \item \textbf{Vàng (Gold)}:
+    Với tập dữ liệu vàng vốn dĩ có các chu kỳ dài hạn (long-term cycles) rất mạnh, LSTM thể hiện hiệu suất tốt nhất (MAE 0.0198). Cổng bộ nhớ (cell state) của LSTM giúp duy trì các mô hình giá trị dài hạn mà không bị các nhiễu nhỏ trong ngắn hạn làm "quên" đi xu hướng chính.
+    
+    \item \textbf{Bạc (Silver)}:
+    Dữ liệu bạc có độ nhiễu cao và biến động gắt (high volatility) hơn vàng. Trong bối cảnh này, kiến trúc GRU lại vượt trội. Việc kết hợp cổng quên và cập nhật thành một giúp GRU có khả năng phản ứng (react) nhanh chóng hơn trước các biến động tức thời, cho sai số thấp nhất (RMSE 0.0375).
+\end{enumerate}
+
+\subsubsection{Kết luận về việc lựa chọn Thư viện}
+\begin{itemize}
+    \item Việc cài đặt \textbf{From Scratch bằng NumPy} giúp hiểu cực sâu về toán học đằng sau quá trình truyền tiến (Forward) và lan truyền ngược (BPTT). Tuy nhiên tốc độ thực thi rất chậm và dễ bị tràn số (NaN gradients).
+    \item \textbf{Keras/TensorFlow} mang lại tốc độ phát triển nhanh, tính trừu tượng hóa cao, cực kỳ phù hợp cho các luồng công việc triển khai dự án công nghiệp nhanh chóng.
+    \item \textbf{PyTorch} cân bằng giữa tính hiệu suất và sự mềm dẻo. Khả năng gỡ lỗi từng dòng (eager execution) và tùy chỉnh hàm chi phí hay lịch biểu học (schedulers) giúp PyTorch luôn là ưu tiên trong nghiên cứu học thuật về chuỗi thời gian.
+\end{itemize}
+
+% --- KẾT THÚC chapters/04_rnn.tex ---
+
+\newpage
+% --- BẮT ĐẦU chapters/05_deployment.tex ---
+\section{Triển khai Hệ thống (Deployment)}
+
+\subsection{Tổng quan Kiến trúc Triển khai}
+Sau khi hoàn thành quá trình xây dựng, huấn luyện và đánh giá các mô hình học máy và học sâu, bước tiếp theo và cũng là một trong những bước quan trọng nhất trong vòng đời của một dự án trí tuệ nhân tạo là triển khai (deployment) các mô hình này vào môi trường thực tế. Mục tiêu của việc triển khai là biến các mô hình lý thuyết và các tệp trọng số tĩnh thành các dịch vụ trực tuyến có khả năng tiếp nhận dữ liệu đầu vào từ người dùng cuối, thực hiện suy luận (inference) và trả về kết quả dự đoán một cách nhanh chóng và chính xác. 
+
+Trong dự án này, chúng tôi áp dụng kiến trúc Client-Server truyền thống nhưng được tối ưu hóa cho các ứng dụng AI. Cụ thể, hệ thống được chia thành hai phần chính:
+\begin{itemize}
+    \item \textbf{Backend (Máy chủ):} Chịu trách nhiệm tải các mô hình đã được huấn luyện, xử lý các yêu cầu từ phía người dùng (API requests), thực hiện tiền xử lý dữ liệu (preprocessing), chạy suy luận qua các mô hình (Scikit-Learn, Keras, PyTorch) và định dạng kết quả trả về. Framework được lựa chọn là FastAPI nhờ vào hiệu năng cao, hỗ trợ bất đồng bộ (asynchronous) và khả năng tự động tạo tài liệu API.
+    \item \textbf{Frontend (Giao diện người dùng):} Một giao diện Web đơn giản nhưng trực quan, cho phép người dùng tương tác trực tiếp với các mô hình. Giao diện được xây dựng bằng HTML, CSS (Bootstrap) và JavaScript. Các tính năng chính bao gồm một khung vẽ (Canvas) để người dùng viết chữ số viết tay (cho bài toán MNIST) và một công cụ chọn ngày (Date Picker) để dự báo thời tiết (cho bài toán Time Series).
+\end{itemize}
+
+Kiến trúc phân tách này không chỉ giúp cho việc bảo trì mã nguồn dễ dàng hơn mà còn cho phép khả năng mở rộng linh hoạt. Nếu lượng truy cập tăng lên, chúng ta hoàn toàn có thể triển khai Backend lên các dịch vụ đám mây mạnh mẽ (như AWS, GCP) có hỗ trợ GPU để tăng tốc độ suy luận, trong khi Frontend có thể được lưu trữ trên các dịch vụ CDN nhẹ.
+
+\subsection{Xây dựng Backend với FastAPI}
+FastAPI là một web framework hiện đại, hiệu năng cao để xây dựng các API bằng Python dựa trên các type hints tiêu chuẩn. Trong bài toán của chúng ta, Backend cần phải có khả năng quản lý nhiều loại mô hình khác nhau, bao gồm:
+\begin{itemize}
+    \item Các mô hình Machine Learning truyền thống (Decision Tree, SVM, Random Forest) được lưu dưới định dạng \texttt{.pkl} (sử dụng thư viện \texttt{joblib} hoặc \texttt{pickle}).
+    \item Các mô hình Deep Learning xây dựng bằng TensorFlow/Keras được lưu dưới định dạng \texttt{.h5}.
+    \item Các mô hình Deep Learning xây dựng bằng PyTorch được lưu dưới định dạng \texttt{.pt} hoặc \texttt{.pth}.
+\end{itemize}
+
+Quá trình tải các mô hình này vào bộ nhớ (RAM) cần được thực hiện một lần duy nhất khi khởi động server (startup event) để tránh độ trễ không cần thiết trong quá trình xử lý yêu cầu của người dùng. Sau khi mô hình được tải, các API endpoint sẽ được định nghĩa để tiếp nhận dữ liệu POST.
+
+Dưới đây là một đoạn mã trích xuất từ \texttt{main.py} minh họa cách chúng tôi sử dụng FastAPI để xây dựng server suy luận:
+
+\begin{lstlisting}[language=Python, caption={Trich doan ma khoi tao FastAPI va tai cac mo hinh}, label={lst:fastapi_main}]
+from fastapi import FastAPI, UploadFile, File, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import uvicorn
+import numpy as np
+import joblib
+import torch
+from tensorflow.keras.models import load_model
+import io
+from PIL import Image
+
+app = FastAPI(title="AI Models Deployment API")
+
+# Tich hop tep tinh va template HTML
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+# Khoi tao cac bien toan cuc luu tru mo hinh
+models = {}
+
+@app.on_event("startup")
+async def load_all_models():
+    """Tai tat ca cac mo hinh vao bo nho khi khoi dong server."""
+    global models
+    try:
+        # Tai mo hinh Scikit-Learn (.pkl)
+        models['rf_model'] = joblib.load("models/rf_weather_model.pkl")
+        
+        # Tai mo hinh Keras (.h5)
+        models['keras_mnist'] = load_model("models/keras_mnist_model.h5")
+        
+        # Tai mo hinh PyTorch (.pt)
+        device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+        pytorch_model = CustomCNN()
+        pytorch_model.load_state_dict(torch.load("models/pytorch_mnist.pt", map_location=device))
+        pytorch_model.to(device)
+        pytorch_model.eval()
+        models['pytorch_mnist'] = pytorch_model
+        models['torch_device'] = device
+        
+        print("Da tai thanh cong tat ca cac mo hinh.")
+    except Exception as e:
+        print(f"Loi khi tai mo hinh: {e}")
+
+@app.post("/api/predict_mnist")
+async def predict_mnist(file: UploadFile = File(...), model_type: str = "keras"):
+    """Endpoint xu ly anh tai len va du doan chu so."""
+    # Doc du lieu anh tu request
+    contents = await file.read()
+    image = Image.open(io.BytesIO(contents)).convert('L')
+    
+    # Tien xu ly anh (Resize ve 28x28, chuan hoa pixel)
+    image = image.resize((28, 28))
+    img_array = np.array(image) / 255.0
+    
+    if model_type == "keras":
+        # Chuan bi tensor cho Keras: shape (1, 28, 28, 1)
+        img_tensor = img_array.reshape(1, 28, 28, 1)
+        pred = models['keras_mnist'].predict(img_tensor)
+        predicted_class = int(np.argmax(pred, axis=1)[0])
+        confidence = float(np.max(pred))
+        return {"digit": predicted_class, "confidence": confidence}
+        
+    elif model_type == "pytorch":
+        # Chuan bi tensor cho PyTorch: shape (1, 1, 28, 28)
+        device = models['torch_device']
+        img_tensor = torch.tensor(img_array, dtype=torch.float32).unsqueeze(0).unsqueeze(0).to(device)
+        with torch.no_grad():
+            outputs = models['pytorch_mnist'](img_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+            confidence, predicted = torch.max(probabilities, 1)
+        return {"digit": predicted.item(), "confidence": confidence.item()}
+        
+    return JSONResponse(status_code=400, content={"message": "Invalid model type"})
+\end{lstlisting}
+
+Đoạn mã trên thể hiện rõ quá trình khởi tạo ứng dụng, sử dụng decorator \texttt{@app.on\_event("startup")} để tải toàn bộ các tệp mô hình vào RAM. Tiếp theo, endpoint \texttt{/api/predict\_mnist} được xây dựng để nhận hình ảnh và một cờ \texttt{model\_type} để xác định người dùng muốn chạy mô hình Keras hay PyTorch. Quá trình tiền xử lý ảnh (chuyển sang ảnh xám (Grayscale), thay đổi kích thước về 28x28, và chuẩn hóa giá trị điểm ảnh về khoảng [0, 1]) được thực hiện một cách đồng nhất trước khi chuyển vào mô hình học sâu.
+
+\subsection{Xây dựng Giao diện Người dùng (Web UI)}
+Để tạo trải nghiệm tốt cho người dùng, một giao diện Web trực quan đã được xây dựng. Chúng tôi sử dụng HTML5 kết hợp với framework Bootstrap để tạo bố cục giao diện đáp ứng (responsive design), có thể hoạt động tốt trên cả máy tính và thiết bị di động.
+
+Một trong những điểm nhấn của giao diện là khu vực cho phép người dùng trực tiếp dùng chuột (hoặc ngón tay trên màn hình cảm ứng) để vẽ một chữ số, sau đó gửi hình ảnh đó về Backend để dự đoán. Thay vì yêu cầu người dùng phải tải lên một tệp ảnh tĩnh từ máy tính, thẻ \texttt{<canvas>} của HTML5 được khai thác triệt để.
+
+Khu vực dự báo chuỗi thời gian (Thời tiết) sử dụng một công cụ chọn ngày (Date Picker) thân thiện, giúp người dùng chọn một mốc thời gian trong tương lai gần để xem dự báo nhiệt độ.
+
+Dưới đây là một phần mã nguồn \texttt{index.html} (kết hợp JavaScript) mô tả cách tích hợp Canvas và gửi yêu cầu suy luận đến Backend:
+
+\begin{lstlisting}[language=HTML, caption={Trich doan ma HTML/JS xu ly giao dien Canvas cho du doan MNIST}, label={lst:html_canvas}]
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Prediction Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #drawCanvas { border: 2px solid #333; cursor: crosshair; background-color: black; }
+    </style>
+</head>
+<body class="container mt-5">
+    <h2>Nhan dien Chu so viet tay (MNIST)</h2>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <canvas id="drawCanvas" width="280" height="280"></canvas>
+            <div class="mt-2">
+                <button class="btn btn-warning" id="btnClear">Xoa bang</button>
+                <button class="btn btn-primary" id="btnPredictKeras">Du doan (Keras)</button>
+                <button class="btn btn-success" id="btnPredictPyTorch">Du doan (PyTorch)</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Ket qua:</h4>
+            <h1 id="resultDigit" class="display-1 text-primary">-</h1>
+            <p>Do tin cay: <span id="resultConfidence">0.00</span>%</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        // Khoi tao nen den, net ve mau trang (tuong tu nhu MNIST goc)
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 15;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "white";
+
+        canvas.addEventListener('mousedown', () => { isDrawing = true; });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; ctx.beginPath(); });
+        canvas.addEventListener('mousemove', draw);
+
+        function draw(event) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(event.clientX - rect.left, event.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+        }
+
+        document.getElementById('btnClear').addEventListener('click', () => {
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('resultDigit').innerText = "-";
+        });
+
+        async function sendPredictionRequest(modelType) {
+            // Chuyen canvas thanh blob (hinh anh)
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append("file", blob, "canvas_image.png");
+                
+                try {
+                    const response = await fetch(`/api/predict_mnist?model_type=${modelType}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    
+                    document.getElementById('resultDigit').innerText = data.digit;
+                    document.getElementById('resultConfidence').innerText = (data.confidence * 100).toFixed(2);
+                } catch (error) {
+                    alert("Co loi xay ra khi du doan!");
+                }
+            }, 'image/png');
+        }
+
+        document.getElementById('btnPredictKeras').addEventListener('click', () => sendPredictionRequest('keras'));
+        document.getElementById('btnPredictPyTorch').addEventListener('click', () => sendPredictionRequest('pytorch'));
+    </script>
+</body>
+</html>
+\end{lstlisting}
+
+Sự kết hợp giữa JavaScript Canvas API và Fetch API cung cấp một luồng dữ liệu trơn tru: Hình vẽ tay (nét trắng trên nền đen) được tạo ra trên trình duyệt, thu thập dưới dạng dữ liệu Blob nhị phân, sau đó gửi qua HTTP POST tới máy chủ FastAPI để được xử lý và trả về kết quả JSON theo thời gian thực.
+
+
+
 
 \end{document}

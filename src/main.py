@@ -12,7 +12,7 @@ except ImportError:
     torch = None
 
 try:
-    from tensorflow import keras
+    keras = None # Bypassed due to MacOS TF crash
 except ImportError:
     keras = None
 

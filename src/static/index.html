@@ -5,45 +5,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Models Deployment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .main-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .header-title {
+            font-weight: 700;
+            background: -webkit-linear-gradient(45deg, #007bff, #6610f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-select, .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+        .form-select:focus, .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+            border-color: #86b7fe;
+        }
+        .btn-predict {
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+        #result {
+            background: #212529;
+            color: #20c997;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+        /* Drawing Canvas Styles */
+        #canvas-container {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            animation: fadeIn 0.5s;
+        }
+        #draw-canvas {
+            border: 2px dashed #6c757d;
+            border-radius: 8px;
+            background: #000;
+            cursor: crosshair;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-clear {
+            border-radius: 20px;
+            padding: 4px 15px;
+            font-size: 0.85rem;
+        }
+        /* Date Picker Styles */
+        #date-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .icon-prepend {
+            color: #6c757d;
+            margin-right: 8px;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">AI Models Deployment Dashboard</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Cấu hình Dự đoán</h5>
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="header-title display-4"><i class="fa-solid fa-brain"></i> AI Models Hub</h1>
+            <p class="text-muted fs-5">Triển khai và kiểm thử các mô hình học máy</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Cấu hình -->
+            <div class="col-lg-5">
+                <div class="card main-card h-100">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4 border-bottom pb-2"><i class="fa-solid fa-sliders icon-prepend"></i>Cấu hình Dự đoán</h4>
                         
-                        <label class="form-label mt-2">1. Framework</label>
-                        <select id="framework" class="form-select">
-                            <option value="NumPy">NumPy (From Scratch)</option>
-                            <option value="Keras">Keras / TensorFlow</option>
-                            <option value="PyTorch">PyTorch</option>
-                        </select>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fa-solid fa-code icon-prepend"></i>1. Framework</label>
+                            <select id="framework" class="form-select">
+                                <option value="NumPy">NumPy (Từ đầu)</option>
+                                <option value="Keras">Keras / TensorFlow</option>
+                                <option value="PyTorch">PyTorch</option>
+                            </select>
+                        </div>
 
-                        <label class="form-label mt-3">2. Loại Mô hình</label>
-                        <select id="model_type" class="form-select" onchange="updateDatasets()">
-                            <option value="ML">Machine Learning (MLP)</option>
-                            <option value="CNN">Mạng Tích chập (CNN)</option>
-                            <option value="RNN">Mạng Hồi quy (RNN)</option>
-                        </select>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fa-solid fa-network-wired icon-prepend"></i>2. Loại Mô hình</label>
+                            <select id="model_type" class="form-select" onchange="updateDatasets()">
+                                <option value="ML">Machine Learning (MLP)</option>
+                                <option value="CNN">Mạng Tích chập (CNN)</option>
+                                <option value="RNN">Mạng Hồi quy (RNN)</option>
+                            </select>
+                        </div>
 
-                        <label class="form-label mt-3">3. Tập dữ liệu (Dataset)</label>
-                        <select id="dataset" class="form-select">
-                            <!-- Populated dynamically -->
-                        </select>
+                        <div class="mb-4">
+                            <label class="form-label"><i class="fa-solid fa-database icon-prepend"></i>3. Tập dữ liệu</label>
+                            <select id="dataset" class="form-select" onchange="handleDatasetChange()">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
 
-                        <button class="btn btn-primary w-100 mt-4" onclick="runPredict()">Thực hiện Dự đoán</button>
+                        <!-- Canvas cho MNIST -->
+                        <div id="canvas-container" class="mb-4 bg-light p-3 rounded border">
+                            <label class="form-label d-block text-start"><i class="fa-solid fa-pen icon-prepend"></i>Vẽ chữ số (MNIST):</label>
+                            <canvas id="draw-canvas" width="200" height="200"></canvas>
+                            <div class="mt-2 text-center">
+                                <button class="btn btn-outline-danger btn-clear" onclick="clearCanvas()"><i class="fa-solid fa-eraser"></i> Xóa</button>
+                            </div>
+                        </div>
+
+                        <!-- Date Picker cho RNN -->
+                        <div id="date-container" class="mb-4 bg-light p-3 rounded border">
+                            <label class="form-label"><i class="fa-solid fa-calendar-days icon-prepend"></i>Chọn ngày tháng năm:</label>
+                            <input type="date" id="target_date" class="form-control">
+                            <small class="text-muted d-block mt-1">Dự đoán chuỗi thời gian cho ngày đã chọn</small>
+                        </div>
+
+                        <button class="btn btn-primary w-100 btn-predict text-white" onclick="runPredict()">
+                            <i class="fa-solid fa-bolt me-2"></i>Thực hiện Dự đoán
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Kết quả / Log Server</h5>
-                        <div id="result" class="bg-dark text-light p-3 rounded mt-3" style="min-height: 300px; font-family: monospace; white-space: pre-wrap;">
-Chờ thực hiện dự đoán...
+
+            <!-- Kết quả -->
+            <div class="col-lg-7">
+                <div class="card main-card h-100">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h4 class="card-title mb-4 border-bottom pb-2"><i class="fa-solid fa-terminal icon-prepend"></i>Kết quả / Log Server</h4>
+                        <div id="result" class="flex-grow-1">
+<span class="text-secondary">>>> Hệ thống đã sẵn sàng. Hãy cấu hình mô hình và nhấn Dự đoán.</span>
                         </div>
                     </div>
                 </div>
@@ -58,6 +177,65 @@ Chờ thực hiện dự đoán...
             "RNN": ["Gold_Price", "AMZN_Stock", "Silver_Price"]
         };
 
+        // Canvas setup
+        const canvas = document.getElementById("draw-canvas");
+        const ctx = canvas.getContext("2d");
+        let isDrawing = false;
+        
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 15;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "white";
+
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top
+                };
+            }
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getCoordinates(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getCoordinates(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        canvas.addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseout", stopDrawing);
+        
+        canvas.addEventListener("touchstart", startDrawing, {passive: false});
+        canvas.addEventListener("touchmove", draw, {passive: false});
+        canvas.addEventListener("touchend", stopDrawing);
+
+        function clearCanvas() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
         function updateDatasets() {
             const type = document.getElementById("model_type").value;
             const dsSelect = document.getElementById("dataset");
@@ -68,6 +246,44 @@ Chờ thực hiện dự đoán...
                 opt.innerText = ds;
                 dsSelect.appendChild(opt);
             });
+            handleDatasetChange();
+        }
+
+        function handleDatasetChange() {
+            const type = document.getElementById("model_type").value;
+            const ds = document.getElementById("dataset").value;
+            
+            const canvasContainer = document.getElementById("canvas-container");
+            const dateContainer = document.getElementById("date-container");
+            
+            // Hiện canvas nếu là MNIST
+            if (type === "CNN" && ds === "MNIST") {
+                canvasContainer.style.display = "block";
+            } else {
+                canvasContainer.style.display = "none";
+            }
+
+            // Hiện date picker nếu là RNN
+            if (type === "RNN") {
+                dateContainer.style.display = "block";
+                // Set default date to today
+                if (!document.getElementById("target_date").value) {
+                    document.getElementById("target_date").valueAsDate = new Date();
+                }
+            } else {
+                dateContainer.style.display = "none";
+            }
+        }
+
+        function appendLog(msg, type="info") {
+            const resDiv = document.getElementById("result");
+            let color = "#20c997";
+            if (type === "error") color = "#ff6b6b";
+            if (type === "warn") color = "#fcc419";
+            
+            const time = new Date().toLocaleTimeString();
+            resDiv.innerHTML += `\n<span style="color:#6c757d">[${time}]</span> <span style="color:${color}">${msg}</span>`;
+            resDiv.scrollTop = resDiv.scrollHeight;
         }
 
         async function runPredict() {
@@ -75,19 +291,35 @@ Chờ thực hiện dự đoán...
             const model_type = document.getElementById("model_type").value;
             const dataset = document.getElementById("dataset").value;
             
-            const resDiv = document.getElementById("result");
-            resDiv.innerText = `Đang tải mô hình ${model_type}_${framework}_${dataset}...\n`;
+            let payload = { framework, model_type, dataset };
+
+            if (model_type === "CNN" && dataset === "MNIST") {
+                payload.image_data = canvas.toDataURL(); // Gửi ảnh dạng base64
+                appendLog(`Đã đính kèm ảnh MNIST vẽ tay.`, "info");
+            }
+            
+            if (model_type === "RNN") {
+                const target_date = document.getElementById("target_date").value;
+                if (!target_date) {
+                    appendLog(`Vui lòng chọn ngày tháng năm!`, "warn");
+                    return;
+                }
+                payload.target_date = target_date;
+                appendLog(`Đã chọn ngày dự đoán: ${target_date}`, "info");
+            }
+            
+            appendLog(`Đang gửi yêu cầu dự đoán với mô hình ${model_type}_${framework}_${dataset}...`);
 
             try {
                 const response = await fetch("/predict", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ framework, model_type, dataset })
+                    body: JSON.stringify(payload)
                 });
                 const data = await response.json();
-                resDiv.innerText += JSON.stringify(data, null, 2);
+                appendLog(JSON.stringify(data, null, 2));
             } catch (err) {
-                resDiv.innerText += `\nLỗi kết nối: ${err.message}`;
+                appendLog(`Lỗi kết nối: ${err.message}`, "error");
             }
         }
 

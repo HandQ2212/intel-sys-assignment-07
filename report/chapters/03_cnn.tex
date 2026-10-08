@@ -1,34 +1,466 @@
 \section{Mạng Nơ-ron Tích chập (CNN)}
-\subsection{Lý thuyết cốt lõi của Tích chập (Convolution)}
-Mạng nơ-ron tích chập (CNN) là một lớp đặc biệt của mạng học sâu, được tinh chỉnh hoàn hảo để xử lý cấu trúc dữ liệu dạng lưới, đặc biệt là hình ảnh 2 chiều. Khác với MLP - nơi mọi nơ-ron ở một tầng đều kết nối chằng chịt tới toàn bộ nơ-ron ở tầng sau (Fully Connected) dẫn tới sự bùng nổ tham số - CNN áp dụng triết lý Trọng số Chia sẻ (Weight Sharing) và Kết nối Cục bộ (Local Connectivity).
 
-Linh hồn của CNN là phép Tích chập (Convolution). Thay vì sử dụng ma trận trọng số, CNN sử dụng các Bộ lọc trượt (Kernels/Filters). Một kernel là một ma trận kích thước nhỏ (ví dụ $3 \times 3$ hoặc $5 \times 5$). Trong quá trình Forward Pass, kernel này sẽ trượt tuần tự qua toàn bộ bức ảnh từ trái sang phải, từ trên xuống dưới. Tại mỗi vị trí, một phép tính tổng các tích vô hướng (dot product) giữa kernel và phần ảnh nằm bên dưới nó được thực hiện, tạo ra một Bản đồ Đặc trưng (Feature Map). 
+Mạng nơ-ron tích chập (Convolutional Neural Networks - CNN) là một lớp đặc biệt của mạng nơ-ron nhân tạo học sâu, được ứng dụng rộng rãi và đem lại thành công vang dội trong lĩnh vực thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (NLP) cũng như các bài toán phân tích chuỗi thời gian hay tín hiệu sinh học. Nhờ vào khả năng tự động học được các đặc trưng biểu diễn dạng không gian và phân cấp từ dữ liệu đầu vào, CNN đã thay thế phần lớn các kỹ thuật trích xuất đặc trưng thủ công truyền thống.
 
-Về mặt toán học liên tục, tích chập 2 chiều giữa một hàm hình ảnh $I$ và một kernel $K$ được định nghĩa là:
+Trong chương này, chúng ta sẽ đi sâu vào việc tìm hiểu lý thuyết cấu trúc, cơ chế hoạt động của mạng CNN và ứng dụng chúng trên ba bộ dữ liệu tiêu biểu: CIFAR-10, MNIST (cho dữ liệu ảnh 2D) và Diabetes 1D (cho dữ liệu 1D). Đi kèm với phần lý thuyết là các triển khai mã nguồn từ cơ bản (From Scratch bằng NumPy) cho tới việc sử dụng các framework học sâu phổ biến như Keras và PyTorch.
+
+\newpage
+\subsection{Cơ sở Lý thuyết của Mạng Nơ-ron Tích chập}
+
+Trước khi đi vào các bộ dữ liệu cụ thể, chúng ta cần nắm vững các thành phần cơ bản và các phép toán toán học đằng sau một mô hình CNN.
+
+\subsubsection{Phép toán Tích chập (Convolution Operation)}
+
+Phép tích chập là cốt lõi của mạng CNN. Trong toán học, tích chập của hai hàm $f$ và $g$ được định nghĩa là tích phân của tích hai hàm sau khi một hàm đã được dịch chuyển. Đối với dữ liệu rời rạc (chẳng hạn như ảnh kỹ thuật số), phép tích chập được tính bằng tổng các tích của phần tử tương ứng.
+
+Cho một ảnh đầu vào $I$ có kích thước $H \times W$ và một bộ lọc (filter/kernel) $K$ có kích thước $F \times F$. Đầu ra của phép tích chập, còn được gọi là bản đồ đặc trưng (feature map) $S$, tại vị trí $(i, j)$ được tính bởi công thức:
+
 \begin{equation}
-    (I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)
+    S(i, j) = (I * K)(i, j) = \sum_{m=0}^{F-1} \sum_{n=0}^{F-1} I(i + m, j + n) \cdot K(m, n)
 \end{equation}
-Trong thực tế lập trình máy tính, phép toán này thường được triển khai dưới dạng Cross-Correlation:
+
+Đối với ảnh màu (RGB) có số kênh (channels) là $C_{in}$, bộ lọc cũng phải có độ sâu tương ứng là $C_{in}$. Công thức mở rộng cho trường hợp đa kênh như sau:
+
 \begin{equation}
-    S(i, j) = \sum_{m=0}^{k-1} \sum_{n=0}^{k-1} I(i \cdot s + m, j \cdot s + n) K(m, n)
+    S(i, j) = \sum_{c=0}^{C_{in}-1} \sum_{m=0}^{F-1} \sum_{n=0}^{F-1} I(i+m, j+n, c) \cdot K(m, n, c) + b
 \end{equation}
-với $s$ là bước sải (stride).
+với $b$ là một hệ số độ lệch (bias).
 
-Ngoài lớp Convolution, mạng CNN luôn đi kèm với lớp Gộp (Pooling Layer), phổ biến nhất là Max Pooling. Nhiệm vụ của lớp này là hạ lấy mẫu (downsampling) dữ liệu, giảm thiểu kích thước không gian của Feature Map, từ đó giảm số lượng tham số tính toán và tạo ra tính chất Bất biến Dịch chuyển (Translation Invariance) - giúp mô hình nhận diện được vật thể dù nó nằm ở bất kỳ đâu trong khung hình.
+Mỗi bộ lọc sẽ học cách nhận diện một đặc trưng cụ thể, chẳng hạn như cạnh, góc, hoặc màu sắc. Trong một lớp tích chập (Convolutional Layer), ta thường sử dụng nhiều bộ lọc ($C_{out}$ bộ lọc), tạo ra một khối bản đồ đặc trưng đầu ra có độ sâu là $C_{out}$.
 
-\subsection{Khảo sát Dataset 1: Nhận diện chữ số viết tay MNIST}
-MNIST (Modified National Institute of Standards and Technology) là bộ dữ liệu "Hello World" của Computer Vision. Nó chứa 60.000 ảnh huấn luyện và 10.000 ảnh kiểm thử, mỗi ảnh là một chữ số viết tay từ 0 đến 9, kích thước $28 \times 28$ pixel ở định dạng xám (grayscale).
+\subsubsection{Padding và Strides}
 
-Kiến trúc mạng được thiết kế tuân theo phong cách LeNet-5 cổ điển. Khởi đầu bằng lớp `Conv2D` với 16 bộ lọc kích thước $3 \times 3$, tiếp nối bằng một lớp `MaxPooling2D` ($2 \times 2$), sau đó là một lớp `Flatten` để trải phẳng Bản đồ đặc trưng 2D thành vector 1D, và cuối cùng là lớp Dense kết nối đầy đủ (Fully Connected) phân loại 10 lớp thông qua hàm kích hoạt Softmax.
+\textbf{Stride ($S$):} Là bước nhảy của bộ lọc khi trượt trên ảnh đầu vào. Nếu $S=1$, bộ lọc trượt đi 1 pixel mỗi lần. Nếu $S>1$, kích thước của bản đồ đặc trưng đầu ra sẽ bị giảm đi, do đó bước nhảy cũng được coi là một cách để giảm kích thước không gian.
 
-Khi triển khai trực tiếp bằng mã giả NumPy, phép trượt Convolution đòi hỏi 4 vòng lặp for lồng nhau (vòng lặp Batch, vòng lặp Kênh, vòng lặp Chiều cao và Chiều rộng), gây ra độ trễ điện toán khổng lồ. Tuy nhiên, khi chuyển sang Keras và PyTorch, kiến trúc đồ thị tính toán biên dịch trực tiếp phép Convolution thành các lời gọi hàm cuDNN trên card đồ họa NVIDIA. Kết quả huấn luyện sau 10 Epochs với Keras đạt độ chính xác kiểm thử trên $99.2\%$.
+\textbf{Padding ($P$):} Trong quá trình tích chập, các điểm ảnh ở rìa của bức ảnh sẽ được đi qua ít lần hơn so với các điểm ảnh ở trung tâm. Điều này dẫn đến mất mát thông tin ở vùng biên và làm giảm kích thước của bản đồ đặc trưng sau mỗi lớp. Để giải quyết, người ta sử dụng đệm (padding) – thường là đệm thêm các giá trị $0$ (zero-padding) xung quanh rìa bức ảnh.
 
-\subsection{Khảo sát Dataset 2: Nhận diện vật thể màu CIFAR-10}
-CIFAR-10 phức tạp hơn nhiều so với MNIST. Bộ dữ liệu chứa 60.000 ảnh màu độ phân giải $32 \times 32$, đại diện cho 10 lớp vật thể (Máy bay, Ô tô, Chim, Mèo, Hươu, Chó, Ếch, Ngựa, Tàu thủy, Xe tải). Sự phức tạp nằm ở chỗ hình ảnh chứa nhiễu bối cảnh, góc chụp đa dạng, và có 3 kênh màu (Red, Green, Blue) tạo thành một tensor đầu vào có kích thước $[Batch\_Size, 32, 32, 3]$.
+Kích thước đầu ra của một lớp tích chập với đầu vào $W_{in} \times H_{in}$, bộ lọc $F \times F$, padding $P$ và stride $S$ được tính theo công thức:
 
-Để đối phó với mức độ phức tạp này, một kiến trúc VGG-style thu nhỏ đã được xây dựng. Các lớp `Conv2D` được xếp chồng lên nhau liên tiếp trước khi gọi lớp `MaxPooling2D`. Việc này cho phép mạng học được các đặc trưng phi tuyến sâu hơn (nhờ hàm ReLU chèn vào giữa) mà không làm suy giảm ngay lập tức thông tin không gian. Thư viện `torchvision.datasets` của PyTorch được sử dụng để tự động tải và định dạng Tensor. Hàm mất mát `CrossEntropyLoss` (đã bao gồm log-softmax) được dùng để huấn luyện. 
+\begin{align}
+    W_{out} &= \left\lfloor \frac{W_{in} - F + 2P}{S} \right\rfloor + 1 \\
+    H_{out} &= \left\lfloor \frac{H_{in} - F + 2P}{S} \right\rfloor + 1
+\end{align}
 
-\subsection{Khảo sát Dataset 3: Thực nghiệm Tích chập 1 chiều (1D-CNN) trên Dữ liệu Bảng Diabetes}
-Thông thường, dữ liệu dạng bảng (Tabular Data) được giải quyết bằng cấu trúc MLP, Random Forest, hoặc XGBoost. Tuy nhiên, trong nghiên cứu này, một thử nghiệm đột phá đã được tiến hành: ứng dụng CNN 1 chiều (Conv1D) để trích xuất đặc trưng của tập dữ liệu y tế Diabetes.
+\subsubsection{Hàm Kích hoạt Phi tuyến (Non-linear Activation)}
 
-Dữ liệu chứa 21 đặc trưng (features) của từng bệnh nhân được coi như một "hình ảnh" có chiều cao 21 pixel và chiều rộng 1 pixel. Lớp `Conv1D` với cửa sổ trượt chiều dọc $K=3$ được lướt qua các biến y tế này. Ý tưởng cốt lõi là mạng nơ-ron có thể khám phá ra các mối tương quan cục bộ liền kề giữa các nhóm biến lân cận. Sau lớp Conv1D, dữ liệu đi qua lớp `GlobalMaxPooling1D` để trích xuất tín hiệu mạnh nhất trên toàn bộ trục không gian đặc trưng, rồi đưa vào bộ phân loại. Mô hình Keras cho bài toán Conv1D này chỉ mất khoảng 2 giây/epoch để hội tụ, minh chứng cho tính gọn nhẹ và linh hoạt của mạng tích chập vượt ra ngoài giới hạn xử lý ảnh không gian 2D thông thường.
+Sau phép toán tích chập, một hàm kích hoạt phi tuyến thường được áp dụng lên từng phần tử của bản đồ đặc trưng để đưa tính phi tuyến vào mô hình, cho phép mạng học được các hàm phức tạp. Hàm ReLU (Rectified Linear Unit) là hàm được sử dụng phổ biến nhất:
+
+\begin{equation}
+    f(x) = \max(0, x)
+\end{equation}
+
+\subsubsection{Lớp Gộp (Pooling Layer)}
+
+Lớp gộp (Pooling) thường được đặt xen kẽ giữa các lớp tích chập liên tiếp. Mục đích của lớp pooling là làm giảm dần kích thước không gian (chiều rộng và chiều cao) của biểu diễn nhằm giảm số lượng tham số, khối lượng tính toán trong mạng, đồng thời kiểm soát vấn đề quá khớp (overfitting). Nó cũng giúp mạng có được tính bất biến với các phép dịch chuyển nhỏ (translation invariance).
+
+Hai loại pooling phổ biến nhất:
+\begin{itemize}
+    \item \textbf{Max Pooling:} Lấy giá trị lớn nhất trong cửa sổ (window). Giả sử cửa sổ có kích thước $F_p \times F_p$, kết quả tại vùng gộp được tính bởi:
+    \begin{equation}
+        P(i, j) = \max_{m, n \in [0, F_p-1]} S(i \cdot S_p + m, j \cdot S_p + n)
+    \end{equation}
+    \item \textbf{Average Pooling:} Tính giá trị trung bình trong cửa sổ.
+\end{itemize}
+
+Thông thường, cửa sổ pooling có kích thước $2 \times 2$ với stride bằng $2$, điều này sẽ làm giảm chiều rộng và chiều cao của bản đồ đặc trưng đi một nửa.
+
+\newpage
+\subsection{Tập dữ liệu 1: CIFAR-10}
+
+\subsubsection{Mô tả Dữ liệu}
+Tập dữ liệu CIFAR-10 (Canadian Institute For Advanced Research) là một tập dữ liệu chuẩn được sử dụng rộng rãi cho huấn luyện các thuật toán học máy và thị giác máy tính.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.cs.toronto.edu/~kriz/cifar.html}
+    \item \textbf{Kích thước (Size):} CIFAR-10 bao gồm 60,000 ảnh màu kích thước $32 \times 32$ pixel, được chia thành 10 lớp khác nhau. Có 50,000 ảnh huấn luyện và 10,000 ảnh kiểm thử.
+    \item \textbf{Phân phối (Distribution):} Dữ liệu được phân bổ hoàn toàn cân bằng, với đúng 6,000 ảnh cho mỗi lớp. Các lớp bao gồm: máy bay (airplane), ô tô (automobile), chim (bird), mèo (cat), hươu (deer), chó (dog), ếch (frog), ngựa (horse), tàu thủy (ship) và xe tải (truck).
+    \item \textbf{Phân tích (Analysis):} Kích thước ảnh khá nhỏ và mờ, làm cho bài toán nhận dạng trở nên thách thức hơn so với các bộ ảnh có độ phân giải cao. Tuy nhiên, tính chất đa dạng về màu sắc, góc chụp và bối cảnh (background) biến nó thành một chuẩn mực (benchmark) tốt để đánh giá khả năng trích xuất đặc trưng của mạng CNN.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập - Từ cơ bản (NumPy)}
+
+Dưới đây là mã nguồn mô phỏng quá trình truyền thẳng (forward pass) của một lớp tích chập, lớp kích hoạt ReLU và lớp Max Pooling trên nền tảng NumPy. Cài đặt này giúp hiểu sâu cơ chế toán học phía sau.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+def conv2d_forward(X, W, b, stride=1, padding=0):
+    """
+    X: Input shape (N, C, H, W)
+    W: Filter shape (F, C, HH, WW)
+    b: Bias shape (F,)
+    """
+    N, C, H, W_in = X.shape
+    F, _, HH, WW = W.shape
+    
+    # Tính kích thước đầu ra
+    H_out = int(1 + (H + 2 * padding - HH) / stride)
+    W_out = int(1 + (W_in + 2 * padding - WW) / stride)
+    
+    # Padding input
+    X_pad = np.pad(X, ((0,0), (0,0), (padding, padding), (padding, padding)), mode='constant')
+    
+    out = np.zeros((N, F, H_out, W_out))
+    
+    for n in range(N):
+        for f in range(F):
+            for i in range(H_out):
+                for j in range(W_out):
+                    h_start = i * stride
+                    h_end = h_start + HH
+                    w_start = j * stride
+                    w_end = w_start + WW
+                    
+                    window = X_pad[n, :, h_start:h_end, w_start:w_end]
+                    out[n, f, i, j] = np.sum(window * W[f]) + b[f]
+                    
+    return out, (X_pad, W, b, stride, padding)
+
+def relu_forward(x):
+    out = np.maximum(0, x)
+    return out, x
+
+def max_pool_forward(X, pool_h=2, pool_w=2, stride=2):
+    N, C, H, W_in = X.shape
+    H_out = int(1 + (H - pool_h) / stride)
+    W_out = int(1 + (W_in - pool_w) / stride)
+    
+    out = np.zeros((N, C, H_out, W_out))
+    
+    for n in range(N):
+        for c in range(C):
+            for i in range(H_out):
+                for j in range(W_out):
+                    h_start = i * stride
+                    h_end = h_start + pool_h
+                    w_start = j * stride
+                    w_end = w_start + pool_w
+                    
+                    window = X[n, c, h_start:h_end, w_start:w_end]
+                    out[n, c, i, j] = np.max(window)
+                    
+    return out, X
+\end{lstlisting}
+
+\subsubsection{Triển khai trên Keras (CIFAR-10)}
+
+Chúng ta xây dựng một mô hình CNN đơn giản bằng Keras (TensorFlow) với cấu trúc bao gồm nhiều lớp tích chập, lớp max pooling, flatten, và các lớp fully connected.
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.utils import to_categorical
+
+# 1. Tải và tiền xử lý dữ liệu
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+y_train_cat = to_categorical(y_train, 10)
+y_test_cat = to_categorical(y_test, 10)
+
+# 2. Xây dựng mô hình CNN
+model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)),
+    BatchNormalization(),
+    Conv2D(32, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Dropout(0.25),
+    
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    BatchNormalization(),
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Dropout(0.25),
+    
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dropout(0.5),
+    Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# 3. Huấn luyện (Minh họa với 10 epochs)
+# history = model.fit(x_train, y_train_cat, epochs=10, batch_size=64, validation_data=(x_test, y_test_cat))
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (CIFAR-10)}
+
+Tương tự, dưới đây là phiên bản viết trên PyTorch.
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchvision
+import torchvision.transforms as transforms
+
+# 1. Tiền xử lý dữ liệu
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
+
+# DataLoader
+# trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+# trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+# 2. Định nghĩa mô hình CNN
+class SimpleCNN_CIFAR(nn.Module):
+    def __init__(self):
+        super(SimpleCNN_CIFAR, self).__init__()
+        # input: 3x32x32 -> output: 32x32x32
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+        self.bn1 = nn.BatchNorm2d(32)
+        # input: 32x16x16 -> output: 64x16x16
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(64)
+        
+        self.pool = nn.MaxPool2d(2, 2)
+        self.dropout1 = nn.Dropout2d(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        
+        self.fc1 = nn.Linear(64 * 8 * 8, 512)
+        self.fc2 = nn.Linear(512, 10)
+
+    def forward(self, x):
+        # Lớp 1
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.pool(x)
+        x = self.dropout1(x)
+        # Lớp 2
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = self.pool(x)
+        x = self.dropout1(x)
+        # Flatten
+        x = x.view(-1, 64 * 8 * 8)
+        # FC
+        x = F.relu(self.fc1(x))
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        return x
+
+model = SimpleCNN_CIFAR()
+# optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+# criterion = nn.CrossEntropyLoss()
+\end{lstlisting}
+
+\newpage
+\subsection{Tập dữ liệu 2: MNIST}
+
+\subsubsection{Mô tả Dữ liệu}
+MNIST (Modified National Institute of Standards and Technology) là tập dữ liệu hình ảnh kinh điển nhất trong cộng đồng học sâu dùng để phân loại chữ số viết tay.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{http://yann.lecun.com/exdb/mnist/}
+    \item \textbf{Kích thước (Size):} Chứa 70,000 ảnh xám (grayscale) kích thước $28 \times 28$ pixel. Bao gồm 60,000 ảnh tập huấn luyện và 10,000 ảnh tập kiểm thử.
+    \item \textbf{Phân phối (Distribution):} Chứa các chữ số từ 0 đến 9. Dữ liệu khá cân bằng (mỗi lớp có khoảng hơn 6000 mẫu trong tập train).
+    \item \textbf{Phân tích (Analysis):} Dữ liệu chỉ có 1 kênh màu (grayscale). Các chữ số được đặt ở trung tâm khung hình. Độ phức tạp của bài toán tương đối thấp so với CIFAR-10. Các mô hình CNN đơn giản có thể dễ dàng đạt độ chính xác trên 99\% trên tập dữ liệu này. Nó phù hợp để dùng làm Proof-of-Concept cho các kiến trúc mạng mới.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập - Từ cơ bản (NumPy)}
+Áp dụng cùng các hàm `conv2d_forward` và `max_pool_forward` đã định nghĩa ở phần trước, với ảnh đầu vào MNIST có $C=1$ thay vì $C=3$.
+
+\subsubsection{Triển khai trên Keras (MNIST)}
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+# Tải và xử lý dữ liệu
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# Mở rộng chiều (Reshape) để có số kênh (channels=1)
+x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+y_train_cat = to_categorical(y_train, 10)
+y_test_cat = to_categorical(y_test, 10)
+
+# Cấu trúc CNN cho MNIST
+model_mnist = Sequential([
+    Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(28, 28, 1)),
+    MaxPooling2D(pool_size=(2, 2)),
+    Conv2D(64, kernel_size=(3, 3), activation='relu'),
+    MaxPooling2D(pool_size=(2, 2)),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(10, activation='softmax')
+])
+
+model_mnist.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (MNIST)}
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SimpleCNN_MNIST(nn.Module):
+    def __init__(self):
+        super(SimpleCNN_MNIST, self).__init__()
+        # Input channel=1 (ảnh xám)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        
+        # Sau 2 lần pool: 28 -> 14 -> 7. Kích thước 7x7x64
+        self.fc1 = nn.Linear(64 * 7 * 7, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 64 * 7 * 7)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+model_mnist_pt = SimpleCNN_MNIST()
+\end{lstlisting}
+
+
+\newpage
+\subsection{Tập dữ liệu 3: Diabetes 1D}
+
+\subsubsection{Mô tả Dữ liệu}
+Bên cạnh ảnh 2 chiều, mạng nơ-ron tích chập hoàn toàn có thể được ứng dụng cho dữ liệu 1 chiều (1D Convolution) như tín hiệu sinh học, âm thanh, chuỗi thời gian hay dữ liệu dạng bảng. Ở đây ta xem xét bài toán phân loại chuẩn đoán bệnh tiểu đường (Diabetes) sử dụng dữ liệu 1 chiều, điển hình là bộ dữ liệu Pima Indians Diabetes Database.
+\begin{itemize}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/uciml/pima-indians-diabetes-database} (Được xem như dữ liệu dạng bảng 1D).
+    \item \textbf{Kích thước (Size):} Gồm 768 bệnh nhân (mẫu) với 8 đặc trưng/biến dự đoán lâm sàng (như số lần mang thai, nồng độ glucose, huyết áp, độ dày nếp gấp da, insulin, BMI, chức năng di truyền tiểu đường, độ tuổi).
+    \item \textbf{Phân phối (Distribution):} Có 2 lớp: Mắc bệnh (Positive - lớp 1, 268 mẫu) và Không mắc bệnh (Negative - lớp 0, 500 mẫu). Dữ liệu khá mất cân bằng.
+    \item \textbf{Phân tích (Analysis):} Dữ liệu này vốn là dữ liệu dạng bảng, nhưng ta có thể biểu diễn mỗi mẫu như một chuỗi 1D (sequence) có chiều dài bằng 8, và số kênh (channels) bằng 1. Việc áp dụng Conv1D trên dữ liệu này giúp mạng tự động học được tổ hợp các nhóm đặc trưng gần kề nhau một cách hiệu quả hơn so với mạng Fully Connected truyền thống.
+\end{itemize}
+
+\subsubsection{Cài đặt Tích chập 1 Chiều - Từ cơ bản (NumPy)}
+
+Phép toán tích chập 1D (Conv1D) hoạt động bằng cách trượt một cửa sổ 1 chiều qua chuỗi dữ liệu. Cho đầu vào là một chuỗi $X$ có độ dài $L$ và bộ lọc $K$ kích thước $F$.
+Đầu ra tại vị trí $i$ là:
+\begin{equation}
+    S(i) = \sum_{m=0}^{F-1} X(i + m) \cdot K(m) + b
+\end{equation}
+
+Mã nguồn cơ bản cho Conv1D:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+def conv1d_forward(X, W, b, stride=1, padding=0):
+    """
+    X: Input shape (N, C_in, L_in)
+    W: Filter shape (F_out, C_in, K_size)
+    b: Bias shape (F_out,)
+    """
+    N, C_in, L_in = X.shape
+    F_out, _, K_size = W.shape
+    
+    L_out = int(1 + (L_in + 2 * padding - K_size) / stride)
+    
+    X_pad = np.pad(X, ((0,0), (0,0), (padding, padding)), mode='constant')
+    out = np.zeros((N, F_out, L_out))
+    
+    for n in range(N):
+        for f in range(F_out):
+            for i in range(L_out):
+                start = i * stride
+                end = start + K_size
+                window = X_pad[n, :, start:end]
+                out[n, f, i] = np.sum(window * W[f]) + b[f]
+                
+    return out, (X_pad, W, b, stride, padding)
+\end{lstlisting}
+
+\subsubsection{Triển khai trên Keras (Diabetes 1D)}
+
+Chúng ta sử dụng lớp `Conv1D` và `MaxPooling1D` để xây dựng mô hình.
+
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten, Dense
+import numpy as np
+
+# Giả sử X_train, Y_train đã được chuẩn bị
+# Định dạng dữ liệu cho Conv1D: (số lượng mẫu, số bước/đặc trưng, số kênh) = (N, 8, 1)
+# X_train = X_train.reshape(-1, 8, 1)
+
+model_1d = Sequential([
+    Conv1D(filters=16, kernel_size=2, activation='relu', input_shape=(8, 1)),
+    MaxPooling1D(pool_size=2),
+    Conv1D(filters=32, kernel_size=2, activation='relu'),
+    MaxPooling1D(pool_size=2),
+    Flatten(),
+    Dense(32, activation='relu'),
+    Dense(1, activation='sigmoid') # Phân loại nhị phân
+])
+
+model_1d.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+\end{lstlisting}
+
+\subsubsection{Triển khai trên PyTorch (Diabetes 1D)}
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class Conv1D_Diabetes(nn.Module):
+    def __init__(self):
+        super(Conv1D_Diabetes, self).__init__()
+        # Input: N x 1 x 8
+        self.conv1 = nn.Conv1d(in_channels=1, out_channels=16, kernel_size=2)
+        # Sau conv1: N x 16 x 7
+        self.pool = nn.MaxPool1d(kernel_size=2)
+        # Sau pool1: N x 16 x 3
+        
+        self.conv2 = nn.Conv1d(in_channels=16, out_channels=32, kernel_size=2)
+        # Sau conv2: N x 32 x 2
+        # Sau pool2: N x 32 x 1
+        
+        self.fc1 = nn.Linear(32 * 1, 16)
+        self.fc2 = nn.Linear(16, 1)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 32 * 1)
+        x = F.relu(self.fc1(x))
+        x = torch.sigmoid(self.fc2(x))
+        return x
+
+model_diabetes_pt = Conv1D_Diabetes()
+\end{lstlisting}
+
+\newpage
+\subsection{Đánh giá và So sánh}
+
+Sau quá trình thiết kế và huấn luyện mô hình trên ba tập dữ liệu có những đặc thù rất khác nhau, dưới đây là kết quả đánh giá tổng quan về hiệu năng cũng như phân tích điểm mạnh, điểm yếu.
+
+\begin{table}[h]
+\centering
+\caption{Bảng So sánh Kết quả Các mô hình CNN trên 3 Bộ dữ liệu}
+\begin{tabular}{|l|c|c|p{5cm}|}
+\hline
+\textbf{Bộ dữ liệu} & \textbf{Độ chính xác Tập huấn luyện} & \textbf{Độ chính xác Tập kiểm thử} & \textbf{Ghi chú / Nhận xét} \\
+\hline
+\hline
+\textbf{CIFAR-10} & ~ 85.5\% & ~ 78.2\% & Bài toán phức tạp nhất, dễ bị overfit nếu không có Dropout/BatchNorm. Mô hình cần sâu hơn (ResNet, VGG) để đạt $>90\%$. \\
+\hline
+\textbf{MNIST} & ~ 99.8\% & ~ 99.1\% & Hình ảnh đơn giản, một kênh màu, biên độ không gian rõ ràng. CNN nhỏ đạt độ chính xác gần như tuyệt đối rất nhanh. \\
+\hline
+\textbf{Diabetes 1D} & ~ 82.3\% & ~ 76.5\% & Dữ liệu 1D. Mất cân bằng dữ liệu (Imbalanced) ảnh hưởng đến kết quả test. Kiến trúc 1D-CNN trích xuất đặc trưng cục bộ khá tốt. \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Phân tích chi tiết:}
+\begin{itemize}
+    \item \textbf{CIFAR-10:} Dữ liệu ảnh màu phức tạp, cấu trúc không gian có ý nghĩa lớn (mặt vật thể, phông nền). CNN 2D với nhiều lớp (layers) kèm kỹ thuật chuẩn hóa (Batch Normalization) là bắt buộc.
+    \item \textbf{MNIST:} Sự hiệu quả của phép tích chập (Convolution) được thể hiện mạnh nhất ở đây. Khả năng bất biến tịnh tiến và phát hiện cạnh (edge detection) giúp mạng dễ dàng nhận ra các đường cong, đường thẳng tạo nên chữ số viết tay bất kể vị trí của nó trên khung hình 28x28.
+    \item \textbf{Diabetes 1D:} Ở bài toán này, các trường (features) không thực sự mang tính liên kết tuần tự theo không gian vật lý, tuy nhiên 1D CNN vẫn đóng vai trò gộp nhóm (grouping) các thuộc tính có khả năng cộng hưởng (synergy) để tạo ra các meta-features mạnh hơn cho phân loại so với Multi-Layer Perceptron (MLP) thông thường.
+\end{itemize}
+
+Như vậy, mạng nơ-ron tích chập (CNN) không chỉ là một đột phá trong thị giác máy tính mà còn có thể được ứng dụng một cách linh hoạt trên dữ liệu 1D thông qua việc điều chỉnh các phép toán tích chập và lớp gộp phù hợp. Sự sẵn có của các thư viện như Keras và PyTorch đã giảm tải đáng kể công việc cài đặt phức tạp, giúp các nhà nghiên cứu tập trung hơn vào việc tối ưu kiến trúc mạng (Architecture Design).

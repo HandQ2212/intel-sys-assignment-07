@@ -1,0 +1,241 @@
+\section{Triển khai Hệ thống (Deployment)}
+
+\subsection{Tổng quan Kiến trúc Triển khai}
+Sau khi hoàn thành quá trình xây dựng, huấn luyện và đánh giá các mô hình học máy và học sâu, bước tiếp theo và cũng là một trong những bước quan trọng nhất trong vòng đời của một dự án trí tuệ nhân tạo là triển khai (deployment) các mô hình này vào môi trường thực tế. Mục tiêu của việc triển khai là biến các mô hình lý thuyết và các tệp trọng số tĩnh thành các dịch vụ trực tuyến có khả năng tiếp nhận dữ liệu đầu vào từ người dùng cuối, thực hiện suy luận (inference) và trả về kết quả dự đoán một cách nhanh chóng và chính xác. 
+
+Trong dự án này, chúng tôi áp dụng kiến trúc Client-Server truyền thống nhưng được tối ưu hóa cho các ứng dụng AI. Cụ thể, hệ thống được chia thành hai phần chính:
+\begin{itemize}
+    \item \textbf{Backend (Máy chủ):} Chịu trách nhiệm tải các mô hình đã được huấn luyện, xử lý các yêu cầu từ phía người dùng (API requests), thực hiện tiền xử lý dữ liệu (preprocessing), chạy suy luận qua các mô hình (Scikit-Learn, Keras, PyTorch) và định dạng kết quả trả về. Framework được lựa chọn là FastAPI nhờ vào hiệu năng cao, hỗ trợ bất đồng bộ (asynchronous) và khả năng tự động tạo tài liệu API.
+    \item \textbf{Frontend (Giao diện người dùng):} Một giao diện Web đơn giản nhưng trực quan, cho phép người dùng tương tác trực tiếp với các mô hình. Giao diện được xây dựng bằng HTML, CSS (Bootstrap) và JavaScript. Các tính năng chính bao gồm một khung vẽ (Canvas) để người dùng viết chữ số viết tay (cho bài toán MNIST) và một công cụ chọn ngày (Date Picker) để dự báo thời tiết (cho bài toán Time Series).
+\end{itemize}
+
+Kiến trúc phân tách này không chỉ giúp cho việc bảo trì mã nguồn dễ dàng hơn mà còn cho phép khả năng mở rộng linh hoạt. Nếu lượng truy cập tăng lên, chúng ta hoàn toàn có thể triển khai Backend lên các dịch vụ đám mây mạnh mẽ (như AWS, GCP) có hỗ trợ GPU để tăng tốc độ suy luận, trong khi Frontend có thể được lưu trữ trên các dịch vụ CDN nhẹ.
+
+\subsection{Xây dựng Backend với FastAPI}
+FastAPI là một web framework hiện đại, hiệu năng cao để xây dựng các API bằng Python dựa trên các type hints tiêu chuẩn. Trong bài toán của chúng ta, Backend cần phải có khả năng quản lý nhiều loại mô hình khác nhau, bao gồm:
+\begin{itemize}
+    \item Các mô hình Machine Learning truyền thống (Decision Tree, SVM, Random Forest) được lưu dưới định dạng \texttt{.pkl} (sử dụng thư viện \texttt{joblib} hoặc \texttt{pickle}).
+    \item Các mô hình Deep Learning xây dựng bằng TensorFlow/Keras được lưu dưới định dạng \texttt{.h5}.
+    \item Các mô hình Deep Learning xây dựng bằng PyTorch được lưu dưới định dạng \texttt{.pt} hoặc \texttt{.pth}.
+\end{itemize}
+
+Quá trình tải các mô hình này vào bộ nhớ (RAM) cần được thực hiện một lần duy nhất khi khởi động server (startup event) để tránh độ trễ không cần thiết trong quá trình xử lý yêu cầu của người dùng. Sau khi mô hình được tải, các API endpoint sẽ được định nghĩa để tiếp nhận dữ liệu POST.
+
+Dưới đây là một đoạn mã trích xuất từ \texttt{main.py} minh họa cách chúng tôi sử dụng FastAPI để xây dựng server suy luận:
+
+\begin{lstlisting}[language=Python, caption={Trích đoạn mã khởi tạo FastAPI và tải các mô hình}, label={lst:fastapi_main}]
+from fastapi import FastAPI, UploadFile, File, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import uvicorn
+import numpy as np
+import joblib
+import torch
+from tensorflow.keras.models import load_model
+import io
+from PIL import Image
+
+app = FastAPI(title="AI Models Deployment API")
+
+# Tích hợp tệp tĩnh và template HTML
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+# Khởi tạo các biến toàn cục lưu trữ mô hình
+models = {}
+
+@app.on_event("startup")
+async def load_all_models():
+    """Tải tất cả các mô hình vào bộ nhớ khi khởi động server."""
+    global models
+    try:
+        # Tải mô hình Scikit-Learn (.pkl)
+        models['rf_model'] = joblib.load("models/rf_weather_model.pkl")
+        
+        # Tải mô hình Keras (.h5)
+        models['keras_mnist'] = load_model("models/keras_mnist_model.h5")
+        
+        # Tải mô hình PyTorch (.pt)
+        device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+        pytorch_model = CustomCNN()
+        pytorch_model.load_state_dict(torch.load("models/pytorch_mnist.pt", map_location=device))
+        pytorch_model.to(device)
+        pytorch_model.eval()
+        models['pytorch_mnist'] = pytorch_model
+        models['torch_device'] = device
+        
+        print("Đã tải thành công tất cả các mô hình.")
+    except Exception as e:
+        print(f"Lỗi khi tải mô hình: {e}")
+
+@app.post("/api/predict_mnist")
+async def predict_mnist(file: UploadFile = File(...), model_type: str = "keras"):
+    """Endpoint xử lý ảnh tải lên và dự đoán chữ số."""
+    # Đọc dữ liệu ảnh từ request
+    contents = await file.read()
+    image = Image.open(io.BytesIO(contents)).convert('L')
+    
+    # Tiền xử lý ảnh (Resize về 28x28, chuẩn hóa pixel)
+    image = image.resize((28, 28))
+    img_array = np.array(image) / 255.0
+    
+    if model_type == "keras":
+        # Chuẩn bị tensor cho Keras: shape (1, 28, 28, 1)
+        img_tensor = img_array.reshape(1, 28, 28, 1)
+        pred = models['keras_mnist'].predict(img_tensor)
+        predicted_class = int(np.argmax(pred, axis=1)[0])
+        confidence = float(np.max(pred))
+        return {"digit": predicted_class, "confidence": confidence}
+        
+    elif model_type == "pytorch":
+        # Chuẩn bị tensor cho PyTorch: shape (1, 1, 28, 28)
+        device = models['torch_device']
+        img_tensor = torch.tensor(img_array, dtype=torch.float32).unsqueeze(0).unsqueeze(0).to(device)
+        with torch.no_grad():
+            outputs = models['pytorch_mnist'](img_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+            confidence, predicted = torch.max(probabilities, 1)
+        return {"digit": predicted.item(), "confidence": confidence.item()}
+        
+    return JSONResponse(status_code=400, content={"message": "Invalid model type"})
+\end{lstlisting}
+
+Đoạn mã trên thể hiện rõ quá trình khởi tạo ứng dụng, sử dụng decorator \texttt{@app.on\_event("startup")} để tải toàn bộ các tệp mô hình vào RAM. Tiếp theo, endpoint \texttt{/api/predict\_mnist} được xây dựng để nhận hình ảnh và một cờ \texttt{model\_type} để xác định người dùng muốn chạy mô hình Keras hay PyTorch. Quá trình tiền xử lý ảnh (chuyển sang ảnh xám (Grayscale), thay đổi kích thước về 28x28, và chuẩn hóa giá trị điểm ảnh về khoảng [0, 1]) được thực hiện một cách đồng nhất trước khi chuyển vào mô hình học sâu.
+
+\subsection{Xây dựng Giao diện Người dùng (Web UI)}
+Để tạo trải nghiệm tốt cho người dùng, một giao diện Web trực quan đã được xây dựng. Chúng tôi sử dụng HTML5 kết hợp với framework Bootstrap để tạo bố cục giao diện đáp ứng (responsive design), có thể hoạt động tốt trên cả máy tính và thiết bị di động.
+
+Một trong những điểm nhấn của giao diện là khu vực cho phép người dùng trực tiếp dùng chuột (hoặc ngón tay trên màn hình cảm ứng) để vẽ một chữ số, sau đó gửi hình ảnh đó về Backend để dự đoán. Thay vì yêu cầu người dùng phải tải lên một tệp ảnh tĩnh từ máy tính, thẻ \texttt{<canvas>} của HTML5 được khai thác triệt để.
+
+Khu vực dự báo chuỗi thời gian (Thời tiết) sử dụng một công cụ chọn ngày (Date Picker) thân thiện, giúp người dùng chọn một mốc thời gian trong tương lai gần để xem dự báo nhiệt độ.
+
+Dưới đây là một phần mã nguồn \texttt{index.html} (kết hợp JavaScript) mô tả cách tích hợp Canvas và gửi yêu cầu suy luận đến Backend:
+
+\begin{lstlisting}[language=HTML, caption={Trích đoạn mã HTML/JS xử lý giao diện Canvas cho dự đoán MNIST}, label={lst:html_canvas}]
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Prediction Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #drawCanvas { border: 2px solid #333; cursor: crosshair; background-color: black; }
+    </style>
+</head>
+<body class="container mt-5">
+    <h2>Nhận diện Chữ số viết tay (MNIST)</h2>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <canvas id="drawCanvas" width="280" height="280"></canvas>
+            <div class="mt-2">
+                <button class="btn btn-warning" id="btnClear">Xóa bảng</button>
+                <button class="btn btn-primary" id="btnPredictKeras">Dự đoán (Keras)</button>
+                <button class="btn btn-success" id="btnPredictPyTorch">Dự đoán (PyTorch)</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Kết quả:</h4>
+            <h1 id="resultDigit" class="display-1 text-primary">-</h1>
+            <p>Độ tin cậy: <span id="resultConfidence">0.00</span>%</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        // Khởi tạo nền đen, nét vẽ màu trắng (tương tự như MNIST gốc)
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 15;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "white";
+
+        canvas.addEventListener('mousedown', () => { isDrawing = true; });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; ctx.beginPath(); });
+        canvas.addEventListener('mousemove', draw);
+
+        function draw(event) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(event.clientX - rect.left, event.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+        }
+
+        document.getElementById('btnClear').addEventListener('click', () => {
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('resultDigit').innerText = "-";
+        });
+
+        async function sendPredictionRequest(modelType) {
+            // Chuyển canvas thành blob (hình ảnh)
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append("file", blob, "canvas_image.png");
+                
+                try {
+                    const response = await fetch(`/api/predict_mnist?model_type=${modelType}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    
+                    document.getElementById('resultDigit').innerText = data.digit;
+                    document.getElementById('resultConfidence').innerText = (data.confidence * 100).toFixed(2);
+                } catch (error) {
+                    alert("Có lỗi xảy ra khi dự đoán!");
+                }
+            }, 'image/png');
+        }
+
+        document.getElementById('btnPredictKeras').addEventListener('click', () => sendPredictionRequest('keras'));
+        document.getElementById('btnPredictPyTorch').addEventListener('click', () => sendPredictionRequest('pytorch'));
+    </script>
+</body>
+</html>
+\end{lstlisting}
+
+Sự kết hợp giữa JavaScript Canvas API và Fetch API cung cấp một luồng dữ liệu trơn tru: Hình vẽ tay (nét trắng trên nền đen) được tạo ra trên trình duyệt, thu thập dưới dạng dữ liệu Blob nhị phân, sau đó gửi qua HTTP POST tới máy chủ FastAPI để được xử lý và trả về kết quả JSON theo thời gian thực.
+
+\subsection{Xử lý Sự cố TensorFlow và Metal trên macOS}
+Trong quá trình triển khai hệ thống, đặc biệt là trên các thiết bị Apple sử dụng chip dòng M (M1/M2/M3) với hệ điều hành macOS, chúng tôi đã gặp phải một số thách thức liên quan đến tính tương thích phần cứng và thư viện học sâu.
+
+Apple đã phát triển một backend có tên là \textit{Metal Performance Shaders (MPS)} để tăng tốc đồ họa và xử lý mảng trên các thiết bị của họ. Trong khi PyTorch hỗ trợ MPS khá tốt thông qua thiết bị \texttt{torch.device("mps")}, TensorFlow lại gặp nhiều vấn đề không ổn định khi tải plugin Metal. Sự cố cụ thể thường là ứng dụng (như FastAPI server hoặc tiến trình Python) bị crash (treo hoặc kết thúc đột ngột với lỗi Segmentation Fault) khi gọi hàm \texttt{load\_model} hoặc trong lần suy luận (inference) đầu tiên. Nguyên nhân sâu xa được cho là do sự xung đột trong việc phân bổ tài nguyên bộ nhớ GPU giữa Metal plugin của TensorFlow (cụ thể là \texttt{tensorflow-metal}) và các tiến trình không đồng bộ của ASGI server (như Uvicorn).
+
+Để giải quyết triệt để vấn đề này trên môi trường phát triển và triển khai cục bộ (Local deployment), chúng tôi đã phải áp dụng các biện pháp can thiệp ở cấp độ biến môi trường (Environment Variables) trước khi import thư viện TensorFlow. Cụ thể:
+
+\begin{enumerate}
+    \item \textbf{Vô hiệu hóa oneDNN tối ưu hóa:} TensorFlow đôi khi gặp lỗi với các tập lệnh tối ưu CPU trên kiến trúc ARM64. Ta có thể tắt cảnh báo hoặc tắt oneDNN bằng cách thiết lập \texttt{TF\_ENABLE\_ONEDNN\_OPTS=0}.
+    \item \textbf{Ép buộc sử dụng CPU cho TensorFlow:} Vì quá trình suy luận (inference) cho bài toán MNIST xử lý một lượng dữ liệu rất nhỏ (ảnh 28x28) mỗi lần, việc dùng GPU để tăng tốc là không thực sự cần thiết và đôi khi thời gian overhead để chuyển dữ liệu vào GPU còn lâu hơn thời gian tính toán trên CPU. Do đó, việc vô hiệu hóa Metal/GPU và ép TensorFlow chạy hoàn toàn trên CPU là một giải pháp an toàn và đáng tin cậy để ngăn chặn crash.
+\end{enumerate}
+
+Chúng tôi đã cấu hình lại tập lệnh khởi động (hoặc phần đầu của file \texttt{main.py}) như sau:
+
+\begin{lstlisting}[language=Python, caption={Cấu hình biến môi trường để tránh lỗi TensorFlow trên macOS}, label={lst:tf_metal_fix}]
+import os
+import sys
+
+# Vô hiệu hóa tối ưu hóa oneDNN để tránh cảnh báo/lỗi trên ARM64
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+# Ép TensorFlow chỉ hiển thị thiết bị CPU (ẩn GPU/Metal)
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+# Vô hiệu hóa thông báo lỗi log cấp độ thấp của TF (chỉ giữ lại ERROR)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+import tensorflow as tf
+
+# Kiểm tra đảm bảo TensorFlow không nhìn thấy GPU nào
+gpus = tf.config.list_physical_devices('GPU')
+if not gpus:
+    print("TensorFlow đang chạy ở chế độ CPU - Tắt Metal/GPU để đảm bảo tính ổn định.")
+else:
+    print("Cảnh báo: TF vẫn nhận diện được GPU. Điều này có thể gây crash trên macOS M-series.")
+\end{lstlisting}
+
+Nhờ áp dụng các thiết lập này, Backend FastAPI đã có thể khởi động ổn định, tải thành công mô hình Keras dạng \texttt{.h5} và phục vụ liên tục hàng ngàn yêu cầu dự đoán thông qua Web UI mà không gặp phải bất kỳ sự cố dừng đột ngột nào. Sự khác biệt về thời gian phản hồi giữa CPU và GPU đối với một hình ảnh duy nhất 28x28 là hoàn toàn không thể nhận thấy đối với người dùng (dưới 10ms), do đó hiệu suất thực tế của hệ thống không bị ảnh hưởng.

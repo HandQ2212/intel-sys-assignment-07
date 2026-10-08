@@ -1,0 +1,78 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {section}{\numberline {1}Giới thiệu chung về Bài tập lớn}{4}{section.1}%
+\contentsline {section}{\numberline {2}Mục tiêu và Phạm vi}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Mục tiêu của báo cáo}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Phạm vi thực hiện}{5}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Cấu trúc của báo cáo}{7}{section.3}%
+\contentsline {section}{\numberline {4}Lịch sử phát triển của Trí tuệ nhân tạo}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Sự ra đời của Trí tuệ nhân tạo (Trước 1956 và Hội nghị Dartmouth)}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Kỳ vọng ban đầu và Mùa đông AI đầu tiên (1956 - 1980)}{11}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Hệ chuyên gia và Mùa đông AI thứ hai (1980 - 1993)}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Sự trỗi dậy của Thuyết kết nối và Học máy (1990s - 2010s)}{14}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Sự bùng nổ của Học sâu (2011 - nay)}{16}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Tình trạng hiện tại và Tương lai của Trí tuệ nhân tạo}{18}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Các kỹ thuật Học máy Cơ bản (Machine Learning)}{20}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Giới thiệu chung về các kỹ thuật Học máy cơ bản}{20}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Bộ dữ liệu 1: Diabetes (Bệnh Tiểu đường)}{21}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Mô tả bộ dữ liệu và phân tích}{21}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Lý thuyết Hồi quy Logistic (Logistic Regression)}{21}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Cài đặt mô hình}{23}{subsubsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.3}Bộ dữ liệu 2: Housing Prices Vietnam (Giá Nhà tại Việt Nam)}{25}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Mô tả bộ dữ liệu và phân tích}{25}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Lý thuyết Hồi quy Tuyến tính Đa biến (Multiple Linear Regression)}{25}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Cài đặt mô hình}{27}{subsubsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.4}Bộ dữ liệu 3: Ecommerce Reviews (Đánh giá Thương mại Điện tử)}{29}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Mô tả bộ dữ liệu và phân tích}{29}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Lý thuyết Mạng nơ-ron đa tầng (Multilayer Perceptron - MLP)}{29}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Cài đặt mô hình}{31}{subsubsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.5}Đánh giá và So sánh các Mô hình}{33}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Mạng Nơ-ron Tích chập (CNN)}{35}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Cơ sở Lý thuyết của Mạng Nơ-ron Tích chập}{36}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Phép toán Tích chập (Convolution Operation)}{36}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Padding và Strides}{36}{subsubsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.3}Hàm Kích hoạt Phi tuyến (Non-linear Activation)}{37}{subsubsection.6.1.3}%
+\contentsline {subsubsection}{\numberline {6.1.4}Lớp Gộp (Pooling Layer)}{37}{subsubsection.6.1.4}%
+\contentsline {subsection}{\numberline {6.2}Tập dữ liệu 1: CIFAR-10}{38}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Mô tả Dữ liệu}{38}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Cài đặt Tích chập - Từ cơ bản (NumPy)}{38}{subsubsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.3}Triển khai trên Keras (CIFAR-10)}{39}{subsubsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.4}Triển khai trên PyTorch (CIFAR-10)}{40}{subsubsection.6.2.4}%
+\contentsline {subsection}{\numberline {6.3}Tập dữ liệu 2: MNIST}{42}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Mô tả Dữ liệu}{42}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Cài đặt Tích chập - Từ cơ bản (NumPy)}{42}{subsubsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3}Triển khai trên Keras (MNIST)}{42}{subsubsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.4}Triển khai trên PyTorch (MNIST)}{43}{subsubsection.6.3.4}%
+\contentsline {subsection}{\numberline {6.4}Tập dữ liệu 3: Diabetes 1D}{44}{subsection.6.4}%
+\contentsline {subsubsection}{\numberline {6.4.1}Mô tả Dữ liệu}{44}{subsubsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.2}Cài đặt Tích chập 1 Chiều - Từ cơ bản (NumPy)}{44}{subsubsection.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.3}Triển khai trên Keras (Diabetes 1D)}{45}{subsubsection.6.4.3}%
+\contentsline {subsubsection}{\numberline {6.4.4}Triển khai trên PyTorch (Diabetes 1D)}{45}{subsubsection.6.4.4}%
+\contentsline {subsection}{\numberline {6.5}Đánh giá và So sánh}{47}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Mạng Nơ-ron Hồi quy (RNN) và Xử lý Dữ liệu Chuỗi Thời gian}{48}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Cơ sở Lý thuyết cơ bản}{48}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Mạng Nơ-ron Hồi quy (RNN)}{48}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Lan truyền ngược qua thời gian (BPTT)}{48}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Bộ nhớ Ngắn-Dài hạn (LSTM)}{49}{subsubsection.7.1.3}%
+\contentsline {subsubsection}{\numberline {7.1.4}Gated Recurrent Unit (GRU)}{49}{subsubsection.7.1.4}%
+\contentsline {subsection}{\numberline {7.2}Tập dữ liệu 1: Dự báo Giá Cổ phiếu Amazon (AMZN)}{50}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Mô tả, Phân phối và Phân tích Dữ liệu}{50}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Cài đặt mô hình bằng Python (From Scratch - NumPy)}{50}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Cài đặt mô hình bằng Keras}{52}{subsubsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.4}Cài đặt mô hình bằng PyTorch}{52}{subsubsection.7.2.4}%
+\contentsline {subsection}{\numberline {7.3}Tập dữ liệu 2: Dự báo Giá Vàng (Gold Price)}{54}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Mô tả, Phân phối và Phân tích Dữ liệu}{54}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Cài đặt mô hình bằng Python (From Scratch - NumPy)}{54}{subsubsection.7.3.2}%
+\contentsline {subsubsection}{\numberline {7.3.3}Cài đặt mô hình bằng Keras}{55}{subsubsection.7.3.3}%
+\contentsline {subsubsection}{\numberline {7.3.4}Cài đặt mô hình bằng PyTorch}{56}{subsubsection.7.3.4}%
+\contentsline {subsection}{\numberline {7.4}Tập dữ liệu 3: Dự báo Giá Bạc (Silver Price)}{57}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}Mô tả, Phân phối và Phân tích Dữ liệu}{57}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Cài đặt mô hình bằng Python (From Scratch - NumPy)}{57}{subsubsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.3}Cài đặt mô hình bằng Keras}{58}{subsubsection.7.4.3}%
+\contentsline {subsubsection}{\numberline {7.4.4}Cài đặt mô hình bằng PyTorch}{58}{subsubsection.7.4.4}%
+\contentsline {subsection}{\numberline {7.5}Đánh giá và So sánh Mô hình}{60}{subsection.7.5}%
+\contentsline {subsubsection}{\numberline {7.5.1}Phân tích kết quả}{60}{subsubsection.7.5.1}%
+\contentsline {subsubsection}{\numberline {7.5.2}Kết luận về việc lựa chọn Thư viện}{60}{subsubsection.7.5.2}%
+\contentsline {section}{\numberline {8}Triển khai Hệ thống (Deployment)}{61}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Tổng quan Kiến trúc Triển khai}{61}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Xây dựng Backend với FastAPI}{61}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Xây dựng Giao diện Người dùng (Web UI)}{63}{subsection.8.3}%

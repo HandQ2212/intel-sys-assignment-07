@@ -1,30 +1,76 @@
-\section{Mở đầu}
-\subsection{Lý do chọn đề tài}
-Trong kỷ nguyên công nghệ số hiện đại, Trí tuệ Nhân tạo (Artificial Intelligence - AI) đã và đang tạo ra những bước ngoặt mang tính cách mạng trong hầu hết mọi lĩnh vực của đời sống con người. Từ những hệ thống gợi ý sản phẩm thông minh trên các nền tảng thương mại điện tử, hệ thống chẩn đoán y khoa tự động, xe tự lái, cho đến các mô hình ngôn ngữ lớn (Large Language Models) như ChatGPT, AI không còn là một khái niệm viễn tưởng mà đã trở thành một công cụ thiết yếu. Sự phát triển bùng nổ của lượng dữ liệu khổng lồ (Big Data) kết hợp với năng lực tính toán ngày càng vượt trội của các phần cứng đồ họa (GPU/TPU) đã mở ra một kỷ nguyên vàng cho các thuật toán Học máy (Machine Learning - ML) và Học sâu (Deep Learning - DL).
+\section*{LỜI MỞ ĐẦU}
 
-Đằng sau những ứng dụng hào nhoáng đó là một nền tảng toán học và khoa học máy tính vô cùng đồ sộ. Để có thể làm chủ và ứng dụng AI một cách hiệu quả, việc hiểu rõ bản chất cốt lõi của các thuật toán, từ những phương pháp học máy thống kê cơ bản cho đến các kiến trúc mạng nơ-ron phức tạp như Mạng nơ-ron Tích chập (Convolutional Neural Networks - CNN) hay Mạng nơ-ron Hồi quy (Recurrent Neural Networks - RNN), là một yêu cầu bắt buộc đối với bất kỳ kỹ sư công nghệ thông tin nào. Quá trình học tập không chỉ dừng lại ở việc gọi các hàm có sẵn từ các thư viện cấp cao (API-driven development) mà còn phải đi sâu vào việc triển khai từ đầu (from scratch) để thấu hiểu cách thức tối ưu hóa hàm mất mát (loss function), sự lan truyền ngược của đạo hàm (backpropagation), và cách thức dữ liệu được biến đổi qua các không gian vector đa chiều.
+Trong kỷ nguyên công nghệ số hiện nay, Trí tuệ Nhân tạo (AI - Artificial Intelligence) và Học máy (Machine Learning) không chỉ dừng lại ở các nghiên cứu mang tính lý thuyết trong các phòng thí nghiệm, mà đã và đang trở thành cốt lõi của hàng loạt ứng dụng thực tiễn làm thay đổi sâu sắc mọi mặt của đời sống xã hội. Từ các hệ thống gợi ý sản phẩm thông minh của các gã khổng lồ thương mại điện tử, các trợ lý ảo có khả năng giao tiếp tự nhiên với con người, cho đến các phương tiện tự hành phức tạp và các phần mềm hỗ trợ chẩn đoán y khoa với độ chính xác cao, AI đang chứng minh sức mạnh to lớn trong việc giải quyết các bài toán khó khăn của nhân loại. Tuy nhiên, để một mô hình AI từ giai đoạn nghiên cứu, huấn luyện trên các tập dữ liệu tĩnh có thể thực sự mang lại giá trị và phục vụ hàng triệu người dùng, nó cần phải vượt qua một khoảng cách rất lớn: đó chính là quá trình triển khai mô hình vào môi trường thực tế (Model Deployment).
 
-\subsection{Mục tiêu nghiên cứu}
-Nghiên cứu này được thực hiện với các mục tiêu cốt lõi như sau:
+Triển khai mô hình AI là một quá trình kỹ thuật phức tạp, đòi hỏi sự kết hợp nhuần nhuyễn giữa kiến thức chuyên sâu về Khoa học dữ liệu (Data Science), kỹ năng lập trình, và tư duy kiến trúc hệ thống, đặc biệt là các kỹ năng thuộc lĩnh vực MLOps (Machine Learning Operations). Một mô hình đạt độ chính xác $99\%$ trong môi trường thử nghiệm (Jupyter Notebook) hoàn toàn có thể trở nên vô dụng nếu nó yêu cầu tới $10$ giây để dự đoán một kết quả, hoặc đòi hỏi lượng tài nguyên máy chủ quá lớn mà hệ thống hiện tại không thể đáp ứng, hoặc không thể xử lý hàng nghìn yêu cầu đồng thời từ người dùng cuối. Do đó, việc hiểu rõ và làm chủ các kỹ thuật triển khai, tối ưu hóa mô hình, xây dựng API giao tiếp và đóng gói ứng dụng là một trong những yêu cầu bắt buộc và quan trọng nhất đối với các kỹ sư AI hiện đại.
+
+Bài tập lớn số 07 của học phần Hệ thống thông minh (Intelligent Systems) với chủ đề "Triển khai các mô hình Trí tuệ Nhân tạo - AI Models Deployment" được thiết kế nhằm mục đích cung cấp cho sinh viên một cái nhìn toàn diện, sâu sắc và mang tính thực chiến cao về toàn bộ vòng đời của một dự án học máy sau giai đoạn huấn luyện. Thông qua việc thực hiện bài tập lớn này, chúng em không chỉ áp dụng lại những kiến thức lý thuyết đã học mà còn phải đối mặt và giải quyết các thách thức thực tế trong việc đưa các mô hình deep learning hiện đại (như CNN, RNN, Transformers) lên các nền tảng web hoặc máy chủ, đảm bảo tính sẵn sàng, khả năng mở rộng và hiệu suất hoạt động tốt nhất.
+
+\newpage
+\section{Giới thiệu chung về Bài tập lớn}
+
+Sự phát triển bùng nổ của các mô hình Deep Learning trong những năm gần đây đã mở ra những hướng đi mới trong việc giải quyết các bài toán phức tạp liên quan đến thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (Natural Language Processing) và dữ liệu dạng chuỗi (Time-series data). Các framework mạnh mẽ như TensorFlow, PyTorch hay Keras đã làm cho quá trình xây dựng và huấn luyện mô hình trở nên dễ dàng hơn bao giờ hết. Hàng loạt các cấu trúc mạng nơ-ron từ đơn giản như Multi-Layer Perceptron (MLP) cho đến các cấu trúc phức tạp như ResNet, YOLO, BERT, hay GPT đã được công bố rộng rãi.
+
+Thế nhưng, vòng đời của một dự án AI không kết thúc khi quá trình huấn luyện báo cáo hàm loss hội tụ và độ chính xác đạt ngưỡng mong muốn. Ngược lại, đó mới chỉ là điểm khởi đầu cho một chặng đường đầy thử thách tiếp theo: Đưa mô hình vào phục vụ thực tế (Production). Bối cảnh của Bài tập lớn 07 được đặt trong tình hình thực tế này, khi mà các nhà tuyển dụng và ngành công nghiệp phần mềm đang khát khao những kỹ sư không chỉ biết "train model" mà còn phải biết "deploy model". 
+
+Bài tập lớn số 07 tập trung vào việc mô phỏng lại một quy trình phát triển và triển khai phần mềm AI tiêu chuẩn trong các công ty công nghệ lớn. Yêu cầu của bài tập lớn đòi hỏi sinh viên phải tiếp nhận một (hoặc nhiều) mô hình đã được huấn luyện sẵn (pre-trained models) hoặc tự tay huấn luyện các mô hình từ đầu trên các tập dữ liệu tiêu chuẩn. Sau khi có được các tệp trọng số (weights) hoặc toàn bộ mô hình (ví dụ dạng \texttt{.h5}, \texttt{.pt}, \texttt{.onnx}), sinh viên sẽ phải tiến hành xây dựng các dịch vụ backend API sử dụng các vi khung (micro-frameworks) phổ biến như FastAPI hoặc Flask. 
+
+Hơn thế nữa, một yếu tố quan trọng trong kiến trúc hệ thống hiện đại là tính di động (portability) và khả năng cô lập môi trường. Do đó, bài tập lớn cũng đặt ra yêu cầu phải sử dụng các công nghệ container hóa (Containerization) điển hình là Docker. Việc đóng gói mô hình, mã nguồn API, cùng với toàn bộ các thư viện phụ thuộc vào trong một Docker container không chỉ giúp tránh tình trạng "chạy được trên máy tôi nhưng lỗi trên server" mà còn tạo tiền đề vững chắc cho việc triển khai tự động lên các hệ thống điện toán đám mây (Cloud Computing) như AWS, Google Cloud, hay Azure thông qua các công cụ điều phối (Orchestration tools) như Kubernetes.
+
+Động lực chính (Motivation) để hoàn thành tốt bài tập lớn này không chỉ là để đáp ứng yêu cầu học thuật của môn học, mà quan trọng hơn cả, là nhằm rèn luyện và trang bị những kỹ năng thiết yếu mà một AI Engineer / Machine Learning Engineer chuyên nghiệp cần có. Quá trình làm bài tập lớn giúp chúng em cọ xát với các khái niệm phức tạp như độ trễ (latency), thông lượng (throughput), tối ưu hóa bộ nhớ, và bảo mật dữ liệu – những yếu tố quyết định sự sống còn của một sản phẩm AI trên thị trường thực tế.
+
+\newpage
+\section{Mục tiêu và Phạm vi}
+
+\subsection{Mục tiêu của báo cáo}
+
+Dự án và báo cáo "AI Models Deployment" hướng đến những mục tiêu cốt lõi sau:
 \begin{itemize}
-    \item \textbf{Hệ thống hóa cơ sở lý thuyết:} Trình bày một cách logic và khoa học quá trình tiến hóa của các hệ thống AI, từ những hệ chuyên gia sơ khai cho đến sự bùng nổ của mạng nơ-ron nhân tạo. Phân tích sâu các khái niệm toán học làm nền tảng cho Học máy.
-    \item \textbf{Thực nghiệm hóa thuật toán cơ bản:} Xây dựng và đánh giá các mô hình Phân loại và Hồi quy sử dụng Multi-Layer Perceptron (MLP) trên các tập dữ liệu thực tế thuộc các miền lĩnh vực đa dạng như y tế, bất động sản và thương mại điện tử.
-    \item \textbf{Khai phá kiến trúc Mạng Tích chập (CNN):} Phân tích cơ chế trích xuất đặc trưng không gian thông qua phép tích chập (convolution) và gộp (pooling). Đánh giá tính hiệu quả trên ảnh màu, ảnh xám và cả dữ liệu bảng 1D.
-    \item \textbf{Giải quyết bài toán Chuỗi thời gian (RNN):} Phân tích cấu trúc hồi quy, thuật toán BPTT và ứng dụng dự báo chuỗi thời gian liên tục trên dữ liệu tài chính vĩ mô.
-    \item \textbf{Đánh giá đối chuẩn (Benchmarking):} Mọi thuật toán đều được triển khai song song trên 3 nền tảng: NumPy (From scratch), Keras (High-level API) và PyTorch (Dynamic Computation Graph) để cung cấp cái nhìn khách quan về hiệu năng và độ phức tạp mã nguồn.
+    \item \textbf{Củng cố và áp dụng kiến thức nền tảng:} Vận dụng các kiến thức về Học máy và Deep Learning để hiểu rõ kiến trúc, cách thức hoạt động và quá trình tiền xử lý/hậu xử lý dữ liệu đầu vào/đầu ra của các mô hình AI khác nhau.
+    \item \textbf{Xây dựng RESTful API cho các mô hình AI:} Nắm vững kỹ thuật lập trình web backend để thiết kế và phát triển các API giao tiếp, cho phép các ứng dụng khách (client-side) có thể gửi yêu cầu dự đoán (inference requests) tới mô hình một cách dễ dàng, an toàn và hiệu quả thông qua giao thức HTTP.
+    \item \textbf{Đóng gói và quản lý môi trường bằng Docker:} Thành thạo việc viết Dockerfile, thiết lập môi trường tối ưu (giảm thiểu kích thước image, sử dụng các base image phù hợp), và sử dụng Docker Compose để quản lý các dịch vụ đa thành phần.
+    \item \textbf{Tối ưu hóa quá trình Inference:} Nghiên cứu và thực nghiệm các phương pháp tối ưu hóa tốc độ dự đoán của mô hình, chẳng hạn như chuyển đổi định dạng mô hình (ví dụ sang ONNX, TensorRT), sử dụng batch inference, hoặc cấu hình số lượng worker phù hợp cho web server.
+    \item \textbf{Triển khai lên môi trường Cloud (Tùy chọn/Nâng cao):} Thực hành việc đưa ứng dụng đã được đóng gói lên các nền tảng đám mây công cộng, thiết lập CI/CD pipeline để tự động hóa quá trình kiểm thử và triển khai.
 \end{itemize}
 
-\subsection{Phạm vi và đối tượng nghiên cứu}
-\textbf{Đối tượng nghiên cứu:}
-Nghiên cứu tập trung vào 3 cấu trúc mạng nơ-ron tiêu biểu: MLP, CNN, và RNN. Song song đó là các thuật toán tối ưu hóa như Gradient Descent (BGD, SGD, Mini-batch) và các phương pháp tinh chỉnh siêu tham số, chuẩn hóa dữ liệu.
+\subsection{Phạm vi thực hiện}
 
-\textbf{Phạm vi thực nghiệm (Datasets):}
-Để đảm bảo tính khách quan, tiểu luận sử dụng 9 tập dữ liệu khác biệt về bản chất:
+Trong khuôn khổ của Bài tập lớn 07, phạm vi của dự án được giới hạn trong các khía cạnh sau để đảm bảo tính khả thi và tập trung vào chất lượng kỹ thuật:
+\begin{enumerate}
+    \item \textbf{Về mặt dữ liệu và mô hình:} Dự án sẽ tập trung triển khai một số mô hình đại diện cho các bài toán phổ biến. Cụ thể có thể bao gồm mô hình phân loại hình ảnh (Image Classification) sử dụng kiến trúc CNN (Convolutional Neural Networks), hoặc bài toán phân tích cảm xúc (Sentiment Analysis) sử dụng Transformer. Các mô hình này có thể là mô hình được huấn luyện lại trên các tập dữ liệu phổ biến, hoặc sử dụng các pre-trained models.
+    \item \textbf{Về công nghệ backend:} Hệ thống sẽ sử dụng \texttt{FastAPI} – một framework Python hiện đại, hiệu năng cao, dựa trên Starlette và Pydantic. Việc lựa chọn FastAPI dựa trên ưu điểm vượt trội về tốc độ xử lý bất đồng bộ (asynchronous) và khả năng tự động sinh tài liệu API (Swagger UI).
+    \item \textbf{Về quy trình đóng gói và triển khai:} Dự án bắt buộc phải cung cấp hệ thống Dockerfile chuẩn hóa, cho phép build và run ứng dụng chỉ với các lệnh Docker cơ bản. Việc triển khai (deploy) có thể thực hiện trên môi trường máy chủ cục bộ (local server), hoặc các dịch vụ triển khai đám mây.
+    \item \textbf{Không bao gồm:} Dự án sẽ không đi sâu vào việc tối ưu hóa kiến trúc mô hình (như Neural Architecture Search) ở mức quá phức tạp, không thực hiện thu thập dữ liệu lớn từ đầu, và không đi sâu vào việc xây dựng một giao diện frontend quá phức tạp, mà chỉ tập trung ở mức độ hiển thị cơ bản hoặc sử dụng trực tiếp API docs để demo ứng dụng.
+\end{enumerate}
+
+\newpage
+\section{Cấu trúc của báo cáo}
+
+Báo cáo này được trình bày một cách hệ thống, chi tiết và logic, tuân theo quy trình phát triển phần mềm chuẩn mực. Cấu trúc của báo cáo được chia thành 5 chương chính (không kể phần Mở đầu và Kết luận), mỗi chương giải quyết một khía cạnh cụ thể trong toàn bộ quy trình xây dựng và triển khai hệ thống AI. Dưới đây là tóm tắt nội dung chính của các chương:
+
+\subsection*{Chương 1: Cơ sở lý thuyết và Tổng quan công nghệ}
+Chương này đóng vai trò như một nền tảng kiến thức vững chắc cho các chương thực hành phía sau. Nội dung sẽ trình bày chi tiết về các khái niệm cốt lõi trong Học máy và Deep Learning, kiến trúc của các mô hình được lựa chọn để triển khai. Đồng thời, chương này cũng phân tích chuyên sâu về các công nghệ và framework được sử dụng trong dự án, bao gồm:
 \begin{itemize}
-    \item Dữ liệu dạng bảng: Bệnh tiểu đường Pima (Diabetes), Giá nhà California (Housing), Đánh giá thời trang (E-commerce).
-    \item Dữ liệu thị giác: Ảnh vật thể CIFAR-10, Ảnh chữ số viết tay MNIST, và một biến thể CNN 1D cho dữ liệu bảng.
-    \item Dữ liệu tuần tự (Time-series): Giá Vàng (Gold Price), Cổ phiếu Amazon (AMZN), và dữ liệu khí tượng Jena Climate.
+    \item Tổng quan về kiến trúc RESTful API và lợi ích của việc microservices hóa hệ thống học máy.
+    \item Phân tích chi tiết về framework FastAPI, Pydantic và cơ chế lập trình bất đồng bộ (async/await) trong Python.
+    \item Lý thuyết về Containerization, so sánh Docker với các công nghệ máy ảo (Virtual Machines) truyền thống, và vai trò của Docker trong quy trình MLOps.
+    \item Các phương pháp và định dạng tối ưu hóa mô hình AI (như ONNX, TorchScript).
 \end{itemize}
 
-\subsection{Cấu trúc của Tiểu luận}
-Báo cáo được cấu trúc thành 4 chương chính. Chương 1 tóm tắt lịch sử AI từ thập niên 1950 đến nay. Chương 2 đi sâu vào các mô hình Machine Learning cơ bản (Perceptron đa tầng). Chương 3 tập trung phân tích Mạng nơ-ron Tích chập (CNN) và khả năng trích xuất đặc trưng không gian. Cuối cùng, Chương 4 trình bày về Mạng nơ-ron Hồi quy (RNN) trong việc giải quyết dữ liệu chuỗi thời gian.
+\subsection*{Chương 2: Xây dựng và Huấn luyện Mô hình AI}
+Chương này mô tả quá trình chuẩn bị "bộ não" cho hệ thống. Nội dung bao gồm việc thu thập, phân tích và tiền xử lý dữ liệu (Exploratory Data Analysis \& Data Preprocessing). Tiếp theo, báo cáo sẽ trình bày chi tiết quá trình thiết kế cấu trúc mạng nơ-ron. Các khía cạnh quan trọng như việc lựa chọn hàm mất mát (loss function), thuật toán tối ưu (optimizer), chiến lược học (learning rate schedule), và quá trình huấn luyện (training loop) cũng như đánh giá mô hình bằng các độ đo (metrics) sẽ được phân tích kỹ lưỡng và đi kèm các ví dụ thực nghiệm.
+
+\subsection*{Chương 3: Xây dựng Dịch vụ Backend API với FastAPI}
+Được xem là cầu nối giữa mô hình tính toán và người dùng cuối, chương này trình bày các bước lập trình cụ thể để gói gọn mô hình vào một ứng dụng web. Các nội dung chính bao gồm:
+\begin{itemize}
+    \item Thiết kế sơ đồ kiến trúc API và luồng xử lý dữ liệu.
+    \item Viết các lớp (classes) và hàm (functions) để thực hiện tiền xử lý dữ liệu từ HTTP requests sao cho tương thích với định dạng đầu vào của mô hình.
+    \item Quản lý vòng đời của mô hình trong ứng dụng (khởi tạo mô hình khi server start) để tránh vấn đề cold start, giảm thiểu độ trễ.
+    \item Định nghĩa các Endpoints, kiểm tra dữ liệu đầu vào bằng Pydantic và trả về kết quả dự đoán (Inference Response) theo định dạng JSON chuẩn.
+\end{itemize}
+
+\subsection*{Chương 4: Đóng gói Ứng dụng với Docker}
+Chương này đi sâu vào thực hành kỹ thuật DevOps/MLOps, mô tả chi tiết cách thức tạo ra một Docker Image hoàn chỉnh cho ứng dụng AI Backend. Báo cáo sẽ trình bày phân tích chuyên sâu về file \texttt{Dockerfile}, giải thích ý nghĩa của từng chỉ thị và chiến lược tối ưu hóa kích thước image. Ngoài ra, việc sử dụng \texttt{docker-compose} để cấu hình và chạy hệ thống nhiều thành phần cũng sẽ được trình bày rõ ràng với mã nguồn minh họa chi tiết.
+
+\subsection*{Chương 5: Triển khai, Đánh giá và Tối ưu hóa Hệ thống}
+Chương cuối cùng của báo cáo trình bày quá trình đưa ứng dụng lên các môi trường thực tế và các thực nghiệm đo lường hiệu năng tổng thể. Nội dung bao gồm việc trình bày chi tiết các bước triển khai (deploy), các kịch bản kiểm thử API. Đặc biệt, chương này sẽ có các số liệu, đánh giá hiệu suất của hệ thống, phân tích thời gian phản hồi (Response Time) và thông lượng dưới các điều kiện vận hành khác nhau. Dựa trên các kết quả đó, chương này sẽ đề xuất các giải pháp nhằm nâng cao khả năng vận hành ổn định cho hệ thống.
