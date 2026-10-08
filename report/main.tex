@@ -1969,6 +1969,17 @@ Kiến trúc phân tách này không chỉ giúp cho việc bảo trì mã ngu�
 
 \textbf{Lưu ý quan trọng:} Toàn bộ hệ thống Backend và Frontend của dự án này đã được triển khai (deploy) hoàn chỉnh lên nền tảng đám mây Render. Người dùng có thể truy cập và trải nghiệm trực tiếp tại đường dẫn: \url{https://intel-sys-assignment-07.onrender.com/}.
 
+\begin{figure}[H]
+    \centering
+    \IfFileExists{figures/web_demo.png}{%
+        \includegraphics[width=0.9\textwidth]{figures/web_demo.png}
+    }{%
+        \fbox{\rule{0pt}{3in} \rule{0.9\textwidth}{0pt}} % Placeholder
+    }
+    \caption{Giao diện chính của hệ thống triển khai thực tế trên Web}
+    \label{fig:web_demo}
+\end{figure}
+
 \subsection{Xây dựng Backend với FastAPI}
 FastAPI là một web framework hiện đại, hiệu năng cao để xây dựng các API bằng Python dựa trên các type hints tiêu chuẩn. Trong bài toán của chúng ta, Backend cần phải có khả năng quản lý nhiều loại mô hình khác nhau, bao gồm:
 \begin{itemize}
