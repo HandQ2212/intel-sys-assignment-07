@@ -147,6 +147,9 @@ Bài tập lớn số 07 của học phần Hệ thống thông minh (Intelligen
 \newpage
 \section{Giới thiệu chung về Bài tập lớn}
 
+\textbf{Mã nguồn dự án (Source Code):} Toàn bộ mã nguồn, tài liệu và cấu hình triển khai của dự án được công khai tại repository: \url{https://github.com/HandQ2212/intel-sys-assignment-07}
+
+
 Sự phát triển bùng nổ của các mô hình Deep Learning trong những năm gần đây đã mở ra những hướng đi mới trong việc giải quyết các bài toán phức tạp liên quan đến thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (Natural Language Processing) và dữ liệu dạng chuỗi (Time-series data). Các framework mạnh mẽ như TensorFlow, PyTorch hay Keras đã làm cho quá trình xây dựng và huấn luyện mô hình trở nên dễ dàng hơn bao giờ hết. Hàng loạt các cấu trúc mạng nơ-ron từ đơn giản như Multi-Layer Perceptron (MLP) cho đến các cấu trúc phức tạp như ResNet, YOLO, BERT, hay GPT đã được công bố rộng rãi.
 
 Thế nhưng, vòng đời của một dự án AI không kết thúc khi quá trình huấn luyện báo cáo hàm loss hội tụ và độ chính xác đạt ngưỡng mong muốn. Ngược lại, đó mới chỉ là điểm khởi đầu cho một chặng đường đầy thử thách tiếp theo: Đưa mô hình vào phục vụ thực tế (Production). Bối cảnh của Bài tập lớn 07 được đặt trong tình hình thực tế này, khi mà các nhà tuyển dụng và ngành công nghiệp phần mềm đang khát khao những kỹ sư không chỉ biết "train model" mà còn phải biết "deploy model". 
@@ -395,7 +398,7 @@ Học máy (Machine Learning - ML) là một lĩnh vực của Trí tuệ Nhân 
 \subsubsection{Mô tả bộ dữ liệu và phân tích}
 Bộ dữ liệu Pima Indians Diabetes Database được thu thập bởi Viện Bệnh tiểu đường, Tiêu hóa và Bệnh thận Quốc gia (National Institute of Diabetes and Digestive and Kidney Diseases). Mục tiêu của bộ dữ liệu là dự đoán xem một bệnh nhân có mắc bệnh tiểu đường hay không, dựa trên các phép đo chẩn đoán y khoa nhất định. Tất cả các bệnh nhân trong bộ dữ liệu này đều là nữ giới có độ tuổi từ 21 trở lên, thuộc di sản Pima Indian.
 \begin{itemize}
-    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/uciml/pima-indians-diabetes-database}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset}
     \item \textbf{Kích thước (Size):} 768 mẫu (samples), 9 cột (8 đặc trưng đầu vào, 1 nhãn đầu ra).
     \item \textbf{Các đặc trưng (Features):}
     \begin{itemize}
@@ -1003,7 +1006,7 @@ Thông thường, cửa sổ pooling có kích thước $2 \times 2$ với strid
 \subsubsection{Mô tả Dữ liệu}
 Tập dữ liệu CIFAR-10 (Canadian Institute For Advanced Research) là một tập dữ liệu chuẩn được sử dụng rộng rãi cho huấn luyện các thuật toán học máy và thị giác máy tính.
 \begin{itemize}
-    \item \textbf{Liên kết (Link):} \url{https://www.cs.toronto.edu/~kriz/cifar.html}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/datasets/ayush1220/cifar10}
     \item \textbf{Kích thước (Size):} CIFAR-10 bao gồm 60,000 ảnh màu kích thước $32 \times 32$ pixel, được chia thành 10 lớp khác nhau. Có 50,000 ảnh huấn luyện và 10,000 ảnh kiểm thử.
     \item \textbf{Phân phối (Distribution):} Dữ liệu được phân bổ hoàn toàn cân bằng, với đúng 6,000 ảnh cho mỗi lớp. Các lớp bao gồm: máy bay (airplane), ô tô (automobile), chim (bird), mèo (cat), hươu (deer), chó (dog), ếch (frog), ngựa (horse), tàu thủy (ship) và xe tải (truck).
     \item \textbf{Phân tích (Analysis):} Kích thước ảnh khá nhỏ và mờ, làm cho bài toán nhận dạng trở nên thách thức hơn so với các bộ ảnh có độ phân giải cao. Tuy nhiên, tính chất đa dạng về màu sắc, góc chụp và bối cảnh (background) biến nó thành một chuẩn mực (benchmark) tốt để đánh giá khả năng trích xuất đặc trưng của mạng CNN.
@@ -1185,7 +1188,7 @@ model = SimpleCNN_CIFAR()
 \subsubsection{Mô tả Dữ liệu}
 MNIST (Modified National Institute of Standards and Technology) là tập dữ liệu hình ảnh kinh điển nhất trong cộng đồng học sâu dùng để phân loại chữ số viết tay.
 \begin{itemize}
-    \item \textbf{Liên kết (Link):} \url{http://yann.lecun.com/exdb/mnist/}
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/datasets/alexandrelemercier/400k-augmented-mnist-extended-handwritten-digits}
     \item \textbf{Kích thước (Size):} Chứa 70,000 ảnh xám (grayscale) kích thước $28 \times 28$ pixel. Bao gồm 60,000 ảnh tập huấn luyện và 10,000 ảnh tập kiểm thử.
     \item \textbf{Phân phối (Distribution):} Chứa các chữ số từ 0 đến 9. Dữ liệu khá cân bằng (mỗi lớp có khoảng hơn 6000 mẫu trong tập train).
     \item \textbf{Phân tích (Analysis):} Dữ liệu chỉ có 1 kênh màu (grayscale). Các chữ số được đặt ở trung tâm khung hình. Độ phức tạp của bài toán tương đối thấp so với CIFAR-10. Các mô hình CNN đơn giản có thể dễ dàng đạt độ chính xác trên 99\% trên tập dữ liệu này. Nó phù hợp để dùng làm Proof-of-Concept cho các kiến trúc mạng mới.
@@ -1262,7 +1265,7 @@ model_mnist_pt = SimpleCNN_MNIST()
 \subsubsection{Mô tả Dữ liệu}
 Bên cạnh ảnh 2 chiều, mạng nơ-ron tích chập hoàn toàn có thể được ứng dụng cho dữ liệu 1 chiều (1D Convolution) như tín hiệu sinh học, âm thanh, chuỗi thời gian hay dữ liệu dạng bảng. Ở đây ta xem xét bài toán phân loại chuẩn đoán bệnh tiểu đường (Diabetes) sử dụng dữ liệu 1 chiều, điển hình là bộ dữ liệu Pima Indians Diabetes Database.
 \begin{itemize}
-    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/uciml/pima-indians-diabetes-database} (Được xem như dữ liệu dạng bảng 1D).
+    \item \textbf{Liên kết (Link):} \url{https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset} (Được xem như dữ liệu dạng bảng 1D).
     \item \textbf{Kích thước (Size):} Gồm 768 bệnh nhân (mẫu) với 8 đặc trưng/biến dự đoán lâm sàng (như số lần mang thai, nồng độ glucose, huyết áp, độ dày nếp gấp da, insulin, BMI, chức năng di truyền tiểu đường, độ tuổi).
     \item \textbf{Phân phối (Distribution):} Có 2 lớp: Mắc bệnh (Positive - lớp 1, 268 mẫu) và Không mắc bệnh (Negative - lớp 0, 500 mẫu). Dữ liệu khá mất cân bằng.
     \item \textbf{Phân tích (Analysis):} Dữ liệu này vốn là dữ liệu dạng bảng, nhưng ta có thể biểu diễn mỗi mẫu như một chuỗi 1D (sequence) có chiều dài bằng 8, và số kênh (channels) bằng 1. Việc áp dụng Conv1D trên dữ liệu này giúp mạng tự động học được tổ hợp các nhóm đặc trưng gần kề nhau một cách hiệu quả hơn so với mạng Fully Connected truyền thống.
@@ -1462,7 +1465,7 @@ GRU hoạt động nhanh hơn và tốn ít bộ nhớ hơn LSTM trong khi thư�
 \subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
 Tập dữ liệu giá cổ phiếu Amazon (AMZN Stock Price) chứa thông tin giao dịch hàng ngày trên thị trường chứng khoán. 
 \begin{itemize}
-    \item \textbf{Link}: Tải về từ Yahoo Finance / Kaggle.
+    \item \textbf{Link}: \url{https://www.kaggle.com/datasets/henryshan/amazon-com-inc-amzn}
     \item \textbf{Kích thước}: Hơn 5000 dòng, bao gồm các cột như Date, Open, High, Low, Close, Adj Close, Volume.
     \item \textbf{Sample Outputs}: Tại ngày giao dịch, ví dụ "2023-01-10", giá trị Close có thể là 89.87 USD.
     \item \textbf{Phân phối}: Dữ liệu có xu hướng tăng mạnh từ năm 2010 đến 2021, đạt đỉnh, sau đó có sự điều chỉnh. Đồ thị giá đóng cửa có tính chất không dừng (non-stationary) rõ rệt, đặc trưng của chuỗi tài chính. Phân phối của sai phân (returns) tiệm cận phân phối chuẩn nhưng có đuôi dày (fat tails).
@@ -1648,7 +1651,7 @@ class PyTorchGRU(nn.Module):
 \subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
 Vàng là một trong những tài sản trú ẩn an toàn phổ biến nhất, chịu ảnh hưởng từ nhiều yếu tố vĩ mô như lạm phát, lãi suất, và biến động địa chính trị.
 \begin{itemize}
-    \item \textbf{Link}: Dữ liệu giao dịch vàng giao ngay (XAU/USD) từ Investing.com.
+    \item \textbf{Link}: \url{https://www.kaggle.com/datasets/lbronchal/gold-and-silver-prices-dataset}
     \item \textbf{Kích thước}: Khoảng 4000 mẫu dữ liệu lịch sử hàng ngày.
     \item \textbf{Sample Outputs}: Open: 1850.50, High: 1870.00, Low: 1845.20, Close: 1865.30.
     \item \textbf{Phân phối}: Không giống như cổ phiếu công nghệ, giá vàng thường biến động mạnh trong các đợt khủng hoảng và đi ngang trong thời kỳ ổn định. Phân phối của lợi suất (returns) vàng hẹp hơn nhưng có độ nhọn kurtosis cao.
@@ -1790,7 +1793,7 @@ class GoldPyTorchLSTM(nn.Module):
 \subsubsection{Mô tả, Phân phối và Phân tích Dữ liệu}
 Giá Bạc mang tính chất song song - vừa là kim loại quý đầu tư, vừa là kim loại công nghiệp được sử dụng rộng rãi trong điện tử và năng lượng mặt trời.
 \begin{itemize}
-    \item \textbf{Link}: Lấy từ LBMA (London Bullion Market Association) hoặc Quandl.
+    \item \textbf{Link}: \url{https://www.kaggle.com/datasets/lbronchal/gold-and-silver-prices-dataset}
     \item \textbf{Kích thước}: Khoảng 3500 dòng dữ liệu theo ngày.
     \item \textbf{Sample Outputs}: Open: 23.10, High: 23.45, Low: 22.90, Close: 23.35.
     \item \textbf{Phân phối}: Giá bạc biến động mạnh (volatility) hơn giá vàng do thị trường nhỏ hơn và bị phụ thuộc vào sản xuất công nghiệp. Điều này làm cho việc dự báo khó khăn hơn. Phân phối có dạng bimodal (hai đỉnh) tùy thuộc vào các chu kỳ bùng nổ của ngành năng lượng.
