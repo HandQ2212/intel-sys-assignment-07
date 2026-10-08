@@ -149,6 +149,8 @@ Bài tập lớn số 07 của học phần Hệ thống thông minh (Intelligen
 
 \textbf{Mã nguồn dự án (Source Code):} Toàn bộ mã nguồn, tài liệu và cấu hình triển khai của dự án được công khai tại repository: \url{https://github.com/HandQ2212/intel-sys-assignment-07}
 
+\textbf{Trang web Demo (Live Demo):} Dự án đã được triển khai thực tế trên nền tảng Cloud. Bạn có thể trải nghiệm trực tiếp tại đường dẫn: \url{https://intel-sys-assignment-07.onrender.com/}
+
 
 Sự phát triển bùng nổ của các mô hình Deep Learning trong những năm gần đây đã mở ra những hướng đi mới trong việc giải quyết các bài toán phức tạp liên quan đến thị giác máy tính (Computer Vision), xử lý ngôn ngữ tự nhiên (Natural Language Processing) và dữ liệu dạng chuỗi (Time-series data). Các framework mạnh mẽ như TensorFlow, PyTorch hay Keras đã làm cho quá trình xây dựng và huấn luyện mô hình trở nên dễ dàng hơn bao giờ hết. Hàng loạt các cấu trúc mạng nơ-ron từ đơn giản như Multi-Layer Perceptron (MLP) cho đến các cấu trúc phức tạp như ResNet, YOLO, BERT, hay GPT đã được công bố rộng rãi.
 
@@ -1964,6 +1966,8 @@ Trong dự án này, chúng tôi áp dụng kiến trúc Client-Server truyền 
 \end{itemize}
 
 Kiến trúc phân tách này không chỉ giúp cho việc bảo trì mã nguồn dễ dàng hơn mà còn cho phép khả năng mở rộng linh hoạt. Nếu lượng truy cập tăng lên, chúng ta hoàn toàn có thể triển khai Backend lên các dịch vụ đám mây mạnh mẽ (như AWS, GCP) có hỗ trợ GPU để tăng tốc độ suy luận, trong khi Frontend có thể được lưu trữ trên các dịch vụ CDN nhẹ.
+
+\textbf{Lưu ý quan trọng:} Toàn bộ hệ thống Backend và Frontend của dự án này đã được triển khai (deploy) hoàn chỉnh lên nền tảng đám mây Render. Người dùng có thể truy cập và trải nghiệm trực tiếp tại đường dẫn: \url{https://intel-sys-assignment-07.onrender.com/}.
 
 \subsection{Xây dựng Backend với FastAPI}
 FastAPI là một web framework hiện đại, hiệu năng cao để xây dựng các API bằng Python dựa trên các type hints tiêu chuẩn. Trong bài toán của chúng ta, Backend cần phải có khả năng quản lý nhiều loại mô hình khác nhau, bao gồm:
